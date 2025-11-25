@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>AURA v13.1 (Final 69)</title>
+    <title>AURA v14.0 (Persistent Energy)</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -91,6 +91,7 @@
             <div id="logo">AURA</div>
             <button id="lang-btn" class="interactive" onclick="openLang()">EN</button>
         </div>
+
         <div id="energy-wrapper">
             <div id="energy-container">
                 <div id="energy-text">ENERGY</div>
@@ -98,7 +99,9 @@
             </div>
             <div id="timer-text"></div>
         </div>
+
         <div id="toast"></div>
+
         <div id="controls">
             <button id="btn-interpret" class="interactive" onclick="interpretFate()">INTERPRET</button>
             <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
@@ -107,6 +110,7 @@
             </div>
         </div>
     </div>
+
     <div id="input-modal" class="modal-overlay">
         <div class="modal-card">
             <h3 id="lbl-query" style="font-family: var(--font-header); margin: 0; color: var(--c-gold);">YOUR QUERY</h3>
@@ -114,6 +118,7 @@
             <button id="btn-reveal" class="modal-btn" onclick="startReading()">REVEAL</button>
         </div>
     </div>
+
     <div id="prophecy-modal" class="modal-overlay" onclick="if(event.target===this) this.style.display='none'">
         <div class="modal-card" style="border-color: var(--c-spirit); box-shadow: 0 0 80px rgba(0, 255, 255, 0.25);">
             <h3 id="lbl-prophecy" style="font-family: var(--font-header); margin: 0 0 15px 0; color: var(--c-spirit);">PROPHECY</h3>
@@ -121,6 +126,7 @@
             <button id="btn-close-prophecy" class="modal-btn" style="background: var(--c-spirit);" onclick="document.getElementById('prophecy-modal').style.display='none'">CLOSE</button>
         </div>
     </div>
+
     <div id="lang-modal" class="modal-overlay" onclick="if(event.target===this) this.style.display='none'">
         <div class="modal-card" style="border-color: #444;">
             <h3 id="lbl-lang" style="margin-top:0; color:#ccc;">LANGUAGE</h3>
@@ -131,6 +137,7 @@
             </div>
         </div>
     </div>
+
     <div id="paywall-modal" class="modal-overlay">
         <div class="modal-card" style="border-color: var(--c-mystic);">
             <h3 id="lbl-no-energy" style="font-family: var(--font-header); margin: 0; color: var(--c-mystic);">ENERGY LOW</h3>
@@ -138,20 +145,27 @@
             <button id="btn-later" class="modal-btn" style="background: transparent; color: #666; border: 1px solid #444; margin-top: 10px;" onclick="document.getElementById('paywall-modal').style.display='none'">LATER</button>
         </div>
     </div>
+
     <div id="chart"></div>
 
 <script>
     // --- NGROK URL ---
     const BACKEND_URL = "https://supperless-yoshiko-noneruditely.ngrok-free.dev"; 
-    // -----------------
+    // ----------------------------
 
     const tg = window.Telegram.WebApp;
     tg.expand();
     
+    // --- ИНИЦИАЛИЗАЦИЯ ЭНЕРГИИ (ЧТЕНИЕ ИЗ LOCAL STORAGE) ---
+    // Читаем сохраненное значение, иначе ставим 100
+    let energy = parseInt(localStorage.getItem('auraEnergy')) || 100;
+    // Читаем время регенерации, иначе ставим текущее время
+    let lastRegenTime = parseInt(localStorage.getItem('auraRegenTime')) || Date.now(); 
+    // ----------------------------------------------------
+
     let curLang = 'ru';
-    let energy = 100;
-    let isPremium = false; 
-    
+    let isPremium = false; // Это будет переключаться после оплаты
+
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const userLang = tg.initDataUnsafe.user.language_code;
         if (userLang === 'ru' || userLang === 'uk' || userLang === 'ua') curLang = userLang === 'ua' ? 'ua' : 'ru';
@@ -159,12 +173,13 @@
 
     const REGEN_AMOUNT = 25; 
     const REGEN_TIME_MS = 30 * 60 * 1000; 
-    let lastRegenTime = Date.now();
-
+    
     let nodes = [];
     let links = [];
     let selectedNode = null;
     let width = window.innerWidth, height = window.innerHeight;
+    const isMobile = window.innerWidth < 768;
+
 
     const DICT = {
         en: { energy: "ENERGY", infinite: "∞ INFINITE", newRitual: "NEW RITUAL", divine: "DIVINE", query: "YOUR QUESTION", reveal: "REVEAL", lowEnergy: "ENERGY DEPLETED", unlock: "UNLOCK ETERNITY (69 ⭐️)", later: "LATER", listening: "THE ORACLE IS LISTENING...", revealed: "THE FATE IS REVEALED", roles: ["ROOT", "PAST", "OBSTACLE", "GUIDE", "OUTCOME"], interpret: "INTERPRET", prophecy: "PROPHECY", regen: "REGEN IN" },
@@ -240,11 +255,22 @@
         if (btn.classList.contains('disabled')) return;
         btn.classList.add('disabled');
         
-        if (!isPremium && energy < 25) { 
-            document.getElementById('paywall-modal').style.display = 'flex'; 
-            btn.classList.remove('disabled');
-            return;
+        // --- ПРОВЕРКА ДОСТУПА И ЭНЕРГИИ ---
+        // Тут должна быть проверка, paid ли юзер. Если нет, проверяем энергию.
+        
+        // Временно пропускаем проверку isPremium, но оставляем логику free energy
+        if (!isPremium) { 
+            if (energy < 25) { 
+                document.getElementById('paywall-modal').style.display = 'flex'; 
+                btn.classList.remove('disabled');
+                return;
+            }
+            energy -= 25; 
+            updateEnergyBar(); 
+            // Сохраняем новое значение энергии
+            localStorage.setItem('auraEnergy', energy); 
         }
+        // ------------------------------------
 
         if (nodes.length > 1) {
             nodes = [nodes.find(n => n.id === 1)];
@@ -252,39 +278,61 @@
             document.getElementById('btn-interpret').classList.remove('visible');
         }
 
-        if (!isPremium) { energy -= 25; updateEnergyBar(); }
-
         try {
+            // ОТПРАВЛЯЕМ ЗАПРОС НА НАШ БЭКЕНД
             const response = await fetch(`${BACKEND_URL}/api/generate_cards`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question: selectedNode.label, lang: curLang })
+                body: JSON.stringify({ 
+                    question: selectedNode.label,
+                    lang: curLang,
+                    user_id: tg.initDataUnsafe?.user?.id || 0 // Передаем ID пользователя для проверки доступа на NAS
+                })
             });
+            
             if (!response.ok) throw new Error("Server error");
+            
             const cards = await response.json(); 
 
             const spacingY = window.innerWidth < 768 ? 180 : 220;
             const spacingX = window.innerWidth < 768 ? 150 : 200;
-            const layouts = [ { x: -spacingX, y: spacingY }, { x: spacingX, y: spacingY }, { x: 0, y: spacingY * 2 }, { x: 0, y: spacingY * 3.2 } ];
+            const layouts = [ 
+                { x: -spacingX, y: spacingY },
+                { x: spacingX, y: spacingY }, 
+                { x: 0, y: spacingY * 2 },     
+                { x: 0, y: spacingY * 3.2 }    
+            ];
 
             cards.forEach((card, i) => {
                 if(i >= 4) return;
                 const pos = layouts[i];
                 const newNode = {
                     id: Date.now() + i, label: card.text, emoji: card.emoji, role: DICT[curLang].roles[i+1],
-                    x: selectedNode.x, y: selectedNode.y, fx: 0 + pos.x, fy: -150 + pos.y 
+                    x: selectedNode.x, y: selectedNode.y,
+                    fx: 0 + pos.x, fy: -150 + pos.y 
                 };
-                nodes.push(newNode); links.push({ source: selectedNode.id, target: newNode.id });
+                nodes.push(newNode);
+                links.push({ source: selectedNode.id, target: newNode.id });
             });
 
-            updateTopology(); simulation.alpha(0.1).restart();
+            updateTopology();
+            simulation.alpha(0.1).restart();
             showToast(DICT[curLang].revealed);
             document.getElementById('btn-interpret').classList.add('visible');
             setTimeout(fitToScreen, 600);
+
         } catch (e) { 
-            console.error(e); showToast("SERVER ERROR"); 
-            if (!isPremium) { energy += 25; updateEnergyBar(); } 
-        } finally { setTimeout(() => btn.classList.remove('disabled'), 2000); }
+            console.error(e);
+            showToast("SERVER ERROR"); 
+            // Возвращаем энергию, если произошла ошибка сети/ИИ
+            if (!isPremium) { 
+                energy = Math.min(100, energy + 25);
+                updateEnergyBar();
+                localStorage.setItem('auraEnergy', energy); 
+            }
+        } finally { 
+            setTimeout(() => btn.classList.remove('disabled'), 2000); 
+        }
     }
 
     async function interpretFate() {
@@ -297,18 +345,63 @@
             const response = await fetch(`${BACKEND_URL}/api/interpret`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question: nodes[0].label, cards: [nodes[1], nodes[2], nodes[3], nodes[4]], lang: curLang })
+                body: JSON.stringify({ 
+                    question: nodes[0].label,
+                    cards: [nodes[1], nodes[2], nodes[3], nodes[4]],
+                    lang: curLang
+                })
             });
-            const data = await response.json(); txtBox.innerHTML = data.text;
-        } catch (e) { txtBox.innerHTML = "<p>Connection lost.</p>"; } finally { btn.innerText = DICT[curLang].interpret; }
+            const data = await response.json();
+            txtBox.innerHTML = data.text;
+        } catch (e) { 
+            txtBox.innerHTML = "<p>Connection lost.</p>"; 
+        } finally { 
+            btn.innerText = DICT[curLang].interpret; 
+        }
     }
 
     function buyPremium() {
+        // !!! ЗАМЕНИ НА ИМЯ ТВОЕГО БОТА (БЕЗ @) !!!
         const botUsername = "AURA_Oracle_bot"; 
         tg.openTelegramLink(`https://t.me/${botUsername}?start=buy`);
         tg.close();
     }
 
+    // --- ФУНКЦИЯ ТАЙМЕРА (С СОХРАНЕНИЕМ) ---
+    function updateTimer() {
+        if (isPremium) { 
+            document.getElementById('timer-text').innerText = DICT[curLang].infinite; 
+            return; 
+        }
+        
+        const timeElapsed = Date.now() - lastRegenTime;
+        const remainingTime = Math.max(0, REGEN_TIME_MS - timeElapsed);
+        
+        if (remainingTime === 0 && energy < 100) {
+            energy = Math.min(100, energy + REGEN_AMOUNT);
+            lastRegenTime = Date.now(); 
+        }
+        
+        updateEnergyBar();
+        
+        if (energy < 100) {
+            const mins = Math.floor(remainingTime / 60000);
+            document.getElementById('timer-text').innerText = `${DICT[curLang].regen}: ${mins}m`;
+        } else {
+            document.getElementById('timer-text').innerText = "FULL";
+        }
+        
+        // --- СОХРАНЯЕМ ТЕКУЩЕЕ ЗНАЧЕНИЕ ---
+        localStorage.setItem('auraEnergy', energy);
+        localStorage.setItem('auraRegenTime', lastRegenTime);
+        // ------------------------------------
+
+        requestAnimationFrame(updateTimer);
+    }
+    // ------------------------------------
+
+
+    // --- HELPER FUNCTIONS ---
     function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.style.opacity = 1; setTimeout(() => t.style.opacity = 0, 3000); }
     
     function fitToScreen() {
@@ -335,11 +428,11 @@
         const enter = node.enter().append("g").attr("class", "node-group")
             .call(d3.drag().on("start", dragStart).on("drag", dragged).on("end", dragEnd))
             .on("click", (e,d) => { selectedNode = d; updateVisuals(); });
-        enter.append("circle").attr("class", "rune-glow").attr("r", window.innerWidth < 768?30:38);
-        enter.append("circle").attr("class", "rune-circle").attr("r", window.innerWidth < 768?20:25);
-        enter.append("text").attr("class", "role-text").attr("dy", window.innerWidth < 768?-32:-40).text(d => d.role);
+        enter.append("circle").attr("class", "rune-glow").attr("r", isMobile?30:38);
+        enter.append("circle").attr("class", "rune-circle").attr("r", isMobile?20:25);
+        enter.append("text").attr("class", "role-text").attr("dy", isMobile?-32:-40).text(d => d.role);
         enter.append("text").attr("class", "emoji-text").attr("dy", 7).text(d => d.emoji);
-        enter.append("text").attr("class", "label-text").attr("dy", window.innerWidth < 768?38:48).text(d => d.label.length > 12 ? d.label.substring(0, 12)+'...' : d.label);
+        enter.append("text").attr("class", "label-text").attr("dy", isMobile?38:48).text(d => d.label.length > 12 ? d.label.substring(0, 12)+'...' : d.label);
         simulation.nodes(nodes).on("tick", ticked); simulation.force("link").links(links); simulation.alpha(1).restart(); ticked(); updateVisuals();
     }
     
@@ -355,6 +448,7 @@
 
     updateTexts();
     resetRitual();
+    requestAnimationFrame(updateTimer); // Убедимся, что таймер стартует
 </script>
 </body>
 </html>
