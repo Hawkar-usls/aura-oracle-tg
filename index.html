@@ -28,8 +28,6 @@
         #btn-divine { width: 70px; height: 70px; border-radius: 50%; background: radial-gradient(circle, rgba(30,10,50,0.9), #050010); border: 1px solid var(--c-gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); color: var(--c-gold); font-family: var(--font-header); font-size: 0.7rem; display: flex; align-items: center; justify-content: center; transition: 0.2s; text-shadow: 0 0 5px var(--c-gold); filter: grayscale(1); opacity: 0.5; pointer-events: none; }
         #btn-divine.active { filter: grayscale(0); opacity: 1; pointer-events: auto; }
         #btn-divine:active { transform: scale(0.95); border-color: var(--c-mystic); color: white; }
-        .loading-pulse { animation: pulse 1.5s infinite; pointer-events: none; opacity: 0.7 !important; }
-        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.7; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.7; } }
         #btn-interpret { background: rgba(15, 10, 30, 0.95); border: 1px solid var(--c-spirit); color: var(--c-spirit); padding: 12px 24px; border-radius: 30px; font-family: var(--font-header); font-size: 0.9rem; letter-spacing: 2px; font-weight: 700; box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); margin-bottom: 5px; opacity: 0; transform: translateY(20px); display: none; pointer-events: auto; }
         #btn-interpret.visible { opacity: 1; transform: translateY(0); display: block; }
         #btn-new { font-size: 0.7rem; color: rgba(255,255,255,0.7); background: none; border: none; letter-spacing: 2px; padding: 10px; }
@@ -136,33 +134,21 @@
     const simulation = d3.forceSimulation(nodes).force("link", d3.forceLink(links).id(d => d.id).distance(isMobile?100:140)).force("charge", d3.forceManyBody().strength(-400)).force("collide", d3.forceCollide(50));
 
     function resetRitual() { document.getElementById('input-modal').style.display = 'flex'; document.getElementById('user-query').value = ""; document.getElementById('btn-interpret').classList.remove('visible'); nodes = []; links = []; updateTopology(); svg.transition().duration(1000).call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(1)); }
-    function startReading() { const q = document.getElementById('user-query').value.trim(); if (!q) return; document.getElementById('input-modal').style.display = 'none'; nodes = [{ id: 1, label: q, emoji: "🔮", role: DICT[curLang].roles[0], x:0, y:0, fx:0, fy:0 }]; selectedNode = nodes[0]; updateTopology(); showToast(DICT[curLang].listening); svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(1)); }
-
-    // --- ФУНКЦИЯ ОПЛАТЫ (ПРЯМОЙ ИНВОЙС) ---
-    async function buyPremium() {
-        const btn = document.getElementById('btn-pay');
-        const originalText = btn.innerText;
-        btn.innerText = "...";
-        
-        try {
-            const res = await fetch(`${BACKEND_URL}/api/create_invoice`, { method: 'POST', headers: API_HEADERS });
-            const data = await res.json();
-            
-            if (data.invoice_url) {
-                tg.openInvoice(data.invoice_url, (status) => {
-                    if (status === 'paid') {
-                        tg.close(); // Успех
-                    }
-                });
-            }
-        } catch (e) {
-            console.error(e);
-            showToast("Error");
-        } finally {
-            btn.innerText = originalText;
-        }
+    function startReading() { 
+        const q = document.getElementById('user-query').value.trim(); if (!q) return; 
+        document.getElementById('input-modal').style.display = 'none'; 
+        nodes = [{ id: 1, label: q, emoji: "🔮", role: DICT[curLang].roles[0], x:0, y:0, fx:0, fy:0 }]; selectedNode = nodes[0]; 
+        updateTopology(); showToast(DICT[curLang].listening); 
+        svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(1));
     }
-    // --------------------------------------
+
+    // --- ОПЛАТА ---
+    function buyPremium() {
+        // Закрывает WebApp и пишет /start buy в чат бота
+        tg.openTelegramLink(`https://t.me/AURA_Oracle_bot?start=buy`);
+        tg.close();
+    }
+    // --------------
 
     async function castOracle() {
         if (nodes.length === 0) return showToast("?");
