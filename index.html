@@ -1,107 +1,200 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>AURA Oracle</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-<style>
-:root {
-    --bg-void: #080010;
-    --bg-nebula: #1a052b;
-    --c-gold: #ffd700;
-    --c-mystic: #9933ff;
-    --c-spirit: #00ffff;
-    --font-header: 'Cinzel', serif;
-    --font-body: 'Lato', sans-serif;
-}
-body, html {
-    margin: 0; padding: 0;
-    width: 100%; height: 100%;
-    overflow: hidden;
-    background-color: var(--bg-void);
-    font-family: var(--font-body);
-    color: var(--c-gold);
-    user-select: none;
-}
-#cosmos {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at 50% 30%, var(--bg-nebula), var(--bg-void));
-    z-index: 0; pointer-events: none;
-}
-#stars { position:absolute;width:100%;height:100%;pointer-events:none; z-index:0;}
-.star { position:absolute;background:white;border-radius:50%;opacity:0.5;animation:twinkle 4s infinite;}
-@keyframes twinkle {0%,100%{opacity:0.2;}50%{opacity:0.8;}}
-.ui-layer {position:absolute;width:100%;height:100%;pointer-events:none;z-index:20;display:flex;flex-direction:column;align-items:center;}
-.interactive {pointer-events:auto;cursor:pointer;}
-.header-row {width:100%;display:flex;justify-content:space-between;align-items:center;padding:15px 20px;padding-top: max(15px, env(safe-area-inset-top));}
-#logo {font-family:var(--font-header);font-size:1.5rem;letter-spacing:3px;color:var(--c-gold);text-shadow:0 0 15px #b8860b;}
-#lang-btn {background: rgba(0,0,0,0.5); border: 1px solid rgba(255,215,0,0.4); color: var(--c-gold); padding:5px 10px; border-radius:15px; font-size:0.8rem; backdrop-filter: blur(5px);}
-#energy-wrapper {position:absolute;top:70px;width:100%;display:flex;flex-direction:column;align-items:center;}
-#energy-container {width:140px;height:4px;background: rgba(255,255,255,0.1);border-radius:2px;position:relative;}
-#energy-bar {width:75%;height:100%;background: linear-gradient(90deg, var(--c-mystic), var(--c-gold));border-radius:2px;transition: width 0.5s ease-out;box-shadow:0 0 8px var(--c-mystic);}
-#energy-text {position:absolute;top:-20px;width:100%;text-align:center;font-size:0.7rem;letter-spacing:2px;color:rgba(255,255,255,0.9);text-shadow:0 0 5px #000;}
-#timer-text {margin-top:6px;font-size:0.65rem;color:var(--c-gold);opacity:0.7;}
-#controls {position:absolute;bottom:0;width:100%;display:flex;flex-direction:column;align-items:center;gap:15px;padding-bottom:calc(30px + env(safe-area-inset-bottom));background:linear-gradient(to top, rgba(8,0,16,0.95) 20%, rgba(8,0,16,0) 100%);padding-top:60px;}
-#btn-divine {width:70px;height:70px;border-radius:50%;background:radial-gradient(circle, rgba(30,10,50,0.9), #050010);border:1px solid var(--c-gold);box-shadow:0 0 20px rgba(255,215,0,0.3);color:var(--c-gold);font-family:var(--font-header);font-size:0.7rem;display:flex;align-items:center;justify-content:center;transition:0.3s;text-shadow:0 0 5px var(--c-gold);filter:grayscale(1);opacity:0.5;pointer-events:none;}
-#btn-divine.active {filter:grayscale(0);opacity:1;pointer-events:auto;animation:glowPulse 2s infinite;}
-@keyframes glowPulse {0%{box-shadow:0 0 15px rgba(255,215,0,0.2);}50%{box-shadow:0 0 25px rgba(255,215,0,0.6);}100%{box-shadow:0 0 15px rgba(255,215,0,0.2);}}
-#btn-divine:active {transform:scale(0.95);border-color: var(--c-mystic);color:white;}
-#btn-interpret {background: rgba(15,10,30,0.95);border:1px solid var(--c-spirit);color: var(--c-spirit);padding:12px 24px;border-radius:30px;font-family: var(--font-header);font-size:0.9rem;letter-spacing:2px;font-weight:700;box-shadow:0 0 20px rgba(0,255,255,0.2);margin-bottom:5px;opacity:0;transform:translateY(20px);display:none;pointer-events:auto;transition:0.5s;}
-#btn-interpret.visible {opacity:1;transform:translateY(0);display:block;}
-#btn-new {font-size:0.7rem;color:rgba(255,255,255,0.7);background:none;border:none;letter-spacing:2px;padding:10px;}
-#btn-invite {font-size:0.6rem;color:var(--c-spirit);background:none;border:1px solid rgba(0,255,255,0.3);border-radius:15px;padding:5px 12px;margin-bottom:5px;}
-#toast {position:absolute;top:110px;width:90%;text-align:center;color:var(--c-gold);font-family:var(--font-header);font-size:1rem;opacity:0;pointer-events:none;transition:opacity 0.5s;text-shadow:0 2px 10px #000;background: rgba(0,0,0,0.7);padding:10px;border-radius:10px;border:1px solid rgba(255,215,0,0.2);z-index:50;}
-.modal-overlay {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);backdrop-filter:blur(5px);z-index:100;display:none;align-items:center;justify-content:center;}
-.modal-card {background:#0d0716;border:1px solid var(--c-gold);padding:25px;text-align:center;width:85%;max-width:340px;box-shadow:0 0 60px rgba(0,0,0,0.9);max-height:80vh;overflow-y:auto;}
-.modal-input {background: rgba(255,255,255,0.05); border:none; border-bottom:1px solid var(--c-gold); color:var(--c-gold); font-family:var(--font-header); font-size:1.2rem; text-align:center; width:100%; padding:10px; margin:20px 0; outline:none;}
-.modal-btn {background:var(--c-gold); color:#000; border:none; padding:12px; width:100%; font-family:var(--font-header); font-weight:700; cursor:pointer; margin-top:10px; transition:0.2s;}
-.modal-btn:hover {transform:scale(1.05);}
-.lang-list {display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:15px;}
-.lang-opt {background: rgba(255,255,255,0.1); color:#ccc; border:1px solid #444; padding:8px 12px; cursor:pointer; font-size:0.8rem; border-radius:4px;}
-#chart {position:absolute;top:0;left:0;width:100%;height:100%;z-index:5;touch-action:none;cursor:grab;}
-.link {fill:none;stroke:rgba(255,215,0,0.3);stroke-width:1.5px;}
-.rune-circle {fill:rgba(15,10,30,0.95);stroke:var(--c-gold);stroke-width:1.5px;filter:drop-shadow(0 0 8px #b8860b);}
-.node-group.selected .rune-circle {stroke:var(--c-spirit);filter:drop-shadow(0 0 15px var(--c-spirit));}
-.rune-glow {fill:transparent;stroke:var(--c-gold);stroke-width:2px;opacity:0.3;filter:blur(5px);}
-.label-text {font-family:var(--font-body);font-size:12px;fill:#fff;text-anchor:middle;letter-spacing:0.5px;pointer-events:none;text-shadow:0 0 5px #000,0 0 3px #000;font-weight:700;}
-.role-text {font-family:var(--font-header);font-size:9px;fill:var(--c-gold);text-anchor:middle;letter-spacing:1.5px;pointer-events:none;text-transform:uppercase;font-weight:700;}
-.emoji-text {font-size:22px;text-anchor:middle;pointer-events:none;filter:drop-shadow(0 0 5px rgba(0,0,0,0.8));}
-@media(max-width:380px){#logo{font-size:1.2rem}#btn-divine{width:60px;height:60px;font-size:0.6rem}.modal-card{width:90%;padding:20px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>AURA Oracle</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-void: #080010; --bg-nebula: #1a052b; --c-gold: #ffd700; --c-mystic: #9933ff; --c-spirit: #00ffff; --font-header: 'Cinzel', serif; --font-body: 'Lato', sans-serif; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: var(--bg-void); font-family: var(--font-body); color: var(--c-gold); user-select: none; }
+        #cosmos { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 30%, var(--bg-nebula), var(--bg-void)); z-index: 0; pointer-events: none; }
+        #stars { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0.5; animation: twinkle 4s infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
+        .ui-layer { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 20; display: flex; flex-direction: column; align-items: center; }
+        .interactive { pointer-events: auto; cursor: pointer; }
+        .header-row { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; padding-top: max(15px, env(safe-area-inset-top)); }
+        #logo { font-family: var(--font-header); font-size: 1.5rem; letter-spacing: 3px; color: var(--c-gold); text-shadow: 0 0 15px #b8860b; }
+        #lang-btn { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,215,0,0.4); color: var(--c-gold); padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; backdrop-filter: blur(5px); }
+        #energy-wrapper { position: absolute; top: 70px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        #energy-container { width: 140px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; }
+        #energy-bar { width: 75%; height: 100%; background: linear-gradient(90deg, var(--c-mystic), var(--c-gold)); border-radius: 2px; transition: width 0.5s ease-out; box-shadow: 0 0 8px var(--c-mystic); }
+        #energy-text { position: absolute; top: -20px; width: 100%; text-align: center; font-size: 0.7rem; letter-spacing: 2px; color: rgba(255,255,255,0.9); text-shadow: 0 0 5px #000; }
+        #timer-text { margin-top: 6px; font-size: 0.65rem; color: var(--c-gold); opacity: 0.7; }
+        #controls { position: absolute; bottom: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; padding-bottom: calc(30px + env(safe-area-inset-bottom)); background: linear-gradient(to top, rgba(8,0,16,0.95) 20%, rgba(8,0,16,0) 100%); padding-top: 60px; }
+        #btn-divine { width: 70px; height: 70px; border-radius: 50%; background: radial-gradient(circle, rgba(30,10,50,0.9), #050010); border: 1px solid var(--c-gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); color: var(--c-gold); font-family: var(--font-header); font-size: 0.7rem; display: flex; align-items: center; justify-content: center; transition: 0.2s; text-shadow: 0 0 5px var(--c-gold); filter: grayscale(1); opacity: 0.5; pointer-events: none; }
+        #btn-divine.active { filter: grayscale(0); opacity: 1; pointer-events: auto; }
+        #btn-divine:active { transform: scale(0.95); border-color: var(--c-mystic); color: white; }
+        #btn-interpret { background: rgba(15, 10, 30, 0.95); border: 1px solid var(--c-spirit); color: var(--c-spirit); padding: 12px 24px; border-radius: 30px; font-family: var(--font-header); font-size: 0.9rem; letter-spacing: 2px; font-weight: 700; box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); margin-bottom: 5px; opacity: 0; transform: translateY(20px); display: none; pointer-events: auto; }
+        #btn-interpret.visible { opacity: 1; transform: translateY(0); display: block; }
+        #btn-new { font-size: 0.7rem; color: rgba(255,255,255,0.7); background: none; border: none; letter-spacing: 2px; padding: 10px; }
+        #btn-invite { font-size: 0.6rem; color: var(--c-spirit); background: none; border: 1px solid rgba(0,255,255,0.3); border-radius: 15px; padding: 5px 12px; margin-bottom: 5px; }
+        #toast { position: absolute; top: 110px; width: 90%; text-align: center; color: var(--c-gold); font-family: var(--font-header); font-size: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.5s; text-shadow: 0 2px 10px #000; background: rgba(0,0,0,0.7); padding: 10px; border-radius: 10px; border: 1px solid rgba(255,215,0,0.2); z-index: 50; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(5px); z-index: 100; display: none; align-items: center; justify-content: center; }
+        .modal-card { background: #0d0716; border: 1px solid var(--c-gold); padding: 25px; text-align: center; width: 85%; max-width: 340px; box-shadow: 0 0 60px rgba(0,0,0,0.9); max-height: 80vh; overflow-y: auto; }
+        .modal-input { background: rgba(255,255,255,0.05); border: none; border-bottom: 1px solid var(--c-gold); color: var(--c-gold); font-family: var(--font-header); font-size: 1.2rem; text-align: center; width: 100%; padding: 10px; margin: 20px 0; outline: none; }
+        .modal-btn { background: var(--c-gold); color: #000; border: none; padding: 12px; width: 100%; font-family: var(--font-header); font-weight: 700; cursor: pointer; margin-top: 10px;}
+        .lang-list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 15px; }
+        .lang-opt { background: rgba(255,255,255,0.1); color: #ccc; border: 1px solid #444; padding: 8px 12px; cursor: pointer; font-size: 0.8rem; border-radius: 4px; }
+        #chart { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; touch-action: none; cursor: grab; }
+        .link { fill: none; stroke: rgba(255, 215, 0, 0.3); stroke-width: 1.5px; }
+        .rune-circle { fill: rgba(15, 10, 30, 0.95); stroke: var(--c-gold); stroke-width: 1.5px; filter: drop-shadow(0 0 8px #b8860b); }
+        .node-group.selected .rune-circle { stroke: var(--c-spirit); filter: drop-shadow(0 0 15px var(--c-spirit)); }
+        .rune-glow { fill: transparent; stroke: var(--c-gold); stroke-width: 2px; opacity: 0.3; filter: blur(5px); }
+        .label-text { font-family: var(--font-body); font-size: 12px; fill: #fff; text-anchor: middle; letter-spacing: 0.5px; pointer-events: none; text-shadow: 0 0 5px #000, 0 0 3px #000; font-weight: 700; }
+        .role-text { font-family: var(--font-header); font-size: 9px; fill: var(--c-gold); text-anchor: middle; letter-spacing: 1.5px; pointer-events: none; text-transform: uppercase; font-weight: 700; }
+        .emoji-text { font-size: 22px; text-anchor: middle; pointer-events: none; filter: drop-shadow(0 0 5px rgba(0,0,0,0.8)); }
+        @media (max-width: 380px) { #logo { font-size: 1.2rem; } #btn-divine { width: 60px; height: 60px; font-size: 0.6rem; } .modal-card { width: 90%; padding: 20px; } }
+    </style>
 </head>
 <body>
-<div id="cosmos"></div>
-<div id="stars"></div>
-<div class="ui-layer">
-    <div class="header-row"><div id="logo">AURA</div><button id="lang-btn" class="interactive" onclick="openLang()">RU</button></div>
-    <div id="energy-wrapper"><div id="energy-container"><div id="energy-text">75%</div><div id="energy-bar" style="width:75%;"></div></div><div id="timer-text"></div></div>
-    <div id="toast"></div>
-    <div id="controls">
-        <button id="btn-interpret" class="interactive" onclick="interpretFate()">INTERPRET</button>
-        <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
-            <button id="btn-invite" class="interactive" onclick="openInvite()">✨ ПРИГЛАСИТЬ ДРУЗЕЙ</button>
-            <button id="btn-divine" class="interactive" onclick="castOracle()">ГАДАТЬ</button>
-            <button id="btn-new" class="interactive" onclick="resetRitual()">НОВЫЙ РИТУАЛ</button>
+    <div id="cosmos"></div><div id="stars"></div>
+    <div class="ui-layer">
+        <div class="header-row"><div id="logo">AURA</div><button id="lang-btn" class="interactive" onclick="openLang()">RU</button></div>
+        <div id="energy-wrapper"><div id="energy-container"><div id="energy-text">75%</div><div id="energy-bar" style="width: 75%;"></div></div><div id="timer-text"></div></div>
+        <div id="toast"></div>
+        <div id="controls">
+            <button id="btn-interpret" class="interactive" onclick="interpretFate()">INTERPRET</button>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+                <button id="btn-invite" class="interactive" onclick="openInvite()">✨ ПРИГЛАСИТЬ ДРУЗЕЙ</button>
+                <button id="btn-divine" class="interactive" onclick="castOracle()">ГАДАТЬ</button>
+                <button id="btn-new" class="interactive" onclick="resetRitual()">НОВЫЙ РИТУАЛ</button>
+            </div>
         </div>
     </div>
-</div>
-<!-- Модалки остаются прежними -->
-<div id="input-modal" class="modal-overlay"><div class="modal-card"><h3 id="lbl-query">ВАШ ВОПРОС</h3><input id="user-query" class="modal-input" placeholder="..." autocomplete="off"><button id="btn-reveal" class="modal-btn" onclick="startReading()">ОТКРЫТЬ</button></div></div>
-<div id="prophecy-modal" class="modal-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modal-card" style="border-color: var(--c-spirit); box-shadow:0 0 80px rgba(0,255,255,0.25);"><h3 id="lbl-prophecy">ПРОРОЧЕСТВО</h3><div id="prophecy-output" style="color:white; text-align:left;"></div><button class="modal-btn" style="background: var(--c-spirit);" onclick="document.getElementById('prophecy-modal').style.display='none'">ЗАКРЫТЬ</button></div></div>
-<div id="lang-modal" class="modal-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modal-card" style="border-color:#444;"><h3 id="lbl-lang" style="color:#ccc;">ЯЗЫК</h3><div class="lang-list"><div class="lang-opt interactive" onclick="setLang('en')">English</div><div class="lang-opt interactive" onclick="setLang('ru')">Русский</div><div class="lang-opt interactive" onclick="setLang('ua')">Українська</div><div class="lang-opt interactive" onclick="setLang('pl')">Polski</div><div class="lang-opt interactive" onclick="setLang('cz')">Čeština</div></div></div></div>
-<div id="paywall-modal" class="modal-overlay"><div class="modal-card" style="border-color: var(--c-mystic);"><h3 id="lbl-no-energy">МАЛО ЭНЕРГИИ</h3><p style="color:#ccc; font-size:0.8rem; margin-bottom:15px;">Ждите восстановления или зовите друзей.</p><button id="btn-pay" class="modal-btn" style="background: linear-gradient(45deg, #9933ff, #ff3366); color:white;" onclick="buyPremium()">ВЕЧНОСТЬ (69 ⭐️)</button><button class="modal-btn" style="background:transparent;color:#666;border:1px solid #444;margin-top:10px;" onclick="document.getElementById('paywall-modal').style.display='none'">ПОЗЖЕ</button></div></div>
-<div id="chart"></div>
+    <div id="input-modal" class="modal-overlay"><div class="modal-card"><h3 id="lbl-query" style="font-family: var(--font-header); margin: 0; color: var(--c-gold);">ВАШ ВОПРОС</h3><input type="text" id="user-query" class="modal-input" placeholder="..." autocomplete="off"><button id="btn-reveal" class="modal-btn" onclick="startReading()">ОТКРЫТЬ</button></div></div>
+    <div id="prophecy-modal" class="modal-overlay" onclick="if(event.target===this) this.style.display='none'"><div class="modal-card" style="border-color: var(--c-spirit); box-shadow: 0 0 80px rgba(0, 255, 255, 0.25);"><h3 id="lbl-prophecy" style="font-family: var(--font-header); margin: 0 0 15px 0; color: var(--c-spirit);">ПРОРОЧЕСТВО</h3><div id="prophecy-output" style="color:white; text-align:left;"></div><button id="btn-close-prophecy" class="modal-btn" style="background: var(--c-spirit);" onclick="document.getElementById('prophecy-modal').style.display='none'">ЗАКРЫТЬ</button></div></div>
+    <div id="lang-modal" class="modal-overlay" onclick="if(event.target===this) this.style.display='none'"><div class="modal-card" style="border-color: #444;"><h3 id="lbl-lang" style="margin-top:0; color:#ccc;">ЯЗЫК</h3><div class="lang-list"><div class="lang-opt interactive" onclick="setLang('en')">English</div><div class="lang-opt interactive" onclick="setLang('ru')">Русский</div><div class="lang-opt interactive" onclick="setLang('ua')">Українська</div><div class="lang-opt interactive" onclick="setLang('pl')">Polski</div><div class="lang-opt interactive" onclick="setLang('cz')">Čeština</div></div></div></div>
+    <div id="paywall-modal" class="modal-overlay"><div class="modal-card" style="border-color: var(--c-mystic);"><h3 id="lbl-no-energy" style="font-family: var(--font-header); margin: 0; color: var(--c-mystic);">МАЛО ЭНЕРГИИ</h3><p style="color:#ccc; font-size:0.8rem; margin-bottom:15px;">Ждите восстановления или зовите друзей.</p><button id="btn-pay" class="modal-btn" style="background: linear-gradient(45deg, #9933ff, #ff3366); color:white;" onclick="buyPremium()">ВЕЧНОСТЬ (69 ⭐️)</button><button class="modal-btn" style="background: transparent; color: #666; border: 1px solid #444; margin-top: 10px;" onclick="document.getElementById('paywall-modal').style.display='none'">ПОЗЖЕ</button></div></div>
+    <div id="chart"></div>
 
 <script>
-// === JS остаётся почти прежний, но с улучшениями для UX и анимаций ===
-// Инициализация Telegram, energy, lang, fetchUserState, DICT — всё прежнее
-// castOracle() теперь с блокировкой кнопки и плавным появлением карт
-// showToast() с более яркой надписью и плавной анимацией
-// updateTopology() добавляет плавное появление node/emoji
-// safe-area корректно учитывается для iPhone
+    const BACKEND_URL = "https://supperless-yoshiko-noneruditely.ngrok-free.dev"; 
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    let energy = 75; let isPremium = false; let isServerAvailable = true; let curLang = 'ru';
+    const API_HEADERS = { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' };
+
+    const DICT = {
+        en: { energy: "ENERGY", infinite: "∞ INFINITE", loading: "LOADING...", offline: "NO CONNECTION", newRitual: "NEW RITUAL", divine: "DIVINE", divine_load: "CONNECTING...", query: "YOUR QUESTION", reveal: "REVEAL", lowEnergy: "LOW ENERGY", unlock: "UNLOCK (69 ⭐️)", later: "LATER", listening: "THE ORACLE IS LISTENING...", revealed: "FATE REVEALED", roles: ["ROOT", "PAST", "OBSTACLE", "GUIDE", "OUTCOME"], interpret: "INTERPRET", prophecy: "PROPHECY", invite: "✨ INVITE FRIENDS (+ENERGY)", regen: "Wait for regeneration" },
+        ru: { energy: "ЭНЕРГИЯ", infinite: "∞ ВЕЧНОСТЬ", loading: "ЗАГРУЗКА...", offline: "НЕТ СВЯЗИ", newRitual: "НОВЫЙ РИТУАЛ", divine: "ГАДАТЬ", divine_load: "ГАДАЮ...", query: "ВАШ ВОПРОС", reveal: "ОТКРЫТЬ", lowEnergy: "МАЛО ЭНЕРГИИ", unlock: "ВЕЧНОСТЬ (69 ⭐️)", later: "ПОЗЖЕ", listening: "ОРАКУЛ СЛУШАЕТ...", revealed: "СУДЬБА РАСКРЫТА", roles: ["СУТЬ", "ПРОШЛОЕ", "ПРЕГРАДА", "СОВЕТ", "ИТОГ"], interpret: "ТРАКТОВКА", prophecy: "ПРОРОЧЕСТВО", invite: "✨ ПРИГЛАСИТЬ ДРУЗЕЙ (+ЭНЕРГИЯ)", regen: "Ждите восстановления" },
+        ua: { energy: "ЕНЕРГІЯ", infinite: "∞ ВІЧНІСТЬ", loading: "ЗАВАНТАЖЕННЯ...", offline: "НЕМАЄ ЗВ'ЯЗКУ", newRitual: "НОВИЙ РИТУАЛ", divine: "ВОРОЖИТИ", divine_load: "ВОРОЖУ...", query: "ВАШ ЗАПИТ", reveal: "ВІДКРИТИ", lowEnergy: "МАЛО ЕНЕРГІЇ", unlock: "ВІЧНІСТЬ (69 ⭐️)", later: "ПІЗНІШЕ", listening: "ОРАКУЛ СЛУХАЄ...", revealed: "ДОЛЯ ВІДКРИТА", roles: ["СУТЬ", "МИНУЛЕ", "ПЕРЕШКОДА", "ПОРАДА", "ПІДСУМОК"], interpret: "ТЛУМАЧЕННЯ", prophecy: "ПРОРОЦТВО", invite: "✨ ЗАПРОСИТИ ДРУЗІВ (+ЕНЕРГІЯ)", regen: "Чекайте відновлення" },
+        pl: { energy: "ENERGIA", infinite: "∞ WIECZNOŚĆ", loading: "ŁADOWANIE...", offline: "BRAK POŁĄCZENIA", newRitual: "NOWY RYTUAŁ", divine: "WRÓŻYĆ", divine_load: "WRÓŻĘ...", query: "TWOJE PYTANIE", reveal: "ODKRYJ", lowEnergy: "MAŁO ENERGII", unlock: "WIECZNOŚĆ (69 ⭐️)", later: "PÓŹNIEJ", listening: "WYROCZNIA SŁUCHA...", revealed: "LOS OBJAWIONY", roles: ["ISTOTA", "PRZESZŁOŚĆ", "PRZESZKODA", "RADA", "WYNIK"], interpret: "INTERPRETACJA", prophecy: "PRZEPOWIEDNIA", invite: "✨ ZAPROŚ ZNAJOMYCH", regen: "Czekaj na regenerację" },
+        cz: { energy: "ENERGIE", infinite: "∞ VĚČNOST", loading: "NAČÍTÁNÍ...", offline: "ŽÁDNÉ SPOJENÍ", newRitual: "NOVÝ RITUÁL", divine: "VĚŠTIT", divine_load: "VĚŠTÍM...", query: "VÁŠ DOTAZ", reveal: "ODHALIT", lowEnergy: "MÁLO ENERGIE", unlock: "VĚČNOST (69 ⭐️)", later: "POZDĚJI", listening: "ORÁKULUM NASLOUCHÁ...", revealed: "OSUD ODHALEN", roles: ["PODSTATA", "MINULOST", "PŘEKÁŽKA", "RADA", "VÝSLEDEK"], interpret: "VÝKLAD", prophecy: "PROROCTVÍ", invite: "✨ POZVĚTE PŘÁTELE", regen: "Čekejte na obnovu" }
+    };
+
+    function setLang(lang) { curLang = lang; document.getElementById('lang-btn').innerText = lang.toUpperCase(); document.getElementById('lang-modal').style.display = 'none'; updateTexts(); }
+    function openLang() { document.getElementById('lang-modal').style.display = 'flex'; }
+    function updateTexts() {
+        const t = DICT[curLang];
+        document.getElementById('btn-new').innerText = t.newRitual;
+        if (!document.getElementById('btn-divine').classList.contains('loading-pulse')) document.getElementById('btn-divine').innerText = t.divine;
+        document.getElementById('lbl-query').innerText = t.query;
+        document.getElementById('btn-reveal').innerText = t.reveal;
+        document.getElementById('lbl-no-energy').innerText = t.lowEnergy;
+        document.getElementById('btn-pay').innerText = t.unlock;
+        document.getElementById('btn-later').innerText = t.later;
+        document.getElementById('btn-interpret').innerText = t.interpret;
+        document.getElementById('lbl-prophecy').innerText = t.prophecy;
+        document.getElementById('btn-invite').innerText = t.invite;
+        document.getElementById('lang-btn').innerText = curLang.toUpperCase();
+        if (!isServerAvailable) document.getElementById('energy-text').innerText = t.offline;
+        else if (isPremium) document.getElementById('energy-text').innerText = t.infinite;
+        else document.getElementById('energy-text').innerText = energy + '%';
+    }
+
+    async function fetchUserState() {
+        const userId = tg.initDataUnsafe?.user?.id || 0;
+        try {
+            const res = await fetch(`${BACKEND_URL}/api/get_user_state?user_id=${userId}`, { method: 'GET', headers: API_HEADERS });
+            if (res.ok) {
+                const data = await res.json(); energy = data.energy; isPremium = data.is_premium; isServerAvailable = true;
+                document.getElementById('btn-divine').classList.add('active'); updateEnergyBar();
+            } else { throw new Error("Server Error"); }
+        } catch (e) { console.error("Sync error", e); isServerAvailable = false; document.getElementById('energy-text').innerText = DICT[curLang].offline; document.getElementById('btn-divine').classList.remove('active'); }
+    }
+    fetchUserState(); setInterval(fetchUserState, 10000);
+
+    let nodes = []; let links = []; let selectedNode = null;
+    let width = window.innerWidth, height = window.innerHeight;
+    const isMobile = window.innerWidth < 768;
+
+    function initStars() { const c = document.getElementById('stars'); for(let i=0; i<40; i++) { const s = document.createElement('div'); s.className='star'; s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%'; s.style.width=Math.random()*2+'px'; s.style.height=s.style.width; s.style.animationDelay=Math.random()*5+'s'; c.appendChild(s); }}
+    initStars();
+
+    const svg = d3.select("#chart").append("svg").attr("width", width).attr("height", height);
+    const g = svg.append("g");
+    const linkGroup = g.append("g").attr("class", "links");
+    const nodeGroup = g.append("g").attr("class", "nodes");
+    const zoom = d3.zoom().scaleExtent([0.1, 5]).on("zoom", (e) => g.attr("transform", e.transform));
+    svg.call(zoom).on("dblclick.zoom", null); svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(1));
+    const simulation = d3.forceSimulation(nodes).force("link", d3.forceLink(links).id(d => d.id).distance(isMobile?100:140)).force("charge", d3.forceManyBody().strength(-400)).force("collide", d3.forceCollide(50));
+
+    function resetRitual() { document.getElementById('input-modal').style.display = 'flex'; document.getElementById('user-query').value = ""; document.getElementById('btn-interpret').classList.remove('visible'); nodes = []; links = []; updateTopology(); svg.transition().duration(1000).call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(1)); }
+    function startReading() { 
+        const q = document.getElementById('user-query').value.trim(); if (!q) return; 
+        document.getElementById('input-modal').style.display = 'none'; 
+        nodes = [{ id: 1, label: q, emoji: "🔮", role: DICT[curLang].roles[0], x:0, y:0, fx:0, fy:0 }]; selectedNode = nodes[0]; 
+        updateTopology(); showToast(DICT[curLang].listening); 
+        svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(1));
+    }
+
+    // --- ОПЛАТА ---
+    function buyPremium() {
+        // Закрывает WebApp и пишет /start buy в чат бота
+        tg.openTelegramLink(`https://t.me/AURA_Oracle_bot?start=buy`);
+        tg.close();
+    }
+    // --------------
+
+    async function castOracle() {
+        if (nodes.length === 0) return showToast("?");
+        if (!isServerAvailable) return showToast(DICT[curLang].offline);
+        const btn = document.getElementById('btn-divine'); if (!btn.classList.contains('active')) return;
+        
+        if (!isPremium && energy < 25) { document.getElementById('paywall-modal').style.display = 'flex'; return; }
+        
+        btn.classList.add('loading-pulse'); btn.innerText = DICT[curLang].divine_load;
+        if (nodes.length > 1) { nodes = [nodes[0]]; links = []; updateTopology(); document.getElementById('btn-interpret').classList.remove('visible'); }
+
+        try {
+            const res = await fetch(`${BACKEND_URL}/api/generate_cards`, { method: 'POST', headers: API_HEADERS, body: JSON.stringify({ question: selectedNode.label, lang: curLang, user_id: tg.initDataUnsafe?.user?.id || 0 }) });
+            if (res.status === 402) { document.getElementById('paywall-modal').style.display = 'flex'; throw new Error("Low Energy"); }
+            if (!res.ok) throw new Error("Err");
+            const cards = await res.json(); fetchUserState();
+            const spY = isMobile?180:220; const spX = isMobile?150:200; const pos = [{x:-spX,y:spY}, {x:spX,y:spY}, {x:0,y:spY*2}, {x:0,y:spY*3.2}];
+            cards.forEach((c, i) => { if(i>=4)return; const nn={id:Date.now()+i, label:c.text, emoji:c.emoji, role:DICT[curLang].roles[i+1], x:0, y:0, fx:pos[i].x, fy:pos[i].y-150}; nodes.push(nn); links.push({source:selectedNode.id, target:nn.id}); });
+            updateTopology(); simulation.alpha(0.1).restart(); showToast(DICT[curLang].revealed); document.getElementById('btn-interpret').classList.add('visible'); setTimeout(fitToScreen,600);
+        } catch (e) { console.error(e); showToast("SERVER ERROR"); }
+        finally { btn.classList.remove('loading-pulse'); btn.innerText = DICT[curLang].divine; }
+    }
+
+    async function interpretFate() {
+        const btn = document.getElementById('btn-interpret'); btn.innerText = "...";
+        const modal = document.getElementById('prophecy-modal'); modal.style.display = 'flex'; document.getElementById('prophecy-output').innerHTML = "<p>Reading...</p>";
+        try {
+            const res = await fetch(`${BACKEND_URL}/api/interpret`, { method: 'POST', headers: API_HEADERS, body: JSON.stringify({ question: nodes[0].label, cards: nodes.slice(1), lang: curLang }) });
+            const data = await res.json(); document.getElementById('prophecy-output').innerHTML = data.text;
+        } catch(e) { document.getElementById('prophecy-output').innerText = "Error"; } finally { btn.innerText = DICT[curLang].interpret; }
+    }
+
+    function updateEnergyBar() {
+        const bar = document.getElementById('energy-bar'); const txt = document.getElementById('energy-text'); const time = document.getElementById('timer-text');
+        if (isPremium) { bar.style.width = '100%'; txt.innerText = DICT[curLang].infinite; time.innerText = ""; }
+        else { bar.style.width = energy + '%'; txt.innerText = energy + '%'; time.innerText = isServerAvailable ? (energy < 100 ? DICT[curLang].regen : "FULL") : DICT[curLang].offline; }
+        const btn = document.getElementById('btn-divine'); if (isServerAvailable) btn.classList.add('active'); else btn.classList.remove('active');
+    }
+
+    function openInvite() { tg.openTelegramLink(`https://t.me/AURA_Oracle_bot?start=invite`); tg.close(); }
+    function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.style.opacity=1; setTimeout(()=>t.style.opacity=0, 3000); }
+    function fitToScreen() { const b = nodeGroup.node().getBBox(); if (b.width===0) return; const s = Math.min(Math.min((width-160)/b.width, (height-160)/b.height), 1.2); const tx = width/2 - s * (b.x + b.width/2); const ty = height/2 - s * (b.y + b.height/2); svg.transition().duration(1500).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(s)); }
+    function updateTopology() { const l = linkGroup.selectAll("line").data(links); l.exit().remove(); l.enter().append("line").attr("class", "link"); const n = nodeGroup.selectAll(".node-group").data(nodes); n.exit().remove(); const e = n.enter().append("g").attr("class", "node-group").call(d3.drag().on("start",ds).on("drag",dd).on("end",de)).on("click",(e,d)=>{selectedNode=d;d3.selectAll(".node-group").classed("selected",n=>n===d);}); e.append("circle").attr("class","rune-glow").attr("r",isMobile?30:35); e.append("circle").attr("class","rune-circle").attr("r",isMobile?20:25); e.append("text").attr("class","role-text").attr("dy",isMobile?-32:-40).text(d=>d.role); e.append("text").attr("class","emoji-text").attr("dy",7).text(d=>d.emoji); e.append("text").attr("class","label-text").attr("dy",isMobile?38:48).text(d=>d.label.length>12?d.label.substr(0,12)+'...':d.label); simulation.nodes(nodes).on("tick",()=>{ linkGroup.selectAll("line").attr("x1",d=>d.source.x+width/2).attr("y1",d=>d.source.y+height/2).attr("x2",d=>d.target.x+width/2).attr("y2",d=>d.target.y+height/2); nodeGroup.selectAll(".node-group").attr("transform",d=>`translate(${d.x+width/2},${d.y+height/2})`); }); simulation.force("link").links(links); simulation.alpha(1).restart(); }
+    function ds(e,d){if(!e.active)simulation.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;} function dd(e,d){d.fx=e.x;d.fy=e.y;} function de(e,d){if(!e.active)simulation.alphaTarget(0);d.fx=null;d.fy=null;}
+
+    updateTexts(); updateEnergyBar(); resetRitual();
 </script>
 </body>
 </html>
