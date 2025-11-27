@@ -243,8 +243,6 @@
     }
 
     async function castOracle() {
-        // --- FIX: BUTTON LOCK ---
-        // Если кнопка уже "мигает" (грузится), выходим и не тратим энергию
         if (document.getElementById('btn-divine').classList.contains('loading-pulse')) return;
 
         if (nodes.length === 0) return showToast("?");
@@ -289,7 +287,22 @@
     }
 
     function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.style.opacity=1; setTimeout(()=>t.style.opacity=0, 3000); }
-    function fitToScreen() { const b = nodeGroup.node().getBBox(); if (b.width===0) return; const s = Math.min(Math.min((width-80)/b.width, (height-160)/b.height), 1.0); const tx = width/2 - s * (b.x + b.width/2); const ty = height/2 - s * (b.y + b.height/2); svg.transition().duration(1500).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(s)); }
+    
+    // --- FIX: Учет визуального центра для fitToScreen ---
+    function fitToScreen() { 
+        const b = nodeGroup.node().getBBox(); if (b.width===0) return; 
+        
+        // Такой же оффсет как в tick: 15% высоты экрана вверх
+        const visualOffsetY = -height * 0.15; 
+        
+        const s = Math.min(Math.min((width-80)/b.width, (height-160)/b.height), 1.0); 
+        
+        // Центрируем относительно "оптического центра" (середина - 15%)
+        const tx = width/2 - s * (b.x + b.width/2); 
+        const ty = (height/2 + visualOffsetY) - s * (b.y + b.height/2); 
+        
+        svg.transition().duration(1500).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(s)); 
+    }
     
     function updateTopology() { 
         const l = linkGroup.selectAll("line").data(links); l.exit().remove(); l.enter().append("line").attr("class", "link"); 
@@ -298,9 +311,10 @@
         e.append("circle").attr("class","rune-glow").attr("r",isMobile?25:35); e.append("circle").attr("class","rune-circle").attr("r",isMobile?22:28); e.append("text").attr("class","role-text").attr("dy",isMobile?-35:-42).text(d=>d.role); e.append("text").attr("class","emoji-text").attr("dy",8).text(d=>d.emoji); e.append("text").attr("class","label-text").attr("dy",isMobile?42:50).text(d=>d.label.length>12?d.label.substr(0,12)+'...':d.label); 
         
         simulation.nodes(nodes).on("tick",()=>{ 
-            // --- FIX: VISUAL CENTER ---
-            // Смещаем центр отрисовки на 50px ВВЕРХ (-50) в функции translate
-            const visualOffsetY = -50; 
+            // --- FIX: VISUAL CENTER (DYNAMIC) ---
+            // Смещаем центр отрисовки на 15% высоты экрана ВВЕРХ
+            // Это примерно -120px на экранах ~800px высотой, что поднимет шар выше
+            const visualOffsetY = -height * 0.15; 
             
             linkGroup.selectAll("line")
                 .attr("x1",d=>d.source.x+width/2)
