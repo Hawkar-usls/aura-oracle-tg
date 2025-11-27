@@ -113,7 +113,7 @@
 
     <div id="paywall-modal" class="modal-overlay"><div class="modal-card" style="border-color: var(--c-mystic);">
         <h3 id="lbl-no-energy" style="font-family: var(--font-header); margin: 0; color: var(--c-mystic); font-size: 1.4rem;">МАЛО ЭНЕРГИИ</h3>
-        <p style="color:#bbb; font-size:0.9rem; margin: 15px 0 25px 0; line-height: 1.4;">Энергия восстанавливается со временем.<br>Или обретите вечность прямо сейчас.</p>
+        <p style="color:#bbb; font-size:0.9rem; margin: 15px 0 25px 0; line-height: 1.4;">Энергия восстанавливается со временем (или пригласи друзей).<br>Или обретите вечность прямо сейчас.</p>
         <button id="btn-pay" class="modal-btn" style="background: linear-gradient(135deg, #9933ff, #ff3366); color:white; box-shadow: 0 4px 15px rgba(255,51,102,0.4);" onclick="buyPremium()">ВЕЧНОСТЬ (69 ⭐️)</button>
         <button id="btn-later" class="modal-btn" style="background: transparent; color: #777; border: 1px solid #444; margin-top: 10px; font-size: 0.8rem; padding: 10px;" onclick="document.getElementById('paywall-modal').style.display='none'">ПОЗЖЕ</button>
     </div></div>
@@ -121,6 +121,7 @@
     <div id="chart"></div>
 
 <script>
+    // URL твоего туннеля (ngrok). Если поменяется - обнови здесь.
     const BACKEND_URL = "https://supperless-yoshiko-noneruditely.ngrok-free.dev"; 
     
     const tg = window.Telegram.WebApp;
@@ -193,25 +194,34 @@
         nodes = [{ id: 1, label: q, emoji: "🔮", role: DICT[curLang].roles[0], x:0, y:0, fx:0, fy:0 }]; selectedNode = nodes[0]; 
         updateTopology(); 
         showToast(DICT[curLang].listening); 
-        
-        // --- ИСПРАВЛЕНИЕ: ПРИНУДИТЕЛЬНО ЦЕНТРИРУЕМ КАМЕРУ НА ШАРЕ ---
-        svg.transition().duration(750).call(
-            zoom.transform, 
-            d3.zoomIdentity.translate(width / 2, height / 2).scale(1)
-        );
-        // -----------------------------------------------------------
+        // Центрируем камеру на первом шаре
+        svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(width / 2, height / 2).scale(1));
     }
+
+    // --- ФУНКЦИЯ ПРИГЛАШЕНИЯ ---
+    function openInvite() {
+        const userId = tg.initDataUnsafe?.user?.id;
+        // Если ID нет (тест в браузере), просто выводим алерт
+        if (!userId) { showToast("No Telegram ID"); return; }
+        
+        const botName = "AURA_Oracle_bot"; // Твой бот
+        const link = `https://t.me/${botName}?start=ref_${userId}`;
+        const text = "🔮 Узнай свою судьбу. Оракул ждет тебя:";
+        
+        // Открываем нативное меню "Поделиться" в Telegram
+        const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
+        tg.openTelegramLink(shareUrl);
+    }
+    // ----------------------------
 
     async function buyPremium() {
         const userId = tg.initDataUnsafe?.user?.id || 0;
         const btn = document.getElementById('btn-pay');
         const originalText = btn.innerText;
         btn.innerText = DICT[curLang].loading;
-        
         try {
             const res = await fetch(`${BACKEND_URL}/api/get_invoice`, { method: 'GET', headers: API_HEADERS });
             const data = await res.json();
-            
             if (data.invoice_link) {
                 tg.openInvoice(data.invoice_link, (status) => {
                     if (status === 'paid') {
@@ -220,19 +230,11 @@
                         updateEnergyBar();
                         document.getElementById('paywall-modal').style.display = 'none';
                         showToast("ETERNA UNLOCKED");
-                    } else if (status === 'failed') {
-                        showToast("PAYMENT FAILED");
-                    }
+                    } else if (status === 'failed') showToast("PAYMENT FAILED");
                 });
-            } else {
-                showToast("ERROR CREATING INVOICE");
-            }
-        } catch (e) {
-            console.error(e);
-            showToast("CONNECTION ERROR");
-        } finally {
-            btn.innerText = originalText;
-        }
+            } else showToast("ERROR CREATING INVOICE");
+        } catch (e) { console.error(e); showToast("CONNECTION ERROR"); } 
+        finally { btn.innerText = originalText; }
     }
 
     async function castOracle() {
@@ -277,7 +279,6 @@
         const btn = document.getElementById('btn-divine'); if (isServerAvailable) btn.classList.add('active'); else btn.classList.remove('active');
     }
 
-    function openInvite() { tg.openTelegramLink(`https://t.me/AURA_Oracle_bot?start=invite`); }
     function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.style.opacity=1; setTimeout(()=>t.style.opacity=0, 3000); }
     function fitToScreen() { const b = nodeGroup.node().getBBox(); if (b.width===0) return; const s = Math.min(Math.min((width-80)/b.width, (height-160)/b.height), 1.0); const tx = width/2 - s * (b.x + b.width/2); const ty = height/2 - s * (b.y + b.height/2); svg.transition().duration(1500).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(s)); }
     function updateTopology() { const l = linkGroup.selectAll("line").data(links); l.exit().remove(); l.enter().append("line").attr("class", "link"); const n = nodeGroup.selectAll(".node-group").data(nodes); n.exit().remove(); const e = n.enter().append("g").attr("class", "node-group").call(d3.drag().on("start",ds).on("drag",dd).on("end",de)).on("click",(e,d)=>{selectedNode=d;d3.selectAll(".node-group").classed("selected",n=>n===d);}); e.append("circle").attr("class","rune-glow").attr("r",isMobile?25:35); e.append("circle").attr("class","rune-circle").attr("r",isMobile?22:28); e.append("text").attr("class","role-text").attr("dy",isMobile?-35:-42).text(d=>d.role); e.append("text").attr("class","emoji-text").attr("dy",8).text(d=>d.emoji); e.append("text").attr("class","label-text").attr("dy",isMobile?42:50).text(d=>d.label.length>12?d.label.substr(0,12)+'...':d.label); simulation.nodes(nodes).on("tick",()=>{ linkGroup.selectAll("line").attr("x1",d=>d.source.x+width/2).attr("y1",d=>d.source.y+height/2).attr("x2",d=>d.target.x+width/2).attr("y2",d=>d.target.y+height/2); nodeGroup.selectAll(".node-group").attr("transform",d=>`translate(${d.x+width/2},${d.y+height/2})`); }); simulation.force("link").links(links); simulation.alpha(1).restart(); }
