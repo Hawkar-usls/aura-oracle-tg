@@ -92,6 +92,7 @@
         <h3 id="lbl-query" style="font-family: var(--font-header); margin: 0; color: var(--c-gold);">ВАШ ВОПРОС</h3>
         <input type="text" id="user-query" class="modal-input" placeholder="..." autocomplete="off">
         <button id="btn-reveal" class="modal-btn" onclick="startReading()">ОТКРЫТЬ</button>
+        <button id="btn-cancel-input" class="modal-btn" style="background: transparent; color: #777; border: 1px solid #444; margin-top: 10px; font-size: 0.8rem; padding: 10px;" onclick="closeInputModal()">CANCEL</button>
     </div></div>
 
     <div id="prophecy-modal" class="modal-overlay" onclick="if(event.target===this) this.style.display='none'"><div class="modal-card" style="border-color: var(--c-spirit); box-shadow: 0 0 60px rgba(0, 255, 255, 0.15);">
@@ -132,11 +133,11 @@
     const API_HEADERS = { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' };
 
     const DICT = {
-        en: { energy: "ENERGY", infinite: "∞ INFINITE", loading: "LOADING...", offline: "OFFLINE", newRitual: "NEW RITUAL", divine: "DIVINE", divine_load: "CONNECTING...", query: "YOUR QUESTION", reveal: "REVEAL", lowEnergy: "LOW ENERGY", unlock: "GET ETERNAL (69 ⭐️)", later: "LATER", listening: "THE ORACLE IS LISTENING...", revealed: "FATE REVEALED", roles: ["ROOT", "PAST", "OBSTACLE", "GUIDE", "OUTCOME"], interpret: "INTERPRET", prophecy: "PROPHECY", invite: "✨ INVITE FRIENDS", regen: "Regenerating..." },
-        ru: { energy: "ЭНЕРГИЯ", infinite: "∞ ВЕЧНОСТЬ", loading: "ЗАГРУЗКА...", offline: "НЕТ СВЯЗИ", newRitual: "НОВИЙ РИТУАЛ", divine: "ГАДАТЬ", divine_load: "ГАДАЮ...", query: "ВАШ ВОПРОС", reveal: "ОТКРЫТЬ", lowEnergy: "МАЛО ЭНЕРГИИ", unlock: "ВЕЧНОСТЬ (69 ⭐️)", later: "ПОЗЖЕ", listening: "ОРАКУЛ СЛУШАЕТ...", revealed: "СУДЬБА РАСКРЫТА", roles: ["СУТЬ", "ПРОШЛОЕ", "ПРЕГРАДА", "СОВЕТ", "ИТОГ"], interpret: "ТРАКТОВКА", prophecy: "ПРОРОЧЕСТВО", invite: "✨ ПРИГЛАСИТЬ ДРУЗЕЙ", regen: "Восстановление..." },
-        ua: { energy: "ЕНЕРГІЯ", infinite: "∞ ВІЧНІСТЬ", loading: "ЗАВАНТАЖЕННЯ...", offline: "НЕМАЄ ЗВ'ЯЗКУ", newRitual: "НОВИЙ РИТУАЛ", divine: "ВОРОЖИТИ", divine_load: "ВОРОЖУ...", query: "ВАШ ЗАПИТ", reveal: "ВІДКРИТИ", lowEnergy: "MAЛО ЕНЕРГІЇ", unlock: "ВІЧНІСТЬ (69 ⭐️)", later: "ПІЗНІШЕ", listening: "ОРАКУЛ СЛУХАЄ...", revealed: "ДОЛЯ ВІДКРИТА", roles: ["СУТЬ", "МИНУЛЕ", "ПЕРЕШКОДА", "ПОРАДА", "ПІДСУМОК"], interpret: "ТЛУМАЧЕННЯ", prophecy: "ПРОРОЦТВО", invite: "✨ ЗАПРОСИТИ ДРУЗІВ", regen: "Відновлення..." },
-        pl: { energy: "ENERGIA", infinite: "∞ WIECZNOŚĆ", loading: "ŁADOWANIE...", offline: "BRAK POŁĄCZENIA", newRitual: "NOWY RYTUAŁ", divine: "WRÓŻYĆ", divine_load: "WRÓŻĘ...", query: "TWOJE PYTANIE", reveal: "ODKRYJ", lowEnergy: "MAŁO ENERGII", unlock: "WIECZNOŚĆ (69 ⭐️)", later: "PÓŹNIEJ", listening: "WYROCZNIA SŁUCHA...", revealed: "LOS OBJAWIONY", roles: ["ISTOTA", "PRZESZŁOŚĆ", "PRZESZKODA", "RADA", "WYNIK"], interpret: "INTERPRETACJA", prophecy: "PRZEPOWIEDNIA", invite: "✨ ZAPROŚ ZNAJOMYCH", regen: "Regeneracja..." },
-        cz: { energy: "ENERGIE", infinite: "∞ VĚČNOST", loading: "NAČÍTÁNÍ...", offline: "ŽÁDNÉ SPOJENÍ", newRitual: "NOVÝ RITUÁL", divine: "VĚŠTIT", divine_load: "VĚŠTÍM...", query: "VÁŠ DOTAZ", reveal: "ODHALIT", lowEnergy: "MÁLO ENERGIE", unlock: "VĚČNOST (69 ⭐️)", later: "POZDĚJI", listening: "ORÁKULUM NASLOUCHÁ...", revealed: "OSUD ODHALEN", roles: ["PODSTATA", "MINULOST", "PŘEKÁŽKA", "RADA", "VÝSLEDEK"], interpret: "VÝKLAD", prophecy: "PROROCTVÍ", invite: "✨ POZVĚTE PŘÁTELE", regen: "Obnovování..." }
+        en: { energy: "ENERGY", infinite: "∞ INFINITE", loading: "LOADING...", offline: "OFFLINE", newRitual: "NEW RITUAL", divine: "DIVINE", divine_load: "CONNECTING...", query: "YOUR QUESTION", reveal: "REVEAL", lowEnergy: "LOW ENERGY", unlock: "GET ETERNAL (69 ⭐️)", later: "LATER", listening: "THE ORACLE IS LISTENING...", revealed: "FATE REVEALED", roles: ["ROOT", "PAST", "OBSTACLE", "GUIDE", "OUTCOME"], interpret: "INTERPRET", prophecy: "PROPHECY", invite: "✨ INVITE FRIENDS", regen: "Regenerating...", cancel: "CANCEL", wait: "ORACLE IS BUSY" },
+        ru: { energy: "ЭНЕРГИЯ", infinite: "∞ ВЕЧНОСТЬ", loading: "ЗАГРУЗКА...", offline: "НЕТ СВЯЗИ", newRitual: "НОВЫЙ РИТУАЛ", divine: "ГАДАТЬ", divine_load: "ГАДАЮ...", query: "ВАШ ВОПРОС", reveal: "ОТКРЫТЬ", lowEnergy: "МАЛО ЭНЕРГИИ", unlock: "ВЕЧНОСТЬ (69 ⭐️)", later: "ПОЗЖЕ", listening: "ОРАКУЛ СЛУШАЕТ...", revealed: "СУДЬБА РАСКРЫТА", roles: ["СУТЬ", "ПРОШЛОЕ", "ПРЕГРАДА", "СОВЕТ", "ИТОГ"], interpret: "ТРАКТОВКА", prophecy: "ПРОРОЧЕСТВО", invite: "✨ ПРИГЛАСИТЬ ДРУЗЕЙ", regen: "Восстановление...", cancel: "ОТМЕНА", wait: "ОРАКУЛ ЗАНЯТ" },
+        ua: { energy: "ЕНЕРГІЯ", infinite: "∞ ВІЧНІСТЬ", loading: "ЗАВАНТАЖЕННЯ...", offline: "НЕМАЄ ЗВ'ЯЗКУ", newRitual: "НОВИЙ РИТУАЛ", divine: "ВОРОЖИТИ", divine_load: "ВОРОЖУ...", query: "ВАШ ЗАПИТ", reveal: "ВІДКРИТИ", lowEnergy: "MAЛО ЕНЕРГІЇ", unlock: "ВІЧНІСТЬ (69 ⭐️)", later: "ПІЗНІШЕ", listening: "ОРАКУЛ СЛУХАЄ...", revealed: "ДОЛЯ ВІДКРИТА", roles: ["СУТЬ", "МИНУЛЕ", "ПЕРЕШКОДА", "ПОРАДА", "ПІДСУМОК"], interpret: "ТЛУМАЧЕННЯ", prophecy: "ПРОРОЦТВО", invite: "✨ ЗАПРОСИТИ ДРУЗІВ", regen: "Відновлення...", cancel: "СКАСУВАТИ", wait: "ОРАКУЛ ЗАЙНЯТИЙ" },
+        pl: { energy: "ENERGIA", infinite: "∞ WIECZNOŚĆ", loading: "ŁADOWANIE...", offline: "BRAK POŁĄCZENIA", newRitual: "NOWY RYTUAŁ", divine: "WRÓŻYĆ", divine_load: "WRÓŻĘ...", query: "TWOJE PYTANIE", reveal: "ODKRYJ", lowEnergy: "MAŁO ENERGII", unlock: "WIECZNOŚĆ (69 ⭐️)", later: "PÓŹNIEJ", listening: "WYROCZNIA SŁUCHA...", revealed: "LOS OBJAWIONY", roles: ["ISTOTA", "PRZESZŁOŚĆ", "PRZESZKODA", "RADA", "WYNIK"], interpret: "INTERPRETACJA", prophecy: "PRZEPOWIEDNIA", invite: "✨ ZAPROŚ ZNAJOMYCH", regen: "Regeneracja...", cancel: "ANULUJ", wait: "WYROCZNIA ZAJĘTA" },
+        cz: { energy: "ENERGIE", infinite: "∞ VĚČNOST", loading: "NAČÍTÁNÍ...", offline: "ŽÁDNÉ SPOJENÍ", newRitual: "NOVÝ RITUÁL", divine: "VĚŠTIT", divine_load: "VĚŠTÍM...", query: "VÁŠ DOTAZ", reveal: "ODHALIT", lowEnergy: "MÁLO ENERGIE", unlock: "VĚČNOST (69 ⭐️)", later: "POZDĚJI", listening: "ORÁKULUM NASLOUCHÁ...", revealed: "OSUD ODHALEN", roles: ["PODSTATA", "MINULOST", "PŘEKÁŽKA", "RADA", "VÝSLEDEK"], interpret: "VÝKLAD", prophecy: "PROROCTVÍ", invite: "✨ POZVĚTE PŘÁTELE", regen: "Obnovování...", cancel: "ZRUŠIT", wait: "ORÁKULUM ZANEPRÁZDNĚNO" }
     };
 
     function setLang(lang) { curLang = lang; document.getElementById('lang-btn').innerText = lang.toUpperCase(); document.getElementById('lang-modal').style.display = 'none'; updateTexts(); }
@@ -153,6 +154,7 @@
         document.getElementById('btn-interpret').innerText = t.interpret;
         document.getElementById('lbl-prophecy').innerText = t.prophecy;
         document.getElementById('btn-invite').innerText = t.invite;
+        document.getElementById('btn-cancel-input').innerText = t.cancel;
         document.getElementById('lang-btn').innerText = curLang.toUpperCase();
         if (!isServerAvailable) document.getElementById('energy-text').innerText = t.offline;
         else if (isPremium) document.getElementById('energy-text').innerText = t.infinite;
@@ -186,33 +188,61 @@
     svg.call(zoom).on("dblclick.zoom", null); svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.9));
     const simulation = d3.forceSimulation(nodes).force("link", d3.forceLink(links).id(d => d.id).distance(isMobile?90:120)).force("charge", d3.forceManyBody().strength(-300)).force("collide", d3.forceCollide(45));
 
-    function resetRitual() { document.getElementById('input-modal').style.display = 'flex'; document.getElementById('user-query').value = ""; document.getElementById('btn-interpret').classList.remove('visible'); nodes = []; links = []; updateTopology(); svg.transition().duration(1000).call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.9)); }
+    // --- FIX: LOGIC FOR RITUAL RESET ---
+    function resetRitual() {
+        // 1. Блокируем новый ритуал, если идет гадание
+        if (document.getElementById('btn-divine').classList.contains('loading-pulse')) {
+            showToast(DICT[curLang].wait);
+            return;
+        }
+
+        document.getElementById('input-modal').style.display = 'flex';
+        document.getElementById('user-query').value = "";
+        
+        // 2. Логика кнопки Отмена:
+        // Если это первый запуск (nodes пустой), кнопку прячем - нужно ввести вопрос.
+        // Если уже есть расклад, кнопку показываем.
+        const cancelBtn = document.getElementById('btn-cancel-input');
+        if (nodes.length > 0) {
+            cancelBtn.style.display = 'block';
+        } else {
+            cancelBtn.style.display = 'none';
+        }
+        
+        // Важно: Мы НЕ очищаем nodes здесь, чтобы можно было нажать Отмена.
+        // Очистка происходит в startReading().
+    }
     
-    // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ START READING ---
-    // Сдвигаем камеру (zoom) вверх, чтобы компенсировать интерфейс снизу
+    // Новая функция закрытия модалки
+    function closeInputModal() {
+        document.getElementById('input-modal').style.display = 'none';
+    }
+    
     function startReading() { 
         const q = document.getElementById('user-query').value.trim(); if (!q) return; 
         document.getElementById('input-modal').style.display = 'none'; 
         
+        // Скрываем кнопку интерпретации от старого расклада
+        document.getElementById('btn-interpret').classList.remove('visible');
+
         width = window.innerWidth;
         height = window.innerHeight;
 
+        // 3. ВОТ ЗДЕСЬ мы очищаем старый расклад и создаем новый
         nodes = [{ id: 1, label: q, emoji: "🔮", role: DICT[curLang].roles[0], x:0, y:0, fx:0, fy:0 }]; selectedNode = nodes[0]; 
+        links = []; // Очищаем связи
+
         updateTopology(); 
         showToast(DICT[curLang].listening); 
         
         setTimeout(() => {
-            // FIX: Сдвиг камеры на 15% высоты экрана вверх (translate Y negative)
-            // Это "поднимает" первый шар визуально, не меняя физику второго вылета.
             const visualShift = -height * 0.15;
-
             svg.transition().duration(1500).ease(d3.easeCubicOut).call(
                 zoom.transform, 
                 d3.zoomIdentity.translate(0, visualShift).scale(1.2)
             );
         }, 300);
     }
-    // ---------------------------
 
     function openInvite() {
         const userId = tg.initDataUnsafe?.user?.id;
@@ -250,8 +280,6 @@
     }
 
     async function castOracle() {
-        // --- FIX: BUTTON LOCK ---
-        // Проверка: если уже идет загрузка, выходим. Энергия не тратится.
         if (document.getElementById('btn-divine').classList.contains('loading-pulse')) return;
 
         if (nodes.length === 0) return showToast("?");
@@ -297,7 +325,29 @@
 
     function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.style.opacity=1; setTimeout(()=>t.style.opacity=0, 3000); }
     function fitToScreen() { const b = nodeGroup.node().getBBox(); if (b.width===0) return; const s = Math.min(Math.min((width-80)/b.width, (height-160)/b.height), 1.0); const tx = width/2 - s * (b.x + b.width/2); const ty = height/2 - s * (b.y + b.height/2); svg.transition().duration(1500).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(s)); }
-    function updateTopology() { const l = linkGroup.selectAll("line").data(links); l.exit().remove(); l.enter().append("line").attr("class", "link"); const n = nodeGroup.selectAll(".node-group").data(nodes); n.exit().remove(); const e = n.enter().append("g").attr("class", "node-group").call(d3.drag().on("start",ds).on("drag",dd).on("end",de)).on("click",(e,d)=>{selectedNode=d;d3.selectAll(".node-group").classed("selected",n=>n===d);}); e.append("circle").attr("class","rune-glow").attr("r",isMobile?25:35); e.append("circle").attr("class","rune-circle").attr("r",isMobile?22:28); e.append("text").attr("class","role-text").attr("dy",isMobile?-35:-42).text(d=>d.role); e.append("text").attr("class","emoji-text").attr("dy",8).text(d=>d.emoji); e.append("text").attr("class","label-text").attr("dy",isMobile?42:50).text(d=>d.label.length>12?d.label.substr(0,12)+'...':d.label); simulation.nodes(nodes).on("tick",()=>{ linkGroup.selectAll("line").attr("x1",d=>d.source.x+width/2).attr("y1",d=>d.source.y+height/2).attr("x2",d=>d.target.x+width/2).attr("y2",d=>d.target.y+height/2); nodeGroup.selectAll(".node-group").attr("transform",d=>`translate(${d.x+width/2},${d.y+height/2})`); }); simulation.force("link").links(links); simulation.alpha(1).restart(); }
+    
+    function updateTopology() { 
+        const l = linkGroup.selectAll("line").data(links); l.exit().remove(); l.enter().append("line").attr("class", "link"); 
+        const n = nodeGroup.selectAll(".node-group").data(nodes); n.exit().remove(); 
+        const e = n.enter().append("g").attr("class", "node-group").call(d3.drag().on("start",ds).on("drag",dd).on("end",de)).on("click",(e,d)=>{selectedNode=d;d3.selectAll(".node-group").classed("selected",n=>n===d);}); 
+        e.append("circle").attr("class","rune-glow").attr("r",isMobile?25:35); e.append("circle").attr("class","rune-circle").attr("r",isMobile?22:28); e.append("text").attr("class","role-text").attr("dy",isMobile?-35:-42).text(d=>d.role); e.append("text").attr("class","emoji-text").attr("dy",8).text(d=>d.emoji); e.append("text").attr("class","label-text").attr("dy",isMobile?42:50).text(d=>d.label.length>12?d.label.substr(0,12)+'...':d.label); 
+        
+        simulation.nodes(nodes).on("tick",()=>{ 
+            const visualOffsetY = -height * 0.15; 
+            
+            linkGroup.selectAll("line")
+                .attr("x1",d=>d.source.x+width/2)
+                .attr("y1",d=>d.source.y+height/2 + visualOffsetY)
+                .attr("x2",d=>d.target.x+width/2)
+                .attr("y2",d=>d.target.y+height/2 + visualOffsetY); 
+            
+            nodeGroup.selectAll(".node-group")
+                .attr("transform",d=>`translate(${d.x+width/2},${d.y+height/2 + visualOffsetY})`); 
+        }); 
+        
+        simulation.force("link").links(links); simulation.alpha(1).restart(); 
+    }
+    
     function ds(e,d){if(!e.active)simulation.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;} function dd(e,d){d.fx=e.x;d.fy=e.y;} function de(e,d){if(!e.active)simulation.alphaTarget(0);d.fx=null;d.fy=null;}
 
     updateTexts(); updateEnergyBar(); resetRitual();
