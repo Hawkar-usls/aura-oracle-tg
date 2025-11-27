@@ -203,9 +203,12 @@
         
         // Задержка 300мс, чтобы интерфейс Telegram успел встать на место, потом зум в центр
         setTimeout(() => {
-            svg.transition().duration(1200).ease(d3.easeCubicOut).call(
+            // ИСПРАВЛЕНИЕ: translate(0, 0)
+            // Так как нода (0,0) уже отрисована по центру экрана (tick смещает ее на width/2), 
+            // камере не нужно смещаться.
+            svg.transition().duration(1500).ease(d3.easeCubicOut).call(
                 zoom.transform, 
-                d3.zoomIdentity.translate(width / 2, height / 2).scale(1.1)
+                d3.zoomIdentity.translate(0, 0).scale(1.2)
             );
         }, 300);
     }
