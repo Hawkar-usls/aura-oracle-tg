@@ -134,7 +134,7 @@
     const DICT = {
         en: { energy: "ENERGY", infinite: "∞ INFINITE", loading: "LOADING...", offline: "OFFLINE", newRitual: "NEW RITUAL", divine: "DIVINE", divine_load: "CONNECTING...", query: "YOUR QUESTION", reveal: "REVEAL", lowEnergy: "LOW ENERGY", unlock: "GET ETERNAL (69 ⭐️)", later: "LATER", listening: "THE ORACLE IS LISTENING...", revealed: "FATE REVEALED", roles: ["ROOT", "PAST", "OBSTACLE", "GUIDE", "OUTCOME"], interpret: "INTERPRET", prophecy: "PROPHECY", invite: "✨ INVITE FRIENDS", regen: "Regenerating..." },
         ru: { energy: "ЭНЕРГИЯ", infinite: "∞ ВЕЧНОСТЬ", loading: "ЗАГРУЗКА...", offline: "НЕТ СВЯЗИ", newRitual: "НОВЫЙ РИТУАЛ", divine: "ГАДАТЬ", divine_load: "ГАДАЮ...", query: "ВАШ ВОПРОС", reveal: "ОТКРЫТЬ", lowEnergy: "МАЛО ЭНЕРГИИ", unlock: "ВЕЧНОСТЬ (69 ⭐️)", later: "ПОЗЖЕ", listening: "ОРАКУЛ СЛУШАЕТ...", revealed: "СУДЬБА РАСКРЫТА", roles: ["СУТЬ", "ПРОШЛОЕ", "ПРЕГРАДА", "СОВЕТ", "ИТОГ"], interpret: "ТРАКТОВКА", prophecy: "ПРОРОЧЕСТВО", invite: "✨ ПРИГЛАСИТЬ ДРУЗЕЙ", regen: "Восстановление..." },
-        ua: { energy: "ЕНЕРГІЯ", infinite: "∞ ВІЧНІСТЬ", loading: "ЗАВАНТАЖЕННЯ...", offline: "НЕМАЄ ЗВ'ЯЗКУ", newRitual: "НОВИЙ РИТУАЛ", divine: "ВОРОЖИТИ", divine_load: "ВОРОЖУ...", query: "ВАШ ЗАПИТ", reveal: "ВІДКРИТИ", lowEnergy: "МАЛО ЕНЕРГІЇ", unlock: "ВІЧНІСТЬ (69 ⭐️)", later: "ПІЗНІШЕ", listening: "ОРАКУЛ СЛУХАЄ...", revealed: "ДОЛЯ ВІДКРИТА", roles: ["СУТЬ", "МИНУЛЕ", "ПЕРЕШКОДА", "ПОРАДА", "ПІДСУМОК"], interpret: "ТЛУМАЧЕННЯ", prophecy: "ПРОРОЦТВО", invite: "✨ ЗАПРОСИТИ ДРУЗІВ", regen: "Відновлення..." },
+        ua: { energy: "ЕНЕРГІЯ", infinite: "∞ ВІЧНІСТЬ", loading: "ЗАВАНТАЖЕННЯ...", offline: "НЕМАЄ ЗВ'ЯЗКУ", newRitual: "НОВИЙ РИТУАЛ", divine: "ВОРОЖИТИ", divine_load: "ВОРОЖУ...", query: "ВАШ ЗАПИТ", reveal: "ВІДКРИТИ", lowEnergy: "MAЛО ЕНЕРГІЇ", unlock: "ВІЧНІСТЬ (69 ⭐️)", later: "ПІЗНІШЕ", listening: "ОРАКУЛ СЛУХАЄ...", revealed: "ДОЛЯ ВІДКРИТА", roles: ["СУТЬ", "МИНУЛЕ", "ПЕРЕШКОДА", "ПОРАДА", "ПІДСУМОК"], interpret: "ТЛУМАЧЕННЯ", prophecy: "ПРОРОЦТВО", invite: "✨ ЗАПРОСИТИ ДРУЗІВ", regen: "Відновлення..." },
         pl: { energy: "ENERGIA", infinite: "∞ WIECZNOŚĆ", loading: "ŁADOWANIE...", offline: "BRAK POŁĄCZENIA", newRitual: "NOWY RYTUAŁ", divine: "WRÓŻYĆ", divine_load: "WRÓŻĘ...", query: "TWOJE PYTANIE", reveal: "ODKRYJ", lowEnergy: "MAŁO ENERGII", unlock: "WIECZNOŚĆ (69 ⭐️)", later: "PÓŹNIEJ", listening: "WYROCZNIA SŁUCHA...", revealed: "LOS OBJAWIONY", roles: ["ISTOTA", "PRZESZŁOŚĆ", "PRZESZKODA", "RADA", "WYNIK"], interpret: "INTERPRETACJA", prophecy: "PRZEPOWIEDNIA", invite: "✨ ZAPROŚ ZNAJOMYCH", regen: "Regeneracja..." },
         cz: { energy: "ENERGIE", infinite: "∞ VĚČNOST", loading: "NAČÍTÁNÍ...", offline: "ŽÁDNÉ SPOJENÍ", newRitual: "NOVÝ RITUÁL", divine: "VĚŠTIT", divine_load: "VĚŠTÍM...", query: "VÁŠ DOTAZ", reveal: "ODHALIT", lowEnergy: "MÁLO ENERGIE", unlock: "VĚČNOST (69 ⭐️)", later: "POZDĚJI", listening: "ORÁKULUM NASLOUCHÁ...", revealed: "OSUD ODHALEN", roles: ["PODSTATA", "MINULOST", "PŘEKÁŽKA", "RADA", "VÝSLEDEK"], interpret: "VÝKLAD", prophecy: "PROROCTVÍ", invite: "✨ POZVĚTE PŘÁTELE", regen: "Obnovování..." }
     };
@@ -188,12 +188,10 @@
 
     function resetRitual() { document.getElementById('input-modal').style.display = 'flex'; document.getElementById('user-query').value = ""; document.getElementById('btn-interpret').classList.remove('visible'); nodes = []; links = []; updateTopology(); svg.transition().duration(1000).call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.9)); }
     
-    // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ ---
     function startReading() { 
         const q = document.getElementById('user-query').value.trim(); if (!q) return; 
         document.getElementById('input-modal').style.display = 'none'; 
         
-        // Пересчитываем размер экрана, так как клавиатура уезжает
         width = window.innerWidth;
         height = window.innerHeight;
 
@@ -201,18 +199,13 @@
         updateTopology(); 
         showToast(DICT[curLang].listening); 
         
-        // Задержка 300мс, чтобы интерфейс Telegram успел встать на место, потом зум в центр
         setTimeout(() => {
-            // ИСПРАВЛЕНИЕ: translate(0, 0)
-            // Так как нода (0,0) уже отрисована по центру экрана (tick смещает ее на width/2), 
-            // камере не нужно смещаться.
             svg.transition().duration(1500).ease(d3.easeCubicOut).call(
                 zoom.transform, 
                 d3.zoomIdentity.translate(0, 0).scale(1.2)
             );
         }, 300);
     }
-    // ---------------------------
 
     function openInvite() {
         const userId = tg.initDataUnsafe?.user?.id;
@@ -250,6 +243,10 @@
     }
 
     async function castOracle() {
+        // --- FIX: BUTTON LOCK ---
+        // Если кнопка уже "мигает" (грузится), выходим и не тратим энергию
+        if (document.getElementById('btn-divine').classList.contains('loading-pulse')) return;
+
         if (nodes.length === 0) return showToast("?");
         if (!isServerAvailable) return showToast(DICT[curLang].offline);
         const btn = document.getElementById('btn-divine'); if (!btn.classList.contains('active')) return;
@@ -293,7 +290,31 @@
 
     function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.style.opacity=1; setTimeout(()=>t.style.opacity=0, 3000); }
     function fitToScreen() { const b = nodeGroup.node().getBBox(); if (b.width===0) return; const s = Math.min(Math.min((width-80)/b.width, (height-160)/b.height), 1.0); const tx = width/2 - s * (b.x + b.width/2); const ty = height/2 - s * (b.y + b.height/2); svg.transition().duration(1500).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(s)); }
-    function updateTopology() { const l = linkGroup.selectAll("line").data(links); l.exit().remove(); l.enter().append("line").attr("class", "link"); const n = nodeGroup.selectAll(".node-group").data(nodes); n.exit().remove(); const e = n.enter().append("g").attr("class", "node-group").call(d3.drag().on("start",ds).on("drag",dd).on("end",de)).on("click",(e,d)=>{selectedNode=d;d3.selectAll(".node-group").classed("selected",n=>n===d);}); e.append("circle").attr("class","rune-glow").attr("r",isMobile?25:35); e.append("circle").attr("class","rune-circle").attr("r",isMobile?22:28); e.append("text").attr("class","role-text").attr("dy",isMobile?-35:-42).text(d=>d.role); e.append("text").attr("class","emoji-text").attr("dy",8).text(d=>d.emoji); e.append("text").attr("class","label-text").attr("dy",isMobile?42:50).text(d=>d.label.length>12?d.label.substr(0,12)+'...':d.label); simulation.nodes(nodes).on("tick",()=>{ linkGroup.selectAll("line").attr("x1",d=>d.source.x+width/2).attr("y1",d=>d.source.y+height/2).attr("x2",d=>d.target.x+width/2).attr("y2",d=>d.target.y+height/2); nodeGroup.selectAll(".node-group").attr("transform",d=>`translate(${d.x+width/2},${d.y+height/2})`); }); simulation.force("link").links(links); simulation.alpha(1).restart(); }
+    
+    function updateTopology() { 
+        const l = linkGroup.selectAll("line").data(links); l.exit().remove(); l.enter().append("line").attr("class", "link"); 
+        const n = nodeGroup.selectAll(".node-group").data(nodes); n.exit().remove(); 
+        const e = n.enter().append("g").attr("class", "node-group").call(d3.drag().on("start",ds).on("drag",dd).on("end",de)).on("click",(e,d)=>{selectedNode=d;d3.selectAll(".node-group").classed("selected",n=>n===d);}); 
+        e.append("circle").attr("class","rune-glow").attr("r",isMobile?25:35); e.append("circle").attr("class","rune-circle").attr("r",isMobile?22:28); e.append("text").attr("class","role-text").attr("dy",isMobile?-35:-42).text(d=>d.role); e.append("text").attr("class","emoji-text").attr("dy",8).text(d=>d.emoji); e.append("text").attr("class","label-text").attr("dy",isMobile?42:50).text(d=>d.label.length>12?d.label.substr(0,12)+'...':d.label); 
+        
+        simulation.nodes(nodes).on("tick",()=>{ 
+            // --- FIX: VISUAL CENTER ---
+            // Смещаем центр отрисовки на 50px ВВЕРХ (-50) в функции translate
+            const visualOffsetY = -50; 
+            
+            linkGroup.selectAll("line")
+                .attr("x1",d=>d.source.x+width/2)
+                .attr("y1",d=>d.source.y+height/2 + visualOffsetY)
+                .attr("x2",d=>d.target.x+width/2)
+                .attr("y2",d=>d.target.y+height/2 + visualOffsetY); 
+            
+            nodeGroup.selectAll(".node-group")
+                .attr("transform",d=>`translate(${d.x+width/2},${d.y+height/2 + visualOffsetY})`); 
+        }); 
+        
+        simulation.force("link").links(links); simulation.alpha(1).restart(); 
+    }
+    
     function ds(e,d){if(!e.active)simulation.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;} function dd(e,d){d.fx=e.x;d.fy=e.y;} function de(e,d){if(!e.active)simulation.alphaTarget(0);d.fx=null;d.fy=null;}
 
     updateTexts(); updateEnergyBar(); resetRitual();
