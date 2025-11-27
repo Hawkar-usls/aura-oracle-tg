@@ -121,7 +121,7 @@
     <div id="chart"></div>
 
 <script>
-    // URL твоего туннеля (ngrok). Если поменяется - обнови здесь.
+    // URL твоего туннеля. Проверь актуальность!
     const BACKEND_URL = "https://supperless-yoshiko-noneruditely.ngrok-free.dev"; 
     
     const tg = window.Telegram.WebApp;
@@ -188,31 +188,40 @@
 
     function resetRitual() { document.getElementById('input-modal').style.display = 'flex'; document.getElementById('user-query').value = ""; document.getElementById('btn-interpret').classList.remove('visible'); nodes = []; links = []; updateTopology(); svg.transition().duration(1000).call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.9)); }
     
+    // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ ---
     function startReading() { 
         const q = document.getElementById('user-query').value.trim(); if (!q) return; 
         document.getElementById('input-modal').style.display = 'none'; 
+        
+        // Пересчитываем размер экрана, так как клавиатура уезжает
+        width = window.innerWidth;
+        height = window.innerHeight;
+
         nodes = [{ id: 1, label: q, emoji: "🔮", role: DICT[curLang].roles[0], x:0, y:0, fx:0, fy:0 }]; selectedNode = nodes[0]; 
         updateTopology(); 
         showToast(DICT[curLang].listening); 
-        // Центрируем камеру на первом шаре
-        svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(width / 2, height / 2).scale(1));
+        
+        // Задержка 300мс, чтобы интерфейс Telegram успел встать на место, потом зум в центр
+        setTimeout(() => {
+            svg.transition().duration(1200).ease(d3.easeCubicOut).call(
+                zoom.transform, 
+                d3.zoomIdentity.translate(width / 2, height / 2).scale(1.1)
+            );
+        }, 300);
     }
+    // ---------------------------
 
-    // --- ФУНКЦИЯ ПРИГЛАШЕНИЯ ---
     function openInvite() {
         const userId = tg.initDataUnsafe?.user?.id;
-        // Если ID нет (тест в браузере), просто выводим алерт
         if (!userId) { showToast("No Telegram ID"); return; }
         
-        const botName = "AURA_Oracle_bot"; // Твой бот
+        const botName = "AURA_Oracle_bot"; 
         const link = `https://t.me/${botName}?start=ref_${userId}`;
         const text = "🔮 Узнай свою судьбу. Оракул ждет тебя:";
         
-        // Открываем нативное меню "Поделиться" в Telegram
         const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
         tg.openTelegramLink(shareUrl);
     }
-    // ----------------------------
 
     async function buyPremium() {
         const userId = tg.initDataUnsafe?.user?.id || 0;
