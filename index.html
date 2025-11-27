@@ -121,7 +121,6 @@
     <div id="chart"></div>
 
 <script>
-    // URL твоего туннеля (ngrok). Если поменяется - обнови здесь.
     const BACKEND_URL = "https://supperless-yoshiko-noneruditely.ngrok-free.dev"; 
     
     const tg = window.Telegram.WebApp;
@@ -187,14 +186,22 @@
     const simulation = d3.forceSimulation(nodes).force("link", d3.forceLink(links).id(d => d.id).distance(isMobile?90:120)).force("charge", d3.forceManyBody().strength(-300)).force("collide", d3.forceCollide(45));
 
     function resetRitual() { document.getElementById('input-modal').style.display = 'flex'; document.getElementById('user-query').value = ""; document.getElementById('btn-interpret').classList.remove('visible'); nodes = []; links = []; updateTopology(); svg.transition().duration(1000).call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.9)); }
+    
     function startReading() { 
         const q = document.getElementById('user-query').value.trim(); if (!q) return; 
         document.getElementById('input-modal').style.display = 'none'; 
         nodes = [{ id: 1, label: q, emoji: "🔮", role: DICT[curLang].roles[0], x:0, y:0, fx:0, fy:0 }]; selectedNode = nodes[0]; 
-        updateTopology(); showToast(DICT[curLang].listening); 
+        updateTopology(); 
+        showToast(DICT[curLang].listening); 
+        
+        // --- ИСПРАВЛЕНИЕ: ПРИНУДИТЕЛЬНО ЦЕНТРИРУЕМ КАМЕРУ НА ШАРЕ ---
+        svg.transition().duration(750).call(
+            zoom.transform, 
+            d3.zoomIdentity.translate(width / 2, height / 2).scale(1)
+        );
+        // -----------------------------------------------------------
     }
 
-    // --- НОВАЯ ЛОГИКА ОПЛАТЫ ---
     async function buyPremium() {
         const userId = tg.initDataUnsafe?.user?.id || 0;
         const btn = document.getElementById('btn-pay');
@@ -202,12 +209,10 @@
         btn.innerText = DICT[curLang].loading;
         
         try {
-            // 1. Просим у бота ссылку на инвойс
             const res = await fetch(`${BACKEND_URL}/api/get_invoice`, { method: 'GET', headers: API_HEADERS });
             const data = await res.json();
             
             if (data.invoice_link) {
-                // 2. Открываем нативное окно оплаты прямо здесь
                 tg.openInvoice(data.invoice_link, (status) => {
                     if (status === 'paid') {
                         isPremium = true;
@@ -217,8 +222,6 @@
                         showToast("ETERNA UNLOCKED");
                     } else if (status === 'failed') {
                         showToast("PAYMENT FAILED");
-                    } else {
-                        // Canceled by user
                     }
                 });
             } else {
@@ -231,7 +234,6 @@
             btn.innerText = originalText;
         }
     }
-    // ----------------------------
 
     async function castOracle() {
         if (nodes.length === 0) return showToast("?");
@@ -249,7 +251,6 @@
             if (!res.ok) throw new Error("Err");
             const cards = await res.json(); fetchUserState();
             
-            // Расстановка карт на экране
             const spY = isMobile?160:200; const spX = isMobile?130:180; 
             const pos = [{x:-spX,y:spY}, {x:spX,y:spY}, {x:0,y:spY*1.8}, {x:0,y:spY*3.0}];
             
