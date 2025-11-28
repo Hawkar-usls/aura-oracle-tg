@@ -251,7 +251,7 @@
         const originalText = btn.innerText;
         btn.innerText = DICT[curLang].loading;
         try {
-            // === ВОТ ЗДЕСЬ ВАЖНОЕ ИЗМЕНЕНИЕ ДЛЯ ОБЩЕГО БЭКЕНДА ===
+            // !!! ВАЖНОЕ ИЗМЕНЕНИЕ ДЛЯ ОБЩЕГО БЭКЕНДА !!!
             const res = await fetch(`${BACKEND_URL}/api/get_invoice?app=aura`, { method: 'GET', headers: API_HEADERS });
             const data = await res.json();
             if (data.invoice_link) {
