@@ -122,15 +122,21 @@
     <div id="chart"></div>
 
 <script>
-    // URL твоего туннеля (УБЕДИСЬ, ЧТО ОН ОБНОВЛЕН!)
+    // =========================================================
+    // ⚙️ НАСТРОЙКИ (ВСТАВЬ СЮДА ССЫЛКУ NGROK)
+    // =========================================================
     const BACKEND_URL = "https://supperless-yoshiko-noneruditely.ngrok-free.dev"; 
-    
+    // =========================================================
+
     const tg = window.Telegram.WebApp;
     tg.expand();
     tg.enableClosingConfirmation(); 
 
     let energy = 75; let isPremium = false; let isServerAvailable = true; let curLang = 'ru';
-    const API_HEADERS = { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' };
+    const API_HEADERS = { 
+        'Content-Type': 'application/json', 
+        'ngrok-skip-browser-warning': 'true' 
+    };
 
     const DICT = {
         en: { energy: "ENERGY", infinite: "∞ INFINITE", loading: "LOADING...", offline: "OFFLINE", newRitual: "NEW RITUAL", divine: "DIVINE", divine_load: "CONNECTING...", query: "YOUR QUESTION", reveal: "REVEAL", lowEnergy: "LOW ENERGY", unlock: "GET ETERNAL (69 ⭐️)", later: "LATER", listening: "THE ORACLE IS LISTENING...", revealed: "FATE REVEALED", roles: ["ROOT", "PAST", "OBSTACLE", "GUIDE", "OUTCOME"], interpret: "INTERPRET", prophecy: "PROPHECY", invite: "✨ INVITE FRIENDS", regen: "Regenerating...", cancel: "CANCEL", wait: "ORACLE IS BUSY" },
