@@ -1,0 +1,17 @@
+{
+  "schema_id": "hawkar.project-status.v1",
+  "project": "Aura Oracle TG",
+  "repository": "https://github.com/Hawkar-usls/aura-oracle-tg",
+  "portfolio_class": "creative_application",
+  "last_reviewed": "2026-08-09",
+  "summary": "Oracle/tarot-style conversational entertainment and reflection interface.",
+  "not_established": [
+    "prophecy",
+    "precognition",
+    "reliable future-event prediction"
+  ],
+  "medical_advice": false,
+  "legal_advice": false,
+  "financial_advice": false,
+  "flagship_research": false
+}
