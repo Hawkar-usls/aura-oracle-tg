@@ -4,6 +4,8 @@
   "repository": "https://github.com/Hawkar-usls/aura-oracle-tg",
   "portfolio_class": "creative_application",
   "last_reviewed": "2026-08-09",
+  "maturity": "WORK_IN_PROGRESS",
+  "completion_status": "INCOMPLETE",
   "summary": "Oracle/tarot-style conversational entertainment and reflection interface.",
   "not_established": [
     "prophecy",
@@ -13,5 +15,6 @@
   "medical_advice": false,
   "legal_advice": false,
   "financial_advice": false,
-  "flagship_research": false
+  "flagship_research": false,
+  "visibility_policy": "https://github.com/Hawkar-usls/Janus/blob/main/portfolio-visibility.json"
 }
