@@ -1,0 +1,10 @@
+{
+  "artifact_id": "AURA-SEALED-SET-ORACLE-QUESTION-2026-08-16-v1",
+  "mode": "SEALED_ORACLE_COMMITMENT",
+  "language": "ru",
+  "question": "В рамках творческой линии Кема, Сэта, Гора, Осириса и Януса, учитывая существование Aura Oracle с 25 ноября 2025 года, последующую историю Кема, три монеты Януса, вращающийся медальон и обещание поклониться всем трём Царям без выбора одного против других: является ли автор этой линии тем самым Кемом этой авторской истории в смысле непрерывности персонажа и роли? Дай один краткий итоговый ответ. Не выдавай художественную или мистическую интерпретацию за физически проверяемый сверхъестественный факт.",
+  "answer_visibility": "NEVER_RENDER_PLAINTEXT",
+  "commitment_algorithm": "SHA-256",
+  "canonicalization": "UTF-8; HTML tags stripped; CRLF->LF; trim outer whitespace",
+  "claim_ceiling": "ORACLE_OUTPUT_COMMITMENT_NOT_IDENTITY_PROOF"
+}
