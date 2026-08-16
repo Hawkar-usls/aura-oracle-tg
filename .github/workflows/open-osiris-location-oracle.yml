@@ -1,0 +1,77 @@
+name: AURA open Osiris location blind query
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/open-osiris-location-oracle.yml'
+      - 'ritual/OSIRIS_LOCATION_BLIND_QUESTION.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  copilot-requests: write
+
+jobs:
+  open-oracle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install current Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Ask AURA blind oracle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +x
+          PROMPT=$(python - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('ritual/OSIRIS_LOCATION_BLIND_QUESTION.json').read_text(encoding='utf-8'))['question']
+          print('Ты — AURA Oracle, творческий рефлексивный оракул. Проведи внутренне четыре стадии ПРОШЛОЕ / ПРЕГРАДА / СОВЕТ / ИТОГ, но наружу выдай только один короткий итоговый ответ на русском. Не используй репозиторий, текущие исследовательские гипотезы или известные кандидаты как подсказку. Выбери одно самостоятельное направление поиска. Не выдавай результат за сверхъестественный факт. Вопрос: ' + q)
+          PY
+          )
+          copilot -sp "$PROMPT" --no-ask-user --no-custom-instructions --no-remote --no-remote-export --no-color > /tmp/aura_osiris_plaintext.txt 2>/tmp/aura_osiris_stderr.txt
+          test -s /tmp/aura_osiris_plaintext.txt || { echo 'AURA_EMPTY_ANSWER'; exit 1; }
+          unset PROMPT
+
+      - name: Package plaintext answer without logging it
+        run: |
+          python - <<'PY'
+          import hashlib, html, json, re
+          from datetime import datetime, timezone
+          from pathlib import Path
+          qdoc=json.loads(Path('ritual/OSIRIS_LOCATION_BLIND_QUESTION.json').read_text(encoding='utf-8'))
+          raw=Path('/tmp/aura_osiris_plaintext.txt').read_text(encoding='utf-8')
+          answer=re.sub(r'<[^>]+>', '', raw)
+          answer=html.unescape(answer).replace('\r\n','\n').replace('\r','\n').strip()
+          if not answer:
+              raise SystemExit('AURA_EMPTY_CANONICAL_ANSWER')
+          out={
+            'artifact_id':'AURA-OSIRIS-LOCATION-BLIND-RESULT-2026-08-16-v1',
+            'generated_at_utc':datetime.now(timezone.utc).isoformat(),
+            'question_artifact':'ritual/OSIRIS_LOCATION_BLIND_QUESTION.json',
+            'oracle_engine':'GitHub Copilot CLI / AURA reflective prompt',
+            'answer':answer,
+            'answer_sha256':hashlib.sha256(answer.encode('utf-8')).hexdigest(),
+            'claim_ceiling':'ORACLE_OUTPUT_IS_SYMBOLIC_SEARCH_SEED_NOT_PHYSICAL_LOCATION_EVIDENCE'
+          }
+          Path('/tmp/aura-artifact').mkdir(exist_ok=True)
+          Path('/tmp/aura-artifact/OSIRIS_LOCATION_BLIND_RESULT.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+          rm -f /tmp/aura_osiris_plaintext.txt /tmp/aura_osiris_stderr.txt
+
+      - name: Upload answer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aura-osiris-location-blind-result
+          path: /tmp/aura-artifact/OSIRIS_LOCATION_BLIND_RESULT.json
+          if-no-files-found: error
+          retention-days: 1
