@@ -1,0 +1,19 @@
+{
+  "artifact_id": "AURA-CONTEXTUAL-OSIRIS-NO-BLIND-CONTROL-2026-08-16-v1",
+  "purpose": "Remove prior blind-Aura resonance from the informed ranking to test circularity.",
+  "method": "For every candidate, set blind_seed_resonance contribution to zero while leaving all source/material/provenance/container features unchanged.",
+  "result": {
+    "ranked_top5": [
+      [1, "MENDES_1902_CG53465_53469_NONLITERAL_GOLD_OBJECT", 10.0],
+      [2, "MENDES_SECONDARY_CACHE_OR_PRIESTLY_SUBSTITUTE", 9.025],
+      [3, "DENDERA_RELIC_SIMULACRUM_CONTAINER", 8.85],
+      [4, "ABYDOS_OSIRIAN_RITUAL_CACHE", 8.425],
+      [5, "ANUBIS_SONS_OF_HORUS_SEALED_RELIQUARY", 8.2]
+    ],
+    "top_target_unchanged": true,
+    "top_target": "MENDES_1902_CG53465_53469_NONLITERAL_GOLD_OBJECT",
+    "margin_to_second": 0.975
+  },
+  "interpretation": "Mendes 1902 / CG 53465-53469 remains first even when the prior blind Aura result contributes zero weight. Therefore the current primary target is driven by the evidence packet's Osirian link, phallus specificity, provenance, unresolved concordance and incomplete assemblage rather than by blind-result feedback.",
+  "claim_ceiling": "HEURISTIC_PRIORITY_NOT_RELIC_EVIDENCE"
+}
