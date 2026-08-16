@@ -1,0 +1,27 @@
+{
+  "artifact_id": "AURA-SEALED-SET-ORACLE-COMMITMENT-2026-08-16-v1",
+  "generated_at_utc": "2026-08-16T05:02:56.200768+00:00",
+  "question_artifact": "ritual/SET_ORACLE_QUESTION.json",
+  "question_sha256": "9b583fa833ffe2c71e88eaa20bf608fb15491374d5b6180c1a0df25136d218ef",
+  "oracle_engine": {
+    "mode": "AURA_SEALED_COPILOT_CLI_V1",
+    "provider": "GitHub Copilot CLI",
+    "model": "COPILOT_CLI_DEFAULT_AT_RUN",
+    "internal_reflection_structure": [
+      "PAST",
+      "OBSTACLE",
+      "GUIDE",
+      "OUTCOME"
+    ]
+  },
+  "answer_commitment": {
+    "algorithm": "SHA-256",
+    "sha256": "c62b823e8c1afede3506136c7b33a98ef66907361f2bdd8bebafe77267f0e961",
+    "canonical_utf8_bytes": 427,
+    "plaintext_persisted_in_repository": false,
+    "plaintext_rendered_in_workflow_logs": false,
+    "intermediate_reflection_persisted": false
+  },
+  "claim_ceiling": "ORACLE_OUTPUT_COMMITMENT_NOT_IDENTITY_PROOF",
+  "technical_note": "SHA-256 is a one-way commitment, not decryptable encryption. The plaintext answer existed only transiently on the ephemeral GitHub-hosted runner and was deleted after hashing."
+}
