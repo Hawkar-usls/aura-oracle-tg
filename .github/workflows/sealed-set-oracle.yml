@@ -31,6 +31,7 @@ jobs:
           import html
           import json
           import re
+          import urllib.error
           import urllib.request
           from datetime import datetime, timezone
           from pathlib import Path
@@ -63,6 +64,9 @@ jobs:
                       if response.status < 200 or response.status >= 300:
                           raise RuntimeError(f'HTTP_{response.status}')
                       return json.loads(response.read().decode('utf-8'))
+              except urllib.error.HTTPError as exc:
+                  # Only the status code is exposed; response body is never printed.
+                  raise SystemExit(f'SEALED_ORACLE_HTTP_{exc.code}')
               except Exception as exc:
                   # Never print response bodies: they could contain oracle plaintext.
                   raise SystemExit('SEALED_ORACLE_REQUEST_FAILED:' + type(exc).__name__)
@@ -84,7 +88,6 @@ jobs:
           if not isinstance(answer, str) or not answer.strip():
               raise SystemExit('SEALED_ORACLE_EMPTY_ANSWER')
 
-          # Canonicalization is frozen in the question manifest.
           canonical = re.sub(r'<[^>]+>', '', answer)
           canonical = html.unescape(canonical)
           canonical = canonical.replace('\r\n', '\n').replace('\r', '\n').strip()
@@ -113,11 +116,9 @@ jobs:
               json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
           )
 
-          # Output commitment only. Never output cards or plaintext answer.
           print('SEALED_ORACLE_SHA256=' + digest)
           print('SEALED_ORACLE_CANONICAL_BYTES=' + str(len(answer_bytes)))
 
-          # Best-effort removal of references before process exit.
           answer = None
           canonical = None
           cards = None
