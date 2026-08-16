@@ -1,0 +1,96 @@
+{
+  "artifact_id": "AURA-OSIRIS-FULL-EVIDENCE-PACKET-2026-08-16-v1",
+  "mode": "INFORMED_ORACLE_CONTEXT",
+  "question": "Учитывая весь текущий evidence packet, какой один следующий физически проверяемый класс места/объекта следует проверять первым в поиске предполагаемой реликвии Осириса? Ответ должен быть исследовательской приоритизацией, не сверхъестественным утверждением.",
+  "hard_boundaries": [
+    "NO_SUPERNATURAL_CLAIM",
+    "NO_EXCAVATION_OR_REMOVAL",
+    "CATALOGUE_ARCHIVE_CONSERVATION_IMAGING_ONLY",
+    "ORACLE_OUTPUT_NOT_EVIDENCE",
+    "NO_LITERAL_RELIC_CLAIM_WITHOUT_PROVENANCE_AND_OSIRIAN_LINK"
+  ],
+  "source_graph": {
+    "late_literary": [
+      "Plutarch: phallus not recovered, river/fish branch, replica made",
+      "Plutarch: Isis also preserves decoy/effigy burial strategy so Typhon cannot identify true tomb",
+      "Diodorus: multiple priestly burial claims and images; privates said to be thrown into Nile by Typhon; likeness made"
+    ],
+    "egyptian_ritual_geography": [
+      "Khoiak traditions include finding/reconstitution of phallus on ritual days",
+      "Papyrus Brooklyn 47.218.84 / Mendesian tradition links divine flesh with phallus and spine/back",
+      "Mendes/Djedet/Tell el-Ruba is therefore a high-value phallus-specific locality",
+      "Abydos remains major Osirian cult/control locality",
+      "Dendera preserves relic-simulacrum/reliquary traditions"
+    ],
+    "custody_and_protection": [
+      "BD17: Anubis guards a chest containing Osirian entrails",
+      "BD151: Qebehsenuef protects/reassembles Osiris; Duamutef rescues father Osiris",
+      "BD42: phallus explicitly identified with Osiris but no phallus-specific guardian named",
+      "Sobek has source-bound water-recovery competence in BD113 but phallus-specific tasking is unresolved",
+      "No evidence Isis deliberately misled Sobek"
+    ],
+    "functional_restoration": [
+      "Physical phallus loss does not equal loss of generative function in the mythic/theological graph",
+      "Postmortem conception traditions coexist with missing-phallus/replica traditions",
+      "Original and ritual substitute could theoretically occupy different custody branches; this remains a hypothesis"
+    ]
+  },
+  "material_evidence": {
+    "mendes_1902": [
+      "Quibell 1902 documents gold funerary body-part sheaths including a phallus sheath in Nesbanebdjedet burial at Mendes",
+      "Nesbanebdjedet held an explicit Osirian priestly title: Prophet of Osiris in Anpet",
+      "Original burial assemblage suffered documented unauthorized removal before official recovery",
+      "The Met links gold funerary equipment from this burial to Cairo CG 53465-53469",
+      "Exact CG number corresponding to the phallus sheath remains unresolved"
+    ],
+    "gold_and_substitute_controls": [
+      "Met 23.10.23: gold-sheet phallus(?) amulet from Saqqara/Memphite context; form control, not Osiris relic",
+      "Cairo JE 56935 and JE 56967 are gold penis/phallus amulet records; detailed metrology still needed",
+      "Real Egyptian mummies can preserve biological genitalia plus a separate ritual genital model, so duplicate does not prove absence of original"
+    ],
+    "modular_osiris_and_terracotta": [
+      "KHM Osiris object has penis and testicles separately made and inserted into an oval recess",
+      "BM 1973,0501.23: separate hand-modelled terracotta insert phallus, 6.60 x 1.70 cm; internal hollow/solid state unknown",
+      "BM 1973,0501.45: separately made hollow two-piece moulded inserted phallus",
+      "BM 1973,0501.53: socket remains after phallus loss",
+      "Current audited terracotta corpus: 33 records; serial mould production and detachable phallus technology supported",
+      "Strong dimensional near-match: BM 1973,0501.22 vs Louvre E35618, but axis semantics are not yet homologous enough for same-mould claim"
+    ],
+    "female_mirror_control": [
+      "Egyptian material culture includes female genital/fertility symbolism including cowrie/vulva associations",
+      "Mendes has female divine/fertility material context, but no Mendes gold vulva object has yet been identified",
+      "Hidden-female Osiris/Seth theory is currently contradicted by the textual gender model and remains a falsification branch, not an admitted conclusion"
+    ]
+  },
+  "archaeological_container_controls": [
+    "Hollow sacred objects and sealed openings can preserve internal contents",
+    "Anubis-associated shrine/jar hidden in wall chamber at Lisht is a positive control for sacred object + nested container + hidden chamber architecture, not an Osiris-phallus claim",
+    "Relevant non-destructive classes: sealed cavity, hollow statuette, reliquary vessel, internal compartment, resin-linen packet, nested container, sealed bronze/wood opening",
+    "Vacuum capsule unsupported"
+  ],
+  "current_ranked_localities": [
+    {"id":"MENDES","status":"A1","reason":"phallus-specific Egyptian ritual geography + Osirian priest burial + gold phallus sheath + incomplete assemblage"},
+    {"id":"ABYDOS","status":"HIGH_CONTROL","reason":"major Osirian cult and burial/relic tradition"},
+    {"id":"MEMPHIS_SAQQARA","status":"HIGH","reason":"gold phallic amulet control + Osirian/Sokar funerary context"},
+    {"id":"DENDERA","status":"HIGH_CONTAINER","reason":"relic-simulacrum/reliquary tradition"},
+    {"id":"NAUKRATIS","status":"TECH_CONTROL","reason":"dense detachable/moulded terracotta phallus corpus, not direct Osiris provenance"}
+  ],
+  "current_blockers": [
+    "Resolve Cairo CG 53465-53469 object-card concordance",
+    "Obtain dimensions/photos/conservation records for Mendes 1902 gold phallus sheath",
+    "Check radiography/micro-CT for BM 1973,0501.23 damaged root and internal structure",
+    "Obtain calibrated 3D metrology for strongest terracotta near-match",
+    "Search catalogues without the word phallus: ritual substitute, amulet, votive, insert, unidentified fragment, body-part symbol, reliquary, packet"
+  ],
+  "blind_aura_previous_result": {
+    "spread": ["WALL_CHAMBER","SECONDARY_TOMB_CACHE","PRIESTLY_ASSEMBLAGE","RITUAL_SUBSTITUTE"],
+    "direct_seed": "First inspect an object catalogued as ritual substitute, amulet or symbol rather than anatomical detail; the target may survive under a functional rather than literal name.",
+    "evidence_weight": 0
+  },
+  "requested_output": {
+    "format": "one primary target plus three supporting cards",
+    "must_choose_from_or_derive_from_evidence": true,
+    "must_explain_why": true,
+    "must_name_one_disconfirming_test": true
+  }
+}
