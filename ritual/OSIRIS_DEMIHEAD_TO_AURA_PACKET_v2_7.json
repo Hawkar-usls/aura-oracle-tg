@@ -1,0 +1,119 @@
+{
+  "schema": "aura.osiris.demihead_evidence_packet.v2_7",
+  "created_at": "2026-08-16",
+  "messenger": {
+    "id": "DEMIHEAD",
+    "role": "janus_oracle_liaison",
+    "question_ru": "Аура, Кот отработал и отдыхает. Я, ДемиХед, принёс тебе его новые находки. После проверки Mendes CG 53470–53475 отдельные подписанные яички/мошонка рядом с CG 53469 не найдены; зато подтверждены отдельные золотые генитальные покрытия, модульные penis+testicles/scrotum controls и настоящий мумифицированный фаллос внутри металлической оболочки. Что теперь является одним главным следующим следом для CG 53469 и одним запасным следом? Скажи, что именно искать ПОД золотой оболочкой и в смятом основании, не объявляя находку реликвией без независимого доказательства."
+  },
+  "scout": {
+    "id": "JANUS_CAT_FASTCAT_MURENYA",
+    "status": "RESTING_AFTER_SUCCESSFUL_ARCHIVE_SCOUT_PASS",
+    "role": "evidence_provider_not_messenger"
+  },
+  "target": {
+    "id": "CAIRO_CG53469_JE35425",
+    "catalogue_name": "Enveloppe de phallus",
+    "material": "gold sheet",
+    "provenance": "Tell Ibn es-Salam / Mendes, February 1902",
+    "length_cm": 12.2,
+    "published_mass_g": 7,
+    "gold_thickness_mm_approx": 0.1,
+    "basal_mass": "PRESENT_BADLY_CRUMPLED_UNRESOLVED",
+    "known_internal_content": "UNKNOWN"
+  },
+  "new_evidence": {
+    "mendes_immediate_sequence_CG53470_53475": "AUDITED_NO_SEPARATELY_NAMED_SCROTAL_OR_TESTICULAR_COVER",
+    "female_gold_genital_cover_control": {
+      "id": "CG53745",
+      "catalogue_name": "Plaque (cache-sexe feminin?)",
+      "provenance": "Saqqara",
+      "material": "gold",
+      "dimensions_cm": [7.0, 8.2],
+      "weight_g": 3,
+      "importance": "Cairo/Vernier corpus contains separately catalogued anatomically gendered gold genital covering technology"
+    },
+    "modular_osiris_control": {
+      "id": "KHM_INV_10077",
+      "observation": "penis together with testicles separately formed and inserted into an oval recess"
+    },
+    "mummy_prosthesis_control": {
+      "id": "MORIMOTO_1989_QURNA",
+      "observation": "gilded resin penis and scrotum model documented on an Egyptian mummy while true genitals remained present"
+    },
+    "biological_inside_metal_control": {
+      "id": "LOUVRE_E13463_CM445",
+      "observation": "mummified biological phallus wrapped in metal sheet",
+      "dimensions_cm": [8.5, 2.7, 2.0],
+      "importance": "direct material precedent that a metallic phallus covering can contain actual organic tissue"
+    },
+    "biological_phallus_controls": [
+      {
+        "id": "LOUVRE_E13468_CM450",
+        "catalogue": "organic phallus (?)",
+        "dimensions_cm": [9.0, 4.0, 2.5]
+      },
+      {
+        "id": "BM_EA74284",
+        "catalogue": "adult mummy penis, gilded",
+        "max_dimensions_cm": [6.0, 3.0, 1.5]
+      }
+    ],
+    "separate_testicular_fragment_control": {
+      "id": "LOUVRE_ME1310",
+      "catalogue": "mummy fragment — testicle (?)",
+      "identification": "UNCERTAIN_DO_NOT_USE_AS_ANATOMICAL_METROLOGY"
+    }
+  },
+  "current_hypotheses": [
+    {
+      "id": "H1_ORGANIC_CORE",
+      "status": "OPEN",
+      "prediction": "radiography/CT reveals discrete internal organic-density core beneath the gold sheet"
+    },
+    {
+      "id": "H2_SCROTAL_OR_PAIRED_BASAL_COMPONENT",
+      "status": "OPEN",
+      "prediction": "multi-view imaging or CT resolves deliberate bilateral/sac-like basal geometry continuous with or attached to the sheath"
+    },
+    {
+      "id": "H3_COLLAPSED_EMPTY_SHEATH",
+      "status": "OPEN",
+      "prediction": "imaging shows folded/collapsed gold without separate internal core or genital component"
+    },
+    {
+      "id": "H4_SUPPORT_REPAIR_RESIDUE",
+      "status": "OPEN",
+      "prediction": "imaging/conservation notes identify modern or ancient packing/support/adhesive unrelated to biological genital tissue"
+    },
+    {
+      "id": "H5_NONADJACENT_OR_LOST_COMPANION",
+      "status": "OPEN",
+      "prediction": "JE/provenance records reveal a separately catalogued or lost companion element outside CG 53470–53475"
+    }
+  ],
+  "candidate_routes": [
+    "CG53469_NONDESTRUCTIVE_INTERNAL_CONTENT",
+    "CG53469_BASAL_TOPOLOGY_AND_SEAMS",
+    "CAIRO_CONSERVATION_HISTORY_AND_CURRENT_MASS",
+    "MENDES_NONADJACENT_JE_COMPANION_SEARCH",
+    "METAL_SHEATH_WITH_ORGANIC_CORE_COMPARATIVE_CORPUS",
+    "MODULAR_OSIRIS_GENITAL_BUNDLE_COMPARISON"
+  ],
+  "rules": {
+    "cat_is_not_sent_back_to_oracle": true,
+    "oracle_output_is_search_priority_not_archaeological_evidence": true,
+    "do_not_assume_empty_sheath": true,
+    "do_not_assume_basal_mass_is_testicles": true,
+    "do_not_claim_literal_osiris_relic": true,
+    "archive_catalogue_conservation_only": true,
+    "nondestructive_imaging_only": true,
+    "destructive_sampling": false,
+    "excavation_or_removal": false
+  },
+  "source_receipts": {
+    "hrain_v2_5_commit": "5fae334e1e6879954d4d576ba73133e6e8ea2708",
+    "hrain_v2_6_commit": "5dc2049eb7e1ee616cc442595fec5d769d7b7a4e",
+    "linear_issue": "HAW-7"
+  }
+}
