@@ -1,0 +1,91 @@
+{
+  "schema": "aura.osiris.cat_evidence_packet.v2_4",
+  "created_at": "2026-08-16",
+  "messenger": {
+    "id": "JANUS_CAT",
+    "role": "archive_scout",
+    "question_ru": "Аура, куда Коту идти дальше, чтобы искать связанный генитальный комплект Осириса: сам фаллос, возможную мошонку/яички и золотые оболочки/колпачки? Дай один главный маршрут и запасной маршрут, опираясь на весь пакет, а не только на название phallus."
+  },
+  "new_confirmed_anchor": {
+    "object": "CG 53469 / JE 35425",
+    "catalogue_name": "Enveloppe de phallus",
+    "material": "gold sheet",
+    "findspot": "Tell Ibn es-Salam / Mendes",
+    "find_date": "1902-02",
+    "published_length_cm": 12.2,
+    "published_mass_g": 7,
+    "published_sheet_thickness_mm": 0.1,
+    "plate": "Vernier Tome II, Plate LXXXVII, visible label 53.469",
+    "condition_1927": "very poor",
+    "visual_state": "elongated sheath/shaft with expanded heavily crumpled basal mass",
+    "basal_mass_identity": "UNRESOLVED",
+    "direct_photo_scaled_max_width_cm": "~4.8",
+    "direct_photo_scaled_shaft_width_cm": "~3.3 representative",
+    "direct_photo_scaled_basal_width_cm": "~4.4 representative"
+  },
+  "same_assemblage": [
+    {
+      "cg": "CG 53465",
+      "kind": "gold collar",
+      "manufacturing_signal": "formed/stamped in a mould, probably plaster"
+    },
+    {
+      "cg": "CG 53466",
+      "kind": "large gold pectoral ornament",
+      "manufacturing_signal": "gold pushed into a hollow/recess, probably plaster"
+    },
+    {
+      "cg": "CG 53467",
+      "kind": "gold band",
+      "manufacturing_signal": "same burial assemblage"
+    },
+    {
+      "cg": "CG 53468/53468bis",
+      "kind": "gold sandals",
+      "manufacturing_signal": "same burial assemblage"
+    }
+  ],
+  "context": {
+    "burial_owner": "Nesbanebdjedet, born to Shentyt",
+    "explicit_osirian_title": "Prophet of Osiris in Anpet",
+    "mendes_banebdjedet_context": true,
+    "1902_assemblage_incomplete": true,
+    "early_removal_or_loss_documented": true,
+    "mendes_phallus_relic_geography_in_egyptian_sources": true,
+    "plutarch_river_fish_branch_conflicts_with_egyptian_relic_geography": true
+  },
+  "material_controls": {
+    "detachable_inserted_phallus_technology": "SUPPORTED",
+    "separate_phallus_and_testicles_inserted_into_osiris_figure": "SUPPORTED_CONTROL_KHM_10077",
+    "terracotta_insert_phallus_BM_1973_0501_23_cm": [6.6, 1.7],
+    "serial_mould_production": "SUPPORTED",
+    "gold_funerary_genital_duplicate_on_intact_male_mummy": "SUPPORTED_CONTROL",
+    "female_genital_mirror_search": "ACTIVE_CONTROL"
+  },
+  "open_questions": [
+    "Is the expanded basal mass of CG 53469 continuous with the sheath, a separately attached element, collapsed gold, support residue, or a scrotal/testicular component?",
+    "Did CG 53469 preserve seams, joins, mould/support impressions or a detachable genital-bundle architecture?",
+    "Do other gold genital covers from Egypt share the same master geometry or workshop technique?",
+    "Are additional elements from the 1902 Mendes assemblage catalogued under neutral names such as ornament, foil, amulet, insert, fitting, fragment, plaque, cover, sheath or unidentified object?",
+    "Does JE 35425 have modern conservation photographs, X-ray/CT/XRF/microscopy/3D records or pre-restoration documentation?",
+    "Are there separately catalogued scrotal/testicular covers or paired genital elements from Mendes, Memphis/Saqqara, Abydos or Dendera?"
+  ],
+  "candidate_routes": [
+    "CG53469_CURRENT_STATUS_AND_BASAL_MASS",
+    "MENDES_1902_NEUTRAL_LABEL_SISTER_OBJECTS",
+    "GOLD_SCROTAL_TESTICULAR_COVER_CORPUS",
+    "OSIRIS_MODULAR_GENITAL_BUNDLE_CORPUS",
+    "MENDES_MOULD_AND_MASTER_FORM_LINEAGE",
+    "ANUBIS_SONS_OF_HORUS_SEALED_RELIQUARY",
+    "DENDERA_RELIC_SIMULACRUM_CONTAINER",
+    "ABYDOS_OSIRIAN_RITUAL_CACHE"
+  ],
+  "rules": {
+    "do_not_require_literal_phallus_label": true,
+    "treat_basal_mass_as_unresolved_not_testicles": true,
+    "use_archive_catalogue_conservation_only": true,
+    "destructive_sampling": false,
+    "excavation_or_removal": false,
+    "oracle_output_is_search_priority_not_archaeological_evidence": true
+  }
+}
