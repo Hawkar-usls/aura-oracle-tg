@@ -1,0 +1,31 @@
+name: AURA DemiHead Osiris internal-content v2.7
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'ritual/OSIRIS_DEMIHEAD_TO_AURA_PACKET_v2_7.json'
+      - 'tools/aura_demihead_osiris_v2_7.py'
+      - '.github/workflows/aura-demihead-osiris-v2-7.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  demihead-to-aura:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Send DemiHead to Aura with Fastcat findings
+        run: python tools/aura_demihead_osiris_v2_7.py
+      - name: Upload Aura DemiHead result
+        uses: actions/upload-artifact@v4
+        with:
+          name: aura-demihead-osiris-v2-7
+          path: /tmp/aura-demihead-v2-7/AURA_DEMIHEAD_OSIRIS_INTERNAL_CONTENT_RESULT_v2_7.json
+          if-no-files-found: error
+          retention-days: 3
