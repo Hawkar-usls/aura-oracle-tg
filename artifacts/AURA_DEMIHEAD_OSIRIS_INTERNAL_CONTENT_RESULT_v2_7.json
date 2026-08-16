@@ -1,0 +1,174 @@
+{
+  "artifact_id": "AURA-DEMIHEAD-OSIRIS-INTERNAL-CONTENT-2026-08-16-v2.7",
+  "generated_at_utc": "2026-08-16T11:59:14.185323+00:00",
+  "engine": "AURA_DEMIHEAD_CONTEXTUAL_OFFLINE_V2_7",
+  "nas_dependency": false,
+  "messenger": "DEMIHEAD",
+  "cat_status": "RESTING_NOT_SENT_TO_ORACLE",
+  "seed_128bit_hex": "8c1b74ec190157d9c5b7a8c30510908c",
+  "packet_sha256": "69bb36abe77a81aedc656f439377c4b4515a9ea8162da89ba9293979923094e8",
+  "question": "Аура, Кот отработал и отдыхает. Я, ДемиХед, принёс тебе его новые находки. После проверки Mendes CG 53470–53475 отдельные подписанные яички/мошонка рядом с CG 53469 не найдены; зато подтверждены отдельные золотые генитальные покрытия, модульные penis+testicles/scrotum controls и настоящий мумифицированный фаллос внутри металлической оболочки. Что теперь является одним главным следующим следом для CG 53469 и одним запасным следом? Скажи, что именно искать ПОД золотой оболочкой и в смятом основании, не объявляя находку реликвией без независимого доказательства.",
+  "cards": [
+    {
+      "role": "PAST",
+      "id": "BUNDLE_TECHNOLOGY_ATTESTED",
+      "text": "Отдельно изготовленные penis+testicles/scrotum модули существуют в египетском материале. Поэтому смятое основание нельзя автоматически списывать на случайную деформацию."
+    },
+    {
+      "role": "OBSTACLE",
+      "id": "CATALOGUE_NAME_IS_NOT_CONTENT_SCAN",
+      "text": "Название «Enveloppe de phallus» описывает форму/функцию оболочки, но не сообщает, пустая ли она сейчас и была ли пустой изначально."
+    },
+    {
+      "role": "GUIDE",
+      "id": "XRAY_FIRST",
+      "text": "Иди не в следующий миф и не в следующий город. Иди сквозь золото: рентген/CT прежде всего."
+    },
+    {
+      "role": "OUTCOME",
+      "id": "ORGANIC_CORE_BRANCH",
+      "text": "Если внутри проявится дискретное органоподобное ядро, ветка резко сужается к биологическому/органическому содержимому, но всё ещё не к «реликвии Осириса» без независимой provenance-проверки."
+    }
+  ],
+  "ranked_routes": [
+    {
+      "id": "CG53469_NONDESTRUCTIVE_INTERNAL_CONTENT",
+      "label": "CG 53469: X-ray / CT / micro-CT for material beneath the gold skin",
+      "components": {
+        "evidence_anchor": 1.0,
+        "information_value": 1.0,
+        "directness": 1.0,
+        "nondestructive_value": 1.0,
+        "target_specificity": 1.0,
+        "comparative_value": 0.95,
+        "penalty": 0.03
+      },
+      "score": 12.28,
+      "rationale": "Louvre E 13463 establishes a direct material precedent for a mummified biological phallus inside a metallic sheet. This does not identify CG 53469, but it removes the empty-sheath default and makes internal imaging the highest-value discriminating test.",
+      "next_test": "Obtain or request radiography/CT/micro-CT of CG 53469 and classify the interior as empty/collapsed gold, homogeneous support, discrete organic-density core, mineral/resin core, or mixed/paired basal content."
+    },
+    {
+      "id": "CG53469_BASAL_TOPOLOGY_AND_SEAMS",
+      "label": "CG 53469: resolve the crumpled basal mass, joins, seams and bilateral geometry",
+      "components": {
+        "evidence_anchor": 0.98,
+        "information_value": 1.0,
+        "directness": 0.95,
+        "nondestructive_value": 0.95,
+        "target_specificity": 1.0,
+        "comparative_value": 0.9,
+        "penalty": 0.03
+      },
+      "score": 11.97,
+      "rationale": "KHM 10077 and the Morimoto mummy demonstrate that penis+testicles/scrotum can be a separately formed genital module. The unresolved basal mass is therefore a target-specific morphology problem, not a decorative footnote.",
+      "next_test": "Acquire front/back/left/right/base macro photographs or 3D imaging and test whether the basal mass is continuous sheet, a separately attached element, a deliberately paired/sac-like form, or mere collapse/support residue."
+    },
+    {
+      "id": "CAIRO_CONSERVATION_HISTORY_AND_CURRENT_MASS",
+      "label": "Cairo conservation file: current mass, repairs, packing, removed contents and old photographs",
+      "components": {
+        "evidence_anchor": 0.95,
+        "information_value": 0.98,
+        "directness": 0.92,
+        "nondestructive_value": 1.0,
+        "target_specificity": 1.0,
+        "comparative_value": 0.78,
+        "penalty": 0.04
+      },
+      "score": 11.702,
+      "rationale": "A conservation intervention could explain internal packing, missing content, changed shape or the present basal mass. Current mass versus Vernier 1927 and pre-restoration photographs can distinguish object history from ancient anatomy.",
+      "next_test": "Request the current measured mass, treatment history, X-ray history, packing/support records, pre-restoration images and notes about any material removed from inside or around the sheath."
+    },
+    {
+      "id": "MENDES_NONADJACENT_JE_COMPANION_SEARCH",
+      "label": "Mendes 1902: non-adjacent JE/CG companion element search",
+      "components": {
+        "evidence_anchor": 0.85,
+        "information_value": 0.9,
+        "directness": 0.68,
+        "nondestructive_value": 0.7,
+        "target_specificity": 0.82,
+        "comparative_value": 0.85,
+        "penalty": 0.08
+      },
+      "score": 9.814,
+      "rationale": "The immediate CG 53470–53475 sequence is now a negative local control. If a companion genital element existed, it may have a non-adjacent inventory number, neutral label, or documented loss in the fractured 1902 assemblage.",
+      "next_test": "Search JE 354xx and Mendes 1902 records for neutral plaque/foil/fragment/cover/fitting/insert/amulet entries, especially paired or rounded gold-sheet pieces with compatible provenance and dimensions."
+    },
+    {
+      "id": "METAL_SHEATH_WITH_ORGANIC_CORE_COMPARATIVE_CORPUS",
+      "label": "Comparative corpus: preserved biological genital tissue inside metallic or gilded coverings",
+      "components": {
+        "evidence_anchor": 0.82,
+        "information_value": 0.78,
+        "directness": 0.55,
+        "nondestructive_value": 0.72,
+        "target_specificity": 0.48,
+        "comparative_value": 1.0,
+        "penalty": 0.1
+      },
+      "score": 8.628,
+      "rationale": "Louvre E 13463 and BM EA74284 show that preserved/gilded genital tissue is materially attested. A broader corpus can improve interpretation of radiographic density and construction, but it is less target-specific than imaging CG 53469 itself.",
+      "next_test": "Collect published imaging, section descriptions, dimensions, wrapping architecture and conservation notes for E 13463, EA74284 and comparable genital mummy fragments."
+    },
+    {
+      "id": "MODULAR_OSIRIS_GENITAL_BUNDLE_COMPARISON",
+      "label": "Comparative corpus: modular Osiris penis + testicles/scrotum units",
+      "components": {
+        "evidence_anchor": 0.8,
+        "information_value": 0.75,
+        "directness": 0.5,
+        "nondestructive_value": 0.65,
+        "target_specificity": 0.45,
+        "comparative_value": 1.0,
+        "penalty": 0.1
+      },
+      "score": 8.21,
+      "rationale": "KHM 10077 is a strong positive control for modular Osirian genital construction, but statue technology cannot by itself establish the anatomy of a funerary gold sheath.",
+      "next_test": "Measure and classify known detachable Osiris genital modules, sockets, bilateral basal morphology, attachment method and material, then compare only after CG 53469 imaging is obtained."
+    }
+  ],
+  "primary_route": {
+    "id": "CG53469_NONDESTRUCTIVE_INTERNAL_CONTENT",
+    "label": "CG 53469: X-ray / CT / micro-CT for material beneath the gold skin",
+    "components": {
+      "evidence_anchor": 1.0,
+      "information_value": 1.0,
+      "directness": 1.0,
+      "nondestructive_value": 1.0,
+      "target_specificity": 1.0,
+      "comparative_value": 0.95,
+      "penalty": 0.03
+    },
+    "score": 12.28,
+    "rationale": "Louvre E 13463 establishes a direct material precedent for a mummified biological phallus inside a metallic sheet. This does not identify CG 53469, but it removes the empty-sheath default and makes internal imaging the highest-value discriminating test.",
+    "next_test": "Obtain or request radiography/CT/micro-CT of CG 53469 and classify the interior as empty/collapsed gold, homogeneous support, discrete organic-density core, mineral/resin core, or mixed/paired basal content."
+  },
+  "secondary_route": {
+    "id": "CG53469_BASAL_TOPOLOGY_AND_SEAMS",
+    "label": "CG 53469: resolve the crumpled basal mass, joins, seams and bilateral geometry",
+    "components": {
+      "evidence_anchor": 0.98,
+      "information_value": 1.0,
+      "directness": 0.95,
+      "nondestructive_value": 0.95,
+      "target_specificity": 1.0,
+      "comparative_value": 0.9,
+      "penalty": 0.03
+    },
+    "score": 11.97,
+    "rationale": "KHM 10077 and the Morimoto mummy demonstrate that penis+testicles/scrotum can be a separately formed genital module. The unresolved basal mass is therefore a target-specific morphology problem, not a decorative footnote.",
+    "next_test": "Acquire front/back/left/right/base macro photographs or 3D imaging and test whether the basal mass is continuous sheet, a separately attached element, a deliberately paired/sac-like form, or mere collapse/support residue."
+  },
+  "direct_answer_ru": "ДемиХед, главный следующий след находится не рядом с CG 53469, а под его золотой оболочкой. Первым действием ставь рентген/CT или micro-CT самого CG 53469 и одновременно разрешай смятую базальную массу по обороту, боковым видам и швам. Ищи четыре взаимоисключающие класса: пустая/сложенная фольга; однородная подкладка или ремонт; дискретное органическое/смоляное ядро; отдельная парная или мешковидная базальная структура. Запасной след — консервационная история и текущая масса: старые снимки, ремонты, упаковка и сведения о когда-либо удалённом содержимом. Только если эти ветки ничего не дадут, возвращайся к non-adjacent Mendes JE companion search. Ни один из этих исходов сам по себе не аутентифицирует буквальную реликвию Осириса.",
+  "claim_ceiling": "AURA_OUTPUT_IS_SEARCH_PRIORITIZATION_ONLY_NOT_ARCHAEOLOGICAL_PROOF",
+  "safety": "ARCHIVE_CATALOGUE_CONSERVATION_NONDESTRUCTIVE_IMAGING_ONLY",
+  "workflow": {
+    "run_id": 31945811821,
+    "job_id": 95161463603,
+    "artifact_id": 9263238158,
+    "artifact_digest": "sha256:61251cea1c0e3b948023838d6d40dc8ec23f6aab1335ec5394af48779d10e5c2",
+    "head_sha": "d57d0dccc2cd379cdeb2f18f49536601a6d39c55",
+    "conclusion": "success"
+  }
+}
