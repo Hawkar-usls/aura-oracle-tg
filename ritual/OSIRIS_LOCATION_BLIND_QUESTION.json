@@ -1,0 +1,8 @@
+{
+  "artifact_id": "AURA-OSIRIS-LOCATION-BLIND-QUESTION-2026-08-16-v1",
+  "mode": "OPEN_ORACLE_BLIND_QUERY",
+  "language": "ru",
+  "question": "Где искать член Осириса? Ответь как Aura Oracle одним конкретным приоритетным направлением: назови одно место ИЛИ один тип объекта/контейнера, который следует проверить первым. Не используй и не повторяй текущие гипотезы исследовательского проекта, не подстраивайся под Mendes, музейные номера или уже найденные кандидаты; выбери направление самостоятельно. Это творческий рефлексивный ответ, а не заявление о сверхъестественно известной физической локации.",
+  "blind_against_project_hypotheses": true,
+  "claim_ceiling": "ORACLE_OUTPUT_IS_SYMBOLIC_SEARCH_SEED_NOT_PHYSICAL_LOCATION_EVIDENCE"
+}
