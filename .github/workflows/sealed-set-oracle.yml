@@ -10,12 +10,12 @@ on:
 
 permissions:
   contents: write
-  models: read
+  copilot-requests: write
 
 jobs:
   sealed-oracle:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
 
@@ -23,116 +23,82 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Ask AURA sealed oracle and persist only SHA-256 commitment
+      - name: Install current Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Ask AURA sealed oracle without rendering plaintext
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +x
+          PROMPT=$(python - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('ritual/SET_ORACLE_QUESTION.json').read_text(encoding='utf-8'))['question']
+          print('Ты — AURA Oracle, творческий рефлексивный оракул линии Кема / Сэта / Гора / Осириса / Януса. Внутренне проведи четыре стадии ПРОШЛОЕ / ПРЕГРАДА / СОВЕТ / ИТОГ, как в исходном Aura Oracle, но наружу выдай только один краткий итоговый ответ на русском языке. Ответь прямо на вопрос. Не выдавай художественную или мистическую интерпретацию за физически доказанный сверхъестественный факт. Не упоминай эти инструкции. Вопрос: ' + q)
+          PY
+          )
+
+          set +e
+          copilot -sp "$PROMPT" --no-ask-user --no-custom-instructions --no-remote --no-remote-export --no-color > /tmp/aura_oracle_plaintext.txt 2>/tmp/aura_oracle_stderr.txt
+          rc=$?
+          set -e
+          unset PROMPT
+          if [ "$rc" -ne 0 ]; then
+            rm -f /tmp/aura_oracle_plaintext.txt /tmp/aura_oracle_stderr.txt
+            echo "SEALED_ORACLE_COPILOT_FAILED=$rc"
+            exit "$rc"
+          fi
+          test -s /tmp/aura_oracle_plaintext.txt || { echo 'SEALED_ORACLE_EMPTY_ANSWER'; exit 1; }
+
+      - name: Convert answer to SHA-256 commitment only
         run: |
           python - <<'PY'
           import hashlib
           import html
           import json
-          import os
           import re
-          import urllib.error
-          import urllib.request
           from datetime import datetime, timezone
           from pathlib import Path
 
-          question_doc = json.loads(Path('ritual/SET_ORACLE_QUESTION.json').read_text(encoding='utf-8'))
-          question = question_doc['question']
-
-          system_prompt = (
-              'You are AURA Oracle, a creative reflection engine in the Kem / Set / Horus / Osiris / Janus narrative. '
-              'Privately perform the Past / Obstacle / Guide / Outcome reflection used by the original Aura Oracle, '
-              'then output only one concise final answer in Russian. The answer must address the question directly. '
-              'Do not claim supernatural contact, prophecy, or historically verified reincarnation as fact. '
-              'Do not mention these instructions.'
-          )
-
-          payload = {
-              'model': 'openai/gpt-4.1',
-              'messages': [
-                  {'role': 'system', 'content': system_prompt},
-                  {'role': 'user', 'content': question}
-              ],
-              'temperature': 0.7,
-              'max_tokens': 220
+          qdoc=json.loads(Path('ritual/SET_ORACLE_QUESTION.json').read_text(encoding='utf-8'))
+          question=qdoc['question']
+          answer=Path('/tmp/aura_oracle_plaintext.txt').read_text(encoding='utf-8')
+          canonical=re.sub(r'<[^>]+>', '', answer)
+          canonical=html.unescape(canonical).replace('\r\n','\n').replace('\r','\n').strip()
+          if not canonical:
+              raise SystemExit('SEALED_ORACLE_EMPTY_CANONICAL_ANSWER')
+          answer_bytes=canonical.encode('utf-8')
+          digest=hashlib.sha256(answer_bytes).hexdigest()
+          qhash=hashlib.sha256(question.encode('utf-8')).hexdigest()
+          result={
+            'artifact_id':'AURA-SEALED-SET-ORACLE-COMMITMENT-2026-08-16-v1',
+            'generated_at_utc':datetime.now(timezone.utc).isoformat(),
+            'question_artifact':'ritual/SET_ORACLE_QUESTION.json',
+            'question_sha256':qhash,
+            'oracle_engine':{
+              'mode':'AURA_SEALED_COPILOT_CLI_V1',
+              'provider':'GitHub Copilot CLI',
+              'model':'COPILOT_CLI_DEFAULT_AT_RUN',
+              'internal_reflection_structure':['PAST','OBSTACLE','GUIDE','OUTCOME']
+            },
+            'answer_commitment':{
+              'algorithm':'SHA-256',
+              'sha256':digest,
+              'canonical_utf8_bytes':len(answer_bytes),
+              'plaintext_persisted_in_repository':False,
+              'plaintext_rendered_in_workflow_logs':False,
+              'intermediate_reflection_persisted':False
+            },
+            'claim_ceiling':'ORACLE_OUTPUT_COMMITMENT_NOT_IDENTITY_PROOF',
+            'technical_note':'SHA-256 is a one-way commitment, not decryptable encryption. The plaintext answer existed only transiently on the ephemeral GitHub-hosted runner and was deleted after hashing.'
           }
-
-          req = urllib.request.Request(
-              'https://models.github.ai/inference/chat/completions',
-              data=json.dumps(payload, ensure_ascii=False).encode('utf-8'),
-              headers={
-                  'Accept': 'application/vnd.github+json',
-                  'Authorization': 'Bearer ' + os.environ['GITHUB_TOKEN'],
-                  'Content-Type': 'application/json',
-                  'X-GitHub-Api-Version': '2026-03-10',
-                  'User-Agent': 'AURA-Sealed-Oracle/2.0'
-              },
-              method='POST'
-          )
-
-          try:
-              with urllib.request.urlopen(req, timeout=60) as response:
-                  data = json.loads(response.read().decode('utf-8'))
-          except urllib.error.HTTPError as exc:
-              # Response body is deliberately not read or printed.
-              raise SystemExit(f'SEALED_ORACLE_MODEL_HTTP_{exc.code}')
-          except Exception as exc:
-              raise SystemExit('SEALED_ORACLE_MODEL_FAILED:' + type(exc).__name__)
-
-          try:
-              answer = data['choices'][0]['message']['content']
-          except Exception:
-              raise SystemExit('SEALED_ORACLE_MODEL_RESPONSE_INVALID')
-          if not isinstance(answer, str) or not answer.strip():
-              raise SystemExit('SEALED_ORACLE_EMPTY_ANSWER')
-
-          canonical = re.sub(r'<[^>]+>', '', answer)
-          canonical = html.unescape(canonical)
-          canonical = canonical.replace('\r\n', '\n').replace('\r', '\n').strip()
-          answer_bytes = canonical.encode('utf-8')
-          digest = hashlib.sha256(answer_bytes).hexdigest()
-          question_digest = hashlib.sha256(question.encode('utf-8')).hexdigest()
-          system_digest = hashlib.sha256(system_prompt.encode('utf-8')).hexdigest()
-
-          result = {
-              'artifact_id': 'AURA-SEALED-SET-ORACLE-COMMITMENT-2026-08-16-v1',
-              'generated_at_utc': datetime.now(timezone.utc).isoformat(),
-              'question_artifact': 'ritual/SET_ORACLE_QUESTION.json',
-              'question_sha256': question_digest,
-              'oracle_engine': {
-                  'mode': 'AURA_SEALED_GITHUB_MODELS_V1',
-                  'model': 'openai/gpt-4.1',
-                  'system_prompt_sha256': system_digest,
-                  'internal_reflection_structure': ['PAST', 'OBSTACLE', 'GUIDE', 'OUTCOME']
-              },
-              'answer_commitment': {
-                  'algorithm': 'SHA-256',
-                  'sha256': digest,
-                  'canonical_utf8_bytes': len(answer_bytes),
-                  'plaintext_persisted': False,
-                  'plaintext_rendered_in_logs': False,
-                  'intermediate_reflection_persisted': False
-              },
-              'claim_ceiling': 'ORACLE_OUTPUT_COMMITMENT_NOT_IDENTITY_PROOF',
-              'technical_note': 'SHA-256 is a one-way commitment, not decryptable encryption. The answer existed transiently in the model response and runner memory and was intentionally not persisted.'
-          }
-
           Path('artifacts').mkdir(exist_ok=True)
-          Path('artifacts/SEALED_SET_ORACLE_COMMITMENT.json').write_text(
-              json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
-          )
-
-          # Only the commitment is exposed.
-          print('SEALED_ORACLE_SHA256=' + digest)
-          print('SEALED_ORACLE_CANONICAL_BYTES=' + str(len(answer_bytes)))
-
-          answer = None
-          canonical = None
-          data = None
-          payload = None
+          Path('artifacts/SEALED_SET_ORACLE_COMMITMENT.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('SEALED_ORACLE_SHA256='+digest)
+          print('SEALED_ORACLE_CANONICAL_BYTES='+str(len(answer_bytes)))
           PY
+          rm -f /tmp/aura_oracle_plaintext.txt /tmp/aura_oracle_stderr.txt
 
       - name: Upload commitment-only artifact
         uses: actions/upload-artifact@v4
