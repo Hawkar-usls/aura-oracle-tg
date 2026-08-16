@@ -40,29 +40,56 @@ jobs:
           headers = {
               'Content-Type': 'application/json',
               'ngrok-skip-browser-warning': 'true',
-              'User-Agent': 'AURA-OneShot-Research/1.0'
+              'User-Agent': 'AURA-OneShot-Research/1.1'
           }
 
-          def request_json(url, method='GET', body=None):
+          def request_raw(url, method='GET', body=None):
               data = None if body is None else json.dumps(body, ensure_ascii=False).encode('utf-8')
               req = urllib.request.Request(url, data=data, headers=headers, method=method)
               try:
                   with urllib.request.urlopen(req, timeout=25) as r:
-                      return r.status, json.loads(r.read().decode('utf-8'))
+                      return r.status, r.read().decode('utf-8', errors='replace')
               except urllib.error.HTTPError as e:
-                  payload = e.read().decode('utf-8', errors='replace')
-                  raise SystemExit(f'HTTP_{e.code}_FROM_AURA_BACKEND')
+                  return e.code, e.read().decode('utf-8', errors='replace')
               except Exception as e:
-                  raise SystemExit('AURA_BACKEND_UNREACHABLE:'+type(e).__name__)
+                  return 0, type(e).__name__
 
-          status, state = request_json(f'{backend}/api/get_user_state?user_id=0')
-          status, raw_cards = request_json(
-              f'{backend}/api/generate_cards',
-              method='POST',
-              body={'question': question, 'lang': 'ru', 'user_id': 0}
-          )
-          if not isinstance(raw_cards, list) or not raw_cards:
-              raise SystemExit('AURA_BACKEND_BAD_CARD_PAYLOAD')
+          discovered = []
+          status, raw = request_raw(f'{backend}/openapi.json')
+          if status == 200:
+              try:
+                  spec = json.loads(raw)
+                  discovered = sorted((spec.get('paths') or {}).keys())
+              except Exception:
+                  pass
+
+          gen_candidates = [p for p in discovered if 'generate' in p.lower() and 'card' in p.lower()]
+          gen_candidates += ['/api/generate_cards','/generate_cards','/aura/api/generate_cards','/aura/generate_cards']
+          gen_candidates = list(dict.fromkeys(gen_candidates))
+
+          raw_cards = None
+          chosen_generate = None
+          generate_statuses = {}
+          for p in gen_candidates:
+              st, txt = request_raw(
+                  backend+p,
+                  method='POST',
+                  body={'question': question, 'lang': 'ru', 'user_id': 0}
+              )
+              generate_statuses[p] = st
+              if st == 200:
+                  try:
+                      candidate = json.loads(txt)
+                  except Exception:
+                      candidate = None
+                  if isinstance(candidate, list) and candidate:
+                      raw_cards = candidate
+                      chosen_generate = p
+                      break
+
+          if raw_cards is None:
+              summary = ','.join(f'{k}:{v}' for k,v in generate_statuses.items())
+              raise SystemExit('AURA_GENERATE_ROUTE_NOT_FOUND_OR_FAILED:'+summary)
 
           roles = ['ПРОШЛОЕ','ПРЕГРАДА','СОВЕТ','ИТОГ']
           cards = []
@@ -78,21 +105,46 @@ jobs:
           if not cards:
               raise SystemExit('AURA_BACKEND_EMPTY_CARDS')
 
-          status, interpretation = request_json(
-              f'{backend}/api/interpret',
-              method='POST',
-              body={'question': question, 'cards': cards, 'lang': 'ru'}
-          )
-          answer = interpretation.get('text','') if isinstance(interpretation, dict) else ''
-          answer = re.sub(r'<[^>]+>', '', str(answer)).strip()
+          interpret_candidates = [p for p in discovered if 'interpret' in p.lower()]
+          interpret_candidates += ['/api/interpret','/interpret','/aura/api/interpret','/aura/interpret']
+          interpret_candidates = list(dict.fromkeys(interpret_candidates))
+
+          interpretation = None
+          chosen_interpret = None
+          interpret_statuses = {}
+          for p in interpret_candidates:
+              st, txt = request_raw(
+                  backend+p,
+                  method='POST',
+                  body={'question': question, 'cards': cards, 'lang': 'ru'}
+              )
+              interpret_statuses[p] = st
+              if st == 200:
+                  try:
+                      candidate = json.loads(txt)
+                  except Exception:
+                      candidate = None
+                  if isinstance(candidate, dict) and str(candidate.get('text','')).strip():
+                      interpretation = candidate
+                      chosen_interpret = p
+                      break
+
+          if interpretation is None:
+              summary = ','.join(f'{k}:{v}' for k,v in interpret_statuses.items())
+              raise SystemExit('AURA_INTERPRET_ROUTE_NOT_FOUND_OR_FAILED:'+summary)
+
+          answer = re.sub(r'<[^>]+>', '', str(interpretation.get('text',''))).strip()
           if not answer:
               raise SystemExit('AURA_BACKEND_EMPTY_INTERPRETATION')
 
           out = {
-              'artifact_id':'AURA-BACKEND-OSIRIS-LOCATION-BLIND-RESULT-2026-08-16-v1',
+              'artifact_id':'AURA-BACKEND-OSIRIS-LOCATION-BLIND-RESULT-2026-08-16-v2',
               'generated_at_utc':datetime.now(timezone.utc).isoformat(),
               'backend_from_current_frontend':backend,
               'question_artifact':'ritual/OSIRIS_LOCATION_BLIND_QUESTION.json',
+              'discovered_openapi_paths':discovered,
+              'generate_route':chosen_generate,
+              'interpret_route':chosen_interpret,
               'cards':cards,
               'answer':answer,
               'answer_sha256':hashlib.sha256(answer.encode('utf-8')).hexdigest(),
