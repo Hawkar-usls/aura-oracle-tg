@@ -1,0 +1,37 @@
+name: Aura Shabitat heuristic bridge
+
+on:
+  push:
+    paths:
+      - 'tools/aura_shabitat_heuristic.py'
+      - 'tests/test_aura_shabitat_heuristic.py'
+      - '.github/workflows/aura-shabitat-heuristic.yml'
+  pull_request:
+    paths:
+      - 'tools/aura_shabitat_heuristic.py'
+      - 'tests/test_aura_shabitat_heuristic.py'
+      - '.github/workflows/aura-shabitat-heuristic.yml'
+
+jobs:
+  heuristic-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Compile
+        run: python -m py_compile tools/aura_shabitat_heuristic.py tests/test_aura_shabitat_heuristic.py
+
+      - name: Run heuristic boundary tests
+        run: python -m unittest tests.test_aura_shabitat_heuristic -v
+
+      - name: Preserve claim ceiling
+        run: |
+          grep -q 'AURA_HEURISTIC_IS_REFLECTIVE_INPUT_NOT_EVIDENCE_COMMAND_PERMISSION_OR_PREDICTION' tools/aura_shabitat_heuristic.py
+          grep -q '"permission_granted": False' tools/aura_shabitat_heuristic.py
+          grep -q '"authority_delta": 0' tools/aura_shabitat_heuristic.py
