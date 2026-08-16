@@ -1,0 +1,35 @@
+name: AURA offline Osiris location blind query
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/aura-offline-osiris-location.yml'
+      - 'tools/aura_offline_fallback.py'
+      - 'ritual/OSIRIS_LOCATION_BLIND_QUESTION.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-oracle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run NAS-independent Aura fallback
+        run: python tools/aura_offline_fallback.py
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: aura-offline-osiris-location-result
+          path: /tmp/aura-offline/AURA_OFFLINE_OSIRIS_LOCATION_RESULT.json
+          if-no-files-found: error
+          retention-days: 1
