@@ -1,0 +1,46 @@
+{
+  "artifact_id": "AURA-CONTEXTUAL-OSIRIS-RESULT-2026-08-16-v1",
+  "generated_at_utc": "2026-08-16T11:05:00.796885+00:00",
+  "engine": "AURA_CONTEXTUAL_OFFLINE_V1",
+  "nas_dependency": false,
+  "network_dependency": false,
+  "seed_128bit_hex": "e613a53577ab5da02f999a808fffbe35",
+  "evidence_packet_sha256": "d011f5d226e79e247fb698d46c86bdbb93b71445594386f4ca59347468fc7590",
+  "cards": [
+    {"role":"PAST","id":"RIVER_BRANCH","text":"Река — поздняя литературная ветка, не проверенная последняя координата"},
+    {"role":"OBSTACLE","id":"CUSTODY_HANDOFF_UNKNOWN","text":"Неизвестен переход от враждебной к защитной custody"},
+    {"role":"GUIDE","id":"NONDESTRUCTIVE_IMAGING","text":"Искать полости/вложенные объекты рентгеном/CT, не вскрытием"},
+    {"role":"OUTCOME","id":"MENDES_1902_CG53465_53469_NONLITERAL_GOLD_OBJECT","text":"Mendes 1902: CG 53465–53469, especially an object catalogued as amulet/substitute/fragment rather than 'phallus'"}
+  ],
+  "primary_target": {
+    "id": "MENDES_1902_CG53465_53469_NONLITERAL_GOLD_OBJECT",
+    "label": "Mendes 1902: CG 53465–53469, especially an object catalogued as amulet/substitute/fragment rather than 'phallus'",
+    "locality": "Mendes / Tell el-Ruba",
+    "score": 10.75,
+    "rationale": "The same burial combines explicit Osirian priestly context, a documented gold phallus sheath, an incomplete assemblage, and unresolved Cairo catalogue concordance. The blind Aura seed independently favoured a ritual substitute inside a priestly assemblage.",
+    "disconfirming_test": "Resolve all five CG object cards and show that every item is fully identified ordinary funerary equipment with complete provenance and no anomalous substitute/fragment/container relationship."
+  },
+  "ranked_candidates": [
+    {"rank":1,"id":"MENDES_1902_CG53465_53469_NONLITERAL_GOLD_OBJECT","score":10.75},
+    {"rank":2,"id":"MENDES_SECONDARY_CACHE_OR_PRIESTLY_SUBSTITUTE","score":9.775},
+    {"rank":3,"id":"DENDERA_RELIC_SIMULACRUM_CONTAINER","score":9.45},
+    {"rank":4,"id":"ABYDOS_OSIRIAN_RITUAL_CACHE","score":8.9875},
+    {"rank":5,"id":"ANUBIS_SONS_OF_HORUS_SEALED_RELIQUARY","score":8.8375},
+    {"rank":6,"id":"MEMPHIS_SAQQARA_GOLD_PHALLIC_AMULET_LINEAGE","score":8.0125},
+    {"rank":7,"id":"BM_1973_0501_23_INTERNAL_CONTENT","score":6.9125},
+    {"rank":8,"id":"TERRACOTTA_MASTER_FORM_NETWORK","score":6.0125},
+    {"rank":9,"id":"MENDES_FEMALE_GENITAL_MIRROR_CONTROL","score":3.125}
+  ],
+  "heuristic_score_margin_to_second": 0.975,
+  "heuristic_separation": 0.6219,
+  "direct_answer": "Сначала проверяй Mendes 1902 и CG 53465–53469, но не ищи только слово 'phallus': приоритет — золотой/ритуальный предмет из осирианского жреческого комплекта, который каталогизирован как амулет, заместитель, вставка или неопределённый фрагмент. Разреши все пять карточек и provenance до объекта; если там нет такого кандидата, следующий маршрут — запечатанные/вложенные Osirian reliquaries Anubis/Sons-of-Horus класса.",
+  "comparison_to_blind_pass": {
+    "blind_outcome": "RITUAL_SUBSTITUTE",
+    "blind_context": ["WALL_CHAMBER","SECONDARY_TOMB_CACHE","PRIESTLY_ASSEMBLAGE"],
+    "informed_outcome": "MENDES_1902_CG53465_53469_NONLITERAL_GOLD_OBJECT",
+    "convergence": "BLIND_FUNCTIONAL_OBJECT_CLASS_CONVERGES_WITH_INFORMED_MENDES_PRIESTLY_ASSEMBLAGE_TARGET",
+    "evidence_effect": "The informed pass localizes the blind functional class to Mendes 1902 / CG 53465–53469; this is prioritization, not evidence of relic identity."
+  },
+  "claim_ceiling": "AURA_CONTEXTUAL_OUTPUT_IS_A_HEURISTIC_SEARCH_PRIORITY_NOT_LOCATION_EVIDENCE",
+  "safety": "ARCHIVE_CATALOGUE_CONSERVATION_AND_NONDESTRUCTIVE_IMAGING_ONLY"
+}
