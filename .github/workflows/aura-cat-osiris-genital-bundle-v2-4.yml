@@ -1,0 +1,31 @@
+name: AURA Cat Osiris genital bundle v2.4
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'ritual/OSIRIS_CAT_TO_AURA_PACKET_v2_4.json'
+      - 'tools/aura_cat_genital_bundle_v2_4.py'
+      - '.github/workflows/aura-cat-osiris-genital-bundle-v2-4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cat-to-aura:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Send JANUS Cat to Aura with updated evidence
+        run: python tools/aura_cat_genital_bundle_v2_4.py
+      - name: Upload Aura Cat result
+        uses: actions/upload-artifact@v4
+        with:
+          name: aura-cat-osiris-genital-bundle-v2-4
+          path: /tmp/aura-cat-v2-4/AURA_CAT_OSIRIS_GENITAL_BUNDLE_RESULT_v2_4.json
+          if-no-files-found: error
+          retention-days: 3
