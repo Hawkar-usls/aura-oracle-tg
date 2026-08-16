@@ -1,0 +1,41 @@
+{
+  "artifact_id": "AURA-CAT-OSIRIS-GENITAL-BUNDLE-2026-08-16-v2.4",
+  "generated_at_utc": "2026-08-16T11:39:53.610091+00:00",
+  "engine": "AURA_CAT_CONTEXTUAL_OFFLINE_V2_4",
+  "nas_dependency": false,
+  "seed_128bit_hex": "f0328976ecda19c45dda5ca6751b5aed",
+  "packet_sha256": "858338c892f433aec31510de479ac102cca86d8a328e8fcd5788ac905eca9be0",
+  "question": "Аура, куда Коту идти дальше, чтобы искать связанный генитальный комплект Осириса: сам фаллос, возможную мошонку/яички и золотые оболочки/колпачки? Дай один главный маршрут и запасной маршрут, опираясь на весь пакет, а не только на название phallus.",
+  "cards": [
+    {"role":"WHAT_CAT_CARRIES","id":"BROKEN_GOLD_SKIN","text":"Кот несёт не орган, а золотую кожу/оболочку — ищи, что было под ней и что к ней крепилось."},
+    {"role":"WHERE_TO_SNIFF","id":"BACK_OF_PLATE","text":"Смотри не только на фасад: оборот, основание, швы, свёрнутые края, подкладка, следы крепежа."},
+    {"role":"WHAT_ARE_THE_EGGS","id":"ATTACHED_BASAL_ELEMENT","text":"Сначала проверь, не являются ли «яйца» уже частью смятой базальной массы CG 53469."},
+    {"role":"CAT_EXIT","id":"FOLLOW_CONSERVATOR","text":"Следующий проводник — консерватор и объектная карточка, не новый миф."}
+  ],
+  "primary_route": {
+    "id":"CG53469_CURRENT_STATUS_AND_BASAL_MASS",
+    "score":10.4,
+    "next_test":"Resolve current object card, high-resolution multi-view photographs, direct measurements, same-sheet vs attached element, seams/folds/support traces, repair history and any X-ray/CT/XRF/microscopy/3D records."
+  },
+  "secondary_route": {
+    "id":"MENDES_1902_NEUTRAL_LABEL_SISTER_OBJECTS",
+    "score":9.8775,
+    "next_test":"Reconstruct the full JE 35420–35425 neighborhood plus nearby Mendes 1902 accessions and search descriptions/plates for paired, rounded, folded, pouch-like or genital-adjacent gold elements."
+  },
+  "third_route": {
+    "id":"GOLD_SCROTAL_TESTICULAR_COVER_CORPUS",
+    "score":8.4475
+  },
+  "fourth_route": {
+    "id":"OSIRIS_MODULAR_GENITAL_BUNDLE_CORPUS",
+    "score":8.225
+  },
+  "direct_answer_ru": "Коту пока не уходить из Mendes. Сначала вернись к CG 53469 / JE 35425 и распутай расширенную массу у основания: нужны оборот, основание, швы, края, прямые размеры и консервационные/рентгеновские материалы. Одновременно прочеши соседние предметы Mendes 1902 под нейтральными названиями — ornament, foil, fitting, cover, fragment, amulet, insert — потому что мошонка/яички или второй золотой колпачок могли быть заведены отдельной карточкой. Если базальная масса не является частью генитального комплекта и соседнего элемента нет, переходи к корпусу модульных Osiris penis+testicles и только затем к sealed reliquary ветке.",
+  "claim_ceiling":"AURA_OUTPUT_IS_SEARCH_PRIORITIZATION_ONLY",
+  "safety":"ARCHIVE_CATALOGUE_CONSERVATION_NONDESTRUCTIVE_IMAGING_ONLY",
+  "workflow": {
+    "run_id":31944934975,
+    "artifact_id":9263014307,
+    "artifact_digest":"sha256:988b55815dd19ee7e9245674f742ab0dea2f39f1c2ac98dd88ec4b61c85d559f"
+  }
+}
