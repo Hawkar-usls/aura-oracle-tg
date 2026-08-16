@@ -1,0 +1,44 @@
+{
+  "artifact_id": "AURA-OFFLINE-OSIRIS-LOCATION-BLIND-RESULT-2026-08-16-v1",
+  "generated_at_utc": "2026-08-16T10:56:55.166638+00:00",
+  "engine": {
+    "mode": "AURA_OFFLINE_FALLBACK_V1",
+    "nas_required": false,
+    "network_required": false,
+    "selection": "Python random.Random seeded from os.urandom(128-bit)",
+    "seed_hex": "1d1e76ed1a7d4a460d079127e1684bd7",
+    "deck_size": 12,
+    "draw_without_replacement": 4
+  },
+  "question_artifact": "ritual/OSIRIS_LOCATION_BLIND_QUESTION.json",
+  "question_sha256": "fd1b0407422401214373ec02f28e9e1900ed6ec92a375afa1053abc705a3e725",
+  "cards": [
+    {
+      "role": "ПРОШЛОЕ",
+      "id": "WALL_CHAMBER",
+      "emoji": "🧱",
+      "label": "Ниша в стене"
+    },
+    {
+      "role": "ПРЕГРАДА",
+      "id": "SECONDARY_TOMB_CACHE",
+      "emoji": "⚱️",
+      "label": "Вторичный тайник"
+    },
+    {
+      "role": "СОВЕТ",
+      "id": "PRIESTLY_ASSEMBLAGE",
+      "emoji": "📿",
+      "label": "Жреческий комплект"
+    },
+    {
+      "role": "ИТОГ",
+      "id": "RITUAL_SUBSTITUTE",
+      "emoji": "🪙",
+      "label": "Ритуальный заместитель"
+    }
+  ],
+  "answer": "Сначала проверяй предмет, который каталогизирован как ритуальный заместитель, амулет или символ, а не как анатомическая деталь: искомое могло сохраниться под функциональным, а не буквальным названием.",
+  "answer_class": "RITUAL_SUBSTITUTE",
+  "claim_ceiling": "SYMBOLIC_BLIND_SEARCH_SEED_NOT_PHYSICAL_LOCATION_EVIDENCE"
+}
