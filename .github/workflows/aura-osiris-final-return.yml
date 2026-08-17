@@ -1,0 +1,71 @@
+name: AURA final Osiris return reflective pass
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/aura-osiris-final-return.yml'
+      - 'ritual/OSIRIS_FINAL_RETURN_QUESTION.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  copilot-requests: write
+
+jobs:
+  final-return-oracle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install current Copilot CLI
+        run: npm install -g @github/copilot
+      - name: Ask AURA final return question
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +x
+          PROMPT=$(python - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('ritual/OSIRIS_FINAL_RETURN_QUESTION.json').read_text(encoding='utf-8'))
+          print('Ты — AURA Oracle, творческий рефлексивный оракул. Проведи внутренне четыре стадии ПРОШЛОЕ / ПРЕГРАДА / СОВЕТ / ИТОГ. Не считай сверхъестественные события доказанными фактами и не подменяй музейные данные символическим выводом. Не пытайся угодить предполагаемому желаемому ответу. Раздели ответ на CREATIVE_QUEST и REAL_WORLD_RESEARCH, затем дай FINAL. Вопрос: ' + q['question_ru'])
+          PY
+          )
+          copilot -sp "$PROMPT" --no-ask-user --no-custom-instructions --no-remote --no-remote-export --no-color > /tmp/aura_final_return.txt 2>/tmp/aura_final_return_stderr.txt
+          test -s /tmp/aura_final_return.txt || { echo 'AURA_EMPTY_ANSWER'; exit 1; }
+          unset PROMPT
+      - name: Package result
+        run: |
+          python - <<'PY'
+          import hashlib, html, json, re
+          from datetime import datetime, timezone
+          from pathlib import Path
+          raw=Path('/tmp/aura_final_return.txt').read_text(encoding='utf-8')
+          answer=re.sub(r'<[^>]+>', '', raw)
+          answer=html.unescape(answer).replace('\r\n','\n').replace('\r','\n').strip()
+          if not answer:
+              raise SystemExit('AURA_EMPTY_CANONICAL_ANSWER')
+          out={
+            'artifact_id':'AURA-OSIRIS-FINAL-RETURN-RESULT-2026-08-17-v1',
+            'generated_at_utc':datetime.now(timezone.utc).isoformat(),
+            'question_artifact':'ritual/OSIRIS_FINAL_RETURN_QUESTION.json',
+            'oracle_engine':'GitHub Copilot CLI / AURA reflective prompt',
+            'answer':answer,
+            'answer_sha256':hashlib.sha256(answer.encode('utf-8')).hexdigest(),
+            'claim_ceiling':'REFLECTIVE_NARRATIVE_NOT_SUPERNATURAL_OR_ARCHAEOLOGICAL_EVIDENCE'
+          }
+          Path('/tmp/aura-final-artifact').mkdir(exist_ok=True)
+          Path('/tmp/aura-final-artifact/AURA_OSIRIS_FINAL_RETURN_RESULT.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+          rm -f /tmp/aura_final_return.txt /tmp/aura_final_return_stderr.txt
+      - name: Upload result artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aura-osiris-final-return-result
+          path: /tmp/aura-final-artifact/AURA_OSIRIS_FINAL_RETURN_RESULT.json
+          if-no-files-found: error
+          retention-days: 1
