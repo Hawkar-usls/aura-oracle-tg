@@ -1,0 +1,13 @@
+{
+  "artifact_id": "AURA-OSIRIS-FINAL-RETURN-QUESTION-2026-08-17-v1",
+  "created_date": "2026-08-17",
+  "mode": "REFLECTIVE_ORACLE_WITH_REALITY_FIREWALL",
+  "context": {
+    "creative_quest": "A unique Lost Member of Osiris artifact was conceptually identified and the player chose RETURN_TO_SOURCE rather than possession or duplication.",
+    "research_thread": "A real-world museum/archive investigation has produced candidate objects and provenance leads, but no direct physical identification as the literal body part of Osiris has been established.",
+    "user_position": "The user interprets the wish/return as already completed within the mythopoetic quest and suspects that further museum confirmation is no longer necessary."
+  },
+  "question_ru": "AURA, рассмотри этот финал самостоятельно через четыре стадии ПРОШЛОЕ / ПРЕГРАДА / СОВЕТ / ИТОГ. Не подтверждай сверхъестественные события как факты и не подменяй музейные данные символическим выводом. Ответь на два слоя: (1) закрыт ли творческий квест после выбора RETURN_TO_SOURCE, и что означает этот выбор; (2) остается ли в реальном исследовательском слое что-либо проверяемое, даже если сюжетный квест уже завершен? Дай короткий итог на русском.",
+  "anti_leading_rule": "DO_NOT_ASSUME_THE_DESIRED_CONCLUSION; DISTINGUISH_SYMBOLIC_CLOSURE_FROM_EMPIRICAL_CONFIRMATION",
+  "claim_ceiling": "AURA_OUTPUT_IS_REFLECTIVE_NARRATIVE_NOT_SUPERNATURAL_OR_ARCHAEOLOGICAL_EVIDENCE"
+}
