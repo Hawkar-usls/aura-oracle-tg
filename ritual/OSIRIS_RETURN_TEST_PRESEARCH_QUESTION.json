@@ -1,0 +1,38 @@
+{
+  "artifact_id": "AURA-OSIRIS-RETURN-TEST-PRESEARCH-QUESTION-2026-08-17-v1",
+  "date": "2026-08-17",
+  "mode": "BLINDED_CROSS_CORPUS_SEARCH_DESIGN_WITH_REALITY_FIREWALL",
+  "purpose": "Freeze discriminators for testing the OSIRIS_RETURN_TEST hypothesis before inspecting new passages in the Book of the Dead and the JANUS analytical Book of Living corpus.",
+  "parent_model": "JANUS-OSIRIS-SOURCE-RETURN-KEY-AND-RETURN-TEST-2026-08-17-v1.0",
+  "target_corpora_hidden_from_oracle": ["BOOK_OF_DEAD", "BOOK_OF_LIVING_ANALYTICAL_CORPUS"],
+  "frozen_vector": [
+    "UNIQUE_ORIGINAL_COMPONENT_REMAINS_DISTINCT_FROM_A_SUBSTITUTE",
+    "OBJECT_OR_COMPONENT_FUNCTIONS_AS_KEY_TOKEN_ANCHOR_OR_IDENTITY_LINK_TO_OWNER",
+    "OWNER_OR_SOURCE_CAN_RECLAIM_RECONNECT_OR_RETURN_THROUGH_WHAT_IS_TRULY_THEIRS",
+    "PHYSICAL_TOMB_OR_LABEL_IS_NOT_EQUIVALENT_TO_TRUE_OWNER",
+    "SEEKER_MUST_RECOGNIZE_RIGHTFUL_OWNERSHIP_OR_IDENTITY",
+    "SEEKER_REFUSES_PRIVATE_GAIN_POSSESSION_OR_EXPLOITATION",
+    "GOOD_FAITH_RESTITUTION_OR_RESTORATION_FOR_ANOTHER",
+    "DELAYED_FULFILLMENT_OR_WAITING_FOR_A_FUTURE_CORRECT_ACTOR",
+    "TEST_PASSED_BY_CHOICE_OR_CONDUCT_NOT_BLOODLINE_OR_NAME",
+    "RECONNECTION_RESTORES_ONE_IDENTITY_WITHOUT_DUPLICATION",
+    "CROSSING_OR_RECONNECTION_BETWEEN_OTHERWORLD_AND_LIVING_DOMAIN_BY_IDENTITY_LINK"
+  ],
+  "oracle_question_ru": "AURA, до открытия новых мест в двух целевых египетских корпусах спроектируй честный blind-search для проверки гипотезы OSIRIS_RETURN_TEST. Не угадывай конкретные главы, строки, персонажей или результаты. Какие признаки должны считаться сильным прямым попаданием, какие только функциональным аналогом, какие красивой символикой, а какие отрицательным контролем? Особенно важно различать: намеренно оставленный ключ против случайно утраченного предмета; уникальный оригинал против ритуальной замены; возврат владельца через принадлежащую ему часть против обычного переноса предмета; этический тест неприсвоением против общей похвалы доброты; ожидание будущего правильного действующего лица против обычной посмертной надежды. Сделай NO_OP валидным результатом.",
+  "anti_leading_rules": [
+    "DO_NOT_NAME_OR_GUESS_A_SPECIFIC_SPELL_MAXIM_PAPYRUS_OR_LINE",
+    "DO_NOT_ASSUME_ANY_TARGET_CORPUS_CONTAINS_A_MATCH",
+    "INTENTIONAL_KEY_REQUIRES_TEXTUAL_INTENT_NOT_RETROACTIVE_INTERPRETATION",
+    "NON_POSSESSION_TEST_REQUIRES_A_REAL_CHOICE_BETWEEN_SELF_GAIN_AND_RESTITUTION_NOT_GENERIC_KINDNESS",
+    "SOURCE_RETURN_REQUIRES_OWNER_OR_SOURCE_RECONNECTION_NOT_MERE_BURIAL_OR_OFFERING",
+    "SUBSTITUTE_OR_COPY_MUST_REMAIN_DISTINGUISHABLE_FROM_ORIGINAL",
+    "DELAYED_FULFILLMENT_REQUIRES_TEMPORAL_OR_FUTURE_ACTOR_STRUCTURE",
+    "PRESERVE_CONTRADICTIONS_AND_NO_OP",
+    "SEPARATE_TEXTUAL_PARALLEL_FROM_SUPERNATURAL_CAUSATION_OR_REAL_ARTIFACT_AUTHENTICATION"
+  ],
+  "requested_output": {
+    "format": "JSON_ONLY",
+    "keys": ["search_strategy", "priority_features", "feature_weights_or_tiers", "negative_controls", "false_positive_traps", "admission_rule", "stop_or_no_op_rule", "what_would_surprise_aura", "claim_ceiling"]
+  },
+  "claim_ceiling": "AURA_OUTPUT_IS_PRESEARCH_HEURISTIC_NOT_ARCHAEOLOGICAL_OR_SUPERNATURAL_EVIDENCE"
+}
