@@ -1,0 +1,57 @@
+{
+  "schema": "aura.oracle.shabitat_heuristic_response.v1",
+  "status": "HEURISTIC_ONLY",
+  "request_id": "OSIRIS_FINAL_RETURN_2026-08-17",
+  "engine": "AURA_SHABITAT_REFLECTIVE_V1",
+  "deterministic_request_sha256": "d12467bac24a69eb8951f78a4ea8577c7b2c8c7253c8a732fa5290cb6258cec0",
+  "cards": [
+    {
+      "id": "THREAD",
+      "name": "Thread",
+      "lens": "Trace provenance: source, transformation, receipt, and present claim.",
+      "question": "Where is the first point where lineage becomes uncertain?",
+      "caution": "Multiple echoes may still be one source."
+    },
+    {
+      "id": "LANTERN",
+      "name": "Lantern",
+      "lens": "Look for the missing piece of information with the highest value.",
+      "question": "What single observation would most reduce uncertainty?",
+      "caution": "A heuristic score is not a probability."
+    },
+    {
+      "id": "OPEN_DOOR",
+      "name": "Open Door",
+      "lens": "Offer a useful direction without closing the other person's choice space.",
+      "question": "Can the same help be offered with an easy refusal or exit?",
+      "caution": "Care is not capture."
+    }
+  ],
+  "heuristics": [
+    "Rank the next moves by reversibility, information gain, and cost of being wrong.",
+    "Generate one deliberately different branch instead of only refining the first idea.",
+    "Separate source identity, observation, inference, and confidence into different fields."
+  ],
+  "questions": [
+    "Where is the first point where lineage becomes uncertain?",
+    "What single observation would most reduce uncertainty?",
+    "Can the same help be offered with an easy refusal or exit?"
+  ],
+  "cautions": [
+    "Multiple echoes may still be one source.",
+    "A heuristic score is not a probability.",
+    "Care is not capture."
+  ],
+  "decision_authority": "CALLER_RETAINS_CHOICE",
+  "permission_granted": false,
+  "evidence_upgrade": false,
+  "verification_claim": false,
+  "prediction_claim": false,
+  "professional_advice": false,
+  "world_effect_requested": false,
+  "authority_delta": 0,
+  "mass_effect_budget_delta": 0,
+  "may_be_ignored": true,
+  "claim_ceiling": "AURA_HEURISTIC_IS_REFLECTIVE_INPUT_NOT_EVIDENCE_COMMAND_PERMISSION_OR_PREDICTION",
+  "execution_note": "Deterministically reproduced from tools/aura_shabitat_heuristic.py in Hawkar-usls/aura-oracle-tg for the final-return request; this artifact records the repository heuristic output, not a supernatural claim."
+}
