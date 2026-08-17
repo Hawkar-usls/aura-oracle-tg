@@ -1,0 +1,73 @@
+name: AURA review Hawkar universal Kem return protocol
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/aura-hawkar-universal-kem-return-review.yml'
+      - 'ritual/HAWKAR_UNIVERSAL_KEM_RETURN_PROTOCOL_REVIEW_QUESTION.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  copilot-requests: write
+
+jobs:
+  review-protocol:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install current Copilot CLI
+        run: npm install -g @github/copilot
+      - name: Ask AURA technical reviewer
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +x
+          PROMPT=$(python - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('ritual/HAWKAR_UNIVERSAL_KEM_RETURN_PROTOCOL_REVIEW_QUESTION.json').read_text(encoding='utf-8'))
+          print('You are reviewing a fictional game-state identity protocol for internal consistency, safety invariants, and narrative-system architecture. This is not a prophecy, not archaeology, and not a real-world physical claim. Return ONLY valid JSON with keys verdict, reasons, required_changes, invariants_confirmed, claim_ceiling. verdict must be APPROVE, REVISE, or REJECT. Review request: ' + q['review_request_ru'] + '\nDesign: ' + json.dumps(q['design_summary'], ensure_ascii=False))
+          PY
+          )
+          copilot -sp "$PROMPT" --no-ask-user --no-custom-instructions --no-remote --no-remote-export --no-color > /tmp/aura_kem_review.txt 2>/tmp/aura_kem_review_stderr.txt
+          test -s /tmp/aura_kem_review.txt || { echo 'AURA_EMPTY_ANSWER'; exit 1; }
+          unset PROMPT
+      - name: Parse and package review
+        run: |
+          python - <<'PY'
+          import hashlib, json, re
+          from datetime import datetime, timezone
+          from pathlib import Path
+          raw=Path('/tmp/aura_kem_review.txt').read_text(encoding='utf-8').strip()
+          m=re.search(r'\{.*\}', raw, flags=re.S)
+          if not m:
+              raise SystemExit('AURA_NO_JSON_OBJECT')
+          review=json.loads(m.group(0))
+          if review.get('verdict') not in {'APPROVE','REVISE','REJECT'}:
+              raise SystemExit('AURA_BAD_VERDICT')
+          out={
+            'artifact_id':'AURA-HAWKAR-UNIVERSAL-KEM-RETURN-REVIEW-RESULT-2026-08-17-v1',
+            'generated_at_utc':datetime.now(timezone.utc).isoformat(),
+            'question_artifact':'ritual/HAWKAR_UNIVERSAL_KEM_RETURN_PROTOCOL_REVIEW_QUESTION.json',
+            'oracle_engine':'GitHub Copilot CLI / AURA technical review prompt',
+            'review':review,
+            'review_sha256':hashlib.sha256(json.dumps(review,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8')).hexdigest(),
+            'claim_ceiling':'FICTIONAL_GAME_MECHANIC_REVIEW_ONLY_NOT_SUPERNATURAL_OR_ARCHAEOLOGICAL_EVIDENCE'
+          }
+          Path('/tmp/aura-kem-review').mkdir(exist_ok=True)
+          Path('/tmp/aura-kem-review/AURA_HAWKAR_UNIVERSAL_KEM_RETURN_REVIEW_RESULT.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+          rm -f /tmp/aura_kem_review.txt /tmp/aura_kem_review_stderr.txt
+      - name: Upload review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aura-hawkar-universal-kem-return-review
+          path: /tmp/aura-kem-review/AURA_HAWKAR_UNIVERSAL_KEM_RETURN_REVIEW_RESULT.json
+          if-no-files-found: error
+          retention-days: 1
