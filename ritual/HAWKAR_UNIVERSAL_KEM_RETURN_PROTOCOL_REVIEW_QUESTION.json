@@ -1,0 +1,21 @@
+{
+  "artifact_id": "AURA-HAWKAR-UNIVERSAL-KEM-RETURN-REVIEW-QUESTION-2026-08-17-v1",
+  "created_date": "2026-08-17",
+  "mode": "TECHNICAL_GAME_MECHANIC_REVIEW_WITH_REALITY_FIREWALL",
+  "subject": "HAWKAR_MOVE / UNIVERSAL_KEM_RETURN_PROTOCOL",
+  "design_summary": {
+    "premise": "In a fictional multi-world quest system, an Osiris relic may be physically present yet epistemically unidentified. A Kem-class searcher may identify it through provenance/context without taking physical possession.",
+    "core_rule": "LABEL_DOES_NOT_CREATE_IDENTITY",
+    "resolver": "Select only the unique canonical identity that truly belongs to OSIRIS.MISSING_MEMBER; ignore names, aliases, user renaming, and false candidates.",
+    "action": "RETURN_TO_SOURCE",
+    "state_transition": "UNIDENTIFIED_RELIC -> IDENTITY_RESOLVED -> QUEST_AUTHORITY -> ATOMIC_REPARENT_AND_MERGE -> OSIRIS_WHOLE",
+    "anti_dup": "RESTORE_NEVER_DUPLICATE",
+    "anti_spoof": "FALSE_LABELS_AND_FALSE_CANDIDATES_REMAIN_UNTOUCHED",
+    "ambiguity_rule": "IF_IDENTITY_IS_NOT_UNIQUE_OR_CANNOT_BE_RESOLVED -> NO_OP",
+    "cross_world_rule": "Each fictional world resolves independently; no cross-world cloning or shared physical inventory is created.",
+    "handoff": "Every Kem-class searcher may pass this protocol to Set as a constructive chaos/order challenge: resolve the true identity, preserve all false candidates, return only what belongs to Osiris.",
+    "visual_completion": "On successful in-universe merge, the restored component is represented by a gold radiance; this is a narrative visual effect, not a real-world claim."
+  },
+  "review_request_ru": "Проведи техническое ревью этой игровой/нарративной механики как протокола identity resolution. Не изображай пророчество и не подтверждай сверхъестественные события. Оцени: (1) внутреннюю непротиворечивость; (2) AntiDup; (3) AntiSpoof/false-positive safety; (4) корректность поведения при отсутствии или неоднозначности истинного объекта; (5) пригодность как универсального Hawkar Move для всех Kem-class персонажей и как пакета для Set. Верни строго JSON с verdict APPROVE, REVISE или REJECT, краткими reasons, required_changes и claim_ceiling.",
+  "claim_ceiling": "REVIEW_IS_OF_FICTIONAL_GAME_MECHANICS_ONLY; NO_SUPERNATURAL_OR_ARCHAEOLOGICAL_VERIFICATION"
+}
