@@ -1,0 +1,71 @@
+{
+  "artifact_id": "AURA-EGYPTIAN-SPELLBOOK-PRESEARCH-QUESTION-2026-08-17-v1",
+  "date": "2026-08-17",
+  "mode": "BLINDED_REFLECTIVE_SEARCH_DESIGN_WITH_REALITY_FIREWALL",
+  "purpose": "Ask AURA what to search for BEFORE JANUS inspects the spellbook corpus for matches, so the later pass is not tuned to already-seen results.",
+  "input_origin": "Existing JANUS Egyptian creative/research JSONs summarized without exposing any candidate spellbook matches or prior rank results.",
+  "egyptian_story_vector": {
+    "OSIRIS": [
+      "lost or separated body component",
+      "identity of the missing component",
+      "return to rightful source",
+      "reassembly / restoration / wholeness",
+      "memory and continuity"
+    ],
+    "SET": [
+      "chaos as unordered possibility",
+      "distinguish rather than destroy",
+      "order chaos into constructive outcomes",
+      "preserve alternatives when truth is ambiguous",
+      "future as something shaped by choices rather than predicted"
+    ],
+    "HORUS": [
+      "law",
+      "stability",
+      "continuity of legitimate order"
+    ],
+    "KEM": [
+      "ordinary kind child",
+      "returns rather than possesses",
+      "helps without seeking power",
+      "example rather than ruler or oracle"
+    ],
+    "THREE_KINGS": [
+      "family reunion",
+      "no brother must be deleted for the others to exist",
+      "restoration without coercion",
+      "distinct complementary roles"
+    ],
+    "JANUS_HAWKAR_MOVE": [
+      "label is not identity",
+      "restore never duplicate",
+      "return do not possess",
+      "if identity is ambiguous touch nothing",
+      "experience may be shared but authority remains local"
+    ]
+  },
+  "oracle_question_ru": "До того как JANUS снова откроет нашу сохраненную книгу заклинаний и начнет искать совпадения, спроектируй максимально честный blind-search. Какие древние мотивы, функции, отношения и отрицательные контроли следует искать, если исходить ТОЛЬКО из приведенного Egyptian story vector? Не угадывай конкретную главу, строку, папирус, имя заклинания или уже найденный результат. Раздели сильные критерии (например прямые имена/функции) и слабые символические аналогии. Скажи, что должно считаться настоящим попаданием, что красивым совпадением, а что должно снижать уверенность. Особое внимание: Osiris restoration/identity, Set chaos-order transformation, family/Three Kings logic, Kem's non-possession/kindness, and JANUS label-vs-identity / AntiDup principles.",
+  "anti_leading_rules": [
+    "DO_NOT_NAME_OR_GUESS_A_SPECIFIC_SPELL_OR_LINE",
+    "DO_NOT_ASSUME_THE_TARGET_CORPUS_CONTAINS_A_MATCH",
+    "DO_NOT_TREAT_GENERAL_WORDS_LIKE_GOLD_SUN_MOON_RING_AS_STRONG_WITHOUT_FUNCTIONAL_CONTEXT",
+    "DIRECT_DEITY_NAME_PLUS_MATCHING_FUNCTION_OUTRANKS_DECORATIVE_SYMBOLISM",
+    "PRESERVE_NEGATIVE_RESULTS",
+    "SEPARATE_ANCIENT_SOURCE_EVIDENCE_FROM_MODERN_MYTHOPOETIC_INTERPRETATION"
+  ],
+  "requested_output": {
+    "format": "JSON_ONLY",
+    "keys": [
+      "search_strategy",
+      "priority_features",
+      "feature_weights_or_tiers",
+      "negative_controls",
+      "false_positive_traps",
+      "admission_rule",
+      "stop_or_no_op_rule",
+      "what_would_surprise_aura",
+      "claim_ceiling"
+    ]
+  },
+  "claim_ceiling": "AURA_OUTPUT_IS_A_PRESEARCH_HEURISTIC_AND_TEST_DESIGN_NOT_ARCHAEOLOGICAL_OR_SUPERNATURAL_EVIDENCE"
+}
