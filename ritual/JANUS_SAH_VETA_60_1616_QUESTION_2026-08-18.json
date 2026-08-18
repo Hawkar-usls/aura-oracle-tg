@@ -1,0 +1,35 @@
+{
+  "artifact_id": "AURA-JANUS-SAH-VETA-QUERY-2026-08-18-v1",
+  "mode": "AURA_CONTEXTUAL_OFFLINE_INPUT",
+  "source": {
+    "registry_repo": "Hawkar-usls/janus-meta-registry",
+    "artifact": "data/JANUS-SAH-REVERSE-TRANCEPTION-GENERATIVE-REBUS-2026-08-18-v1.1.json",
+    "commit": "8a25024384d11934daa8e9f6d8df2219b1c41db7"
+  },
+  "results_to_aura": {
+    "base_operator": "ORIGIN -> ENCODE -> TRANSFER -> REGENERATE -> ORIGIN_PRIME",
+    "compact_rebus": "FATHER -> SEED -> GATE -> SON -> FATHER' ↩︎",
+    "osirian_overlay": "OSIRIS_0 -> SEED -> FEMALE_GATE -> HORUS -> OSIRIS_1 ↩︎",
+    "surrogate_restoration_hypothesis": "FUNCTIONAL_CONTINUITY_CAN_SURVIVE_WHILE_IDENTITY_CONTINUITY_IS_LOST",
+    "canonical_phrase": "THE SON RETURNS ONLY THE FATHER-STATE THAT SURVIVED THE SUBSTITUTION.",
+    "veta_gate": {
+      "symbol": "↬",
+      "function": "Identity-Erasure Boundary",
+      "formal_effect": "distinct-provenance residuals -> HEAP_CLASS; reverse recovery becomes non-unique without an external provenance anchor"
+    },
+    "original_component_anchor": "candidate only; not historical fact without independent provenance"
+  },
+  "uninterpreted_markers": {
+    "number": 60,
+    "time_string": "16:16",
+    "instruction": "Treat these as opaque markers first. Do not assign numerology, prophecy, or historical meaning unless the current Aura heuristic itself yields a concrete testable mapping."
+  },
+  "question": "Given the Veta/identity-loss model plus opaque markers 60 and 16:16, what should we test next? Prefer a reversible, falsifiable identity/provenance test over symbolic strengthening.",
+  "hard_boundaries": [
+    "AURA_OUTPUT_IS_REFLECTIVE_HEURISTIC_NOT_PROPHECY",
+    "NO_HISTORICAL_UPGRADE_FROM_SYMBOLIC_MATCH",
+    "NO_NUMEROLOGY_AS_EVIDENCE",
+    "NO_LITERAL_RELIC_CLAIM_WITHOUT_PROVENANCE",
+    "PREFER_REVERSIBLE_FALSIFIABLE_NEXT_STEP"
+  ]
+}
