@@ -1,0 +1,72 @@
+{
+  "artifact_id": "AURA-PT477-V2-DIAGNOSTIC-QUESTION-2026-08-18-v1",
+  "question_ru": "Где именно мы ошиблись в PT477-v2 Apep / Book of Two Ways route tombstone, если механизм резко снизил HAWKING_ESCAPE и немного снизил charged work, но нарушил заранее замороженную траекторию состояний и сертифицированных absorption? Что в нашей технической трактовке ритуала/маршрута надо изменить, а что сохранить неизменным?",
+  "context": {
+    "parent_result": "PT477-v1 rejected: extra scan, no pruning",
+    "candidate_operator": "PT477_V2_APEP_TWO_WAYS_ROUTE_TOMBSTONE",
+    "historical_prompt_boundary": "Apep ritual and Book of Two Ways are heuristic operator prompts only, not algorithmic evidence",
+    "baseline": {
+      "residual_states": 2822,
+      "bytewise_distinct_absorptions": 602,
+      "polarity_flip_absorptions": 450,
+      "event_horizon_collisions": 839,
+      "hawking_escape_count": 2292,
+      "canonical_edge_visits": 3488298,
+      "resolution_attempts": 626489,
+      "resolution_additions": 93638,
+      "charged_work_proxy": 4114787
+    },
+    "candidate": {
+      "residual_states": 2823,
+      "bytewise_distinct_absorptions": 603,
+      "polarity_flip_absorptions": 452,
+      "event_horizon_collisions": 841,
+      "hawking_escape_count": 1174,
+      "canonical_edge_visits": 3477926,
+      "resolution_attempts": 626639,
+      "resolution_additions": 93661,
+      "charged_work_proxy": 4113983,
+      "route_rescan_edge_visits": 0,
+      "route_token_updates": 5368,
+      "route_tombstone_checks": 2955,
+      "route_tombstone_hits": 1124,
+      "route_tombstone_inserts": 1095,
+      "event_horizon_entries_avoided": 5
+    },
+    "gates": {
+      "same_boolean_answers": true,
+      "same_cap_status": true,
+      "same_residual_states": false,
+      "same_bytewise_distinct_absorptions": false,
+      "same_polarity_flip_absorptions": false,
+      "hawking_escapes_not_increased": true,
+      "canonical_edge_visits_strictly_lower": true,
+      "charged_work_proxy_strictly_lower": true,
+      "route_tombstone_hits_positive": true,
+      "no_extra_residual_scan": true
+    },
+    "frozen_terminal": "STOP_AT_PT477_V2_NO_IMPROVEMENT",
+    "pt222": "NOT_ENTERED"
+  },
+  "candidate_error_classes_predeclared": [
+    "ROUTE_IDENTITY_TOO_COARSE",
+    "TOMBSTONE_SCOPE_TOO_GLOBAL",
+    "TOMBSTONE_LIFETIME_TOO_LONG",
+    "NEGATIVE_CERTIFICATE_BOUND_TO_WRONG_CONTEXT",
+    "BIND_EVENT_TOO_EARLY_OR_TOO_LATE",
+    "BOOK_OF_TWO_WAYS_DIRECTIONALITY_MISSING",
+    "APEP_NAME_OR_FORM_IDENTITY_MISSING",
+    "TOMBSTONE_SHOULD_ATTACH_TO_EDGE_NOT_STATE_CLASS",
+    "DO_NOT_CHANGE_BIND_CUT_BURN_MECHANIC"
+  ],
+  "anti_leading_rules": [
+    "Do not assume the user's preferred diagnosis is correct.",
+    "Treat all predeclared error classes as candidates, not facts.",
+    "Do not reinterpret the failed frozen run into a pass.",
+    "Preserve STOP_AT_PT477_V2_NO_IMPROVEMENT.",
+    "Prefer the smallest change that explains the exact observed divergence.",
+    "Do not recommend resonance/frequency tuning.",
+    "Do not claim ancient texts encode complexity theory or physics.",
+    "P_VS_NP remains OPEN."
+  ]
+}
