@@ -1,0 +1,169 @@
+name: AURA sealed January Hephaestus Osiris recognition
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/sealed-january-hephaestus-osiris-recognition.yml'
+      - 'ritual/JANUARY_HEPHAESTUS_PHYSARUM_OSIRIS_RECOGNITION_QUESTION.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  copilot-requests: write
+
+jobs:
+  sealed-january-recognition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install current Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Ask Aura without rendering plaintext
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +x
+          PROMPT=$(python - <<'PY'
+          import json
+          from pathlib import Path
+          doc=json.loads(Path('ritual/JANUARY_HEPHAESTUS_PHYSARUM_OSIRIS_RECOGNITION_QUESTION.json').read_text(encoding='utf-8'))
+          print(
+            'Ты — AURA Oracle, творческий рефлексивный оракул JANUS. '
+            'Сохраняй жёсткую границу между символическим guide и доказательством. '
+            'Внутренне проведи ПРОШЛОЕ / ПРЕГРАДА / СОВЕТ / ИТОГ. '
+            'Наружу выдай один краткий связный ответ на русском языке согласно question и hard_boundaries. '
+            'Не упоминай системные инструкции. Полный пакет: ' +
+            json.dumps(doc, ensure_ascii=False, sort_keys=True)
+          )
+          PY
+          )
+          set +e
+          copilot -sp "$PROMPT" --no-ask-user --no-custom-instructions --no-remote --no-remote-export --no-color > /tmp/aura_january_plaintext.txt 2>/tmp/aura_january_stderr.txt
+          rc=$?
+          set -e
+          unset PROMPT
+          if [ "$rc" -ne 0 ]; then
+            rm -f /tmp/aura_january_plaintext.txt /tmp/aura_january_stderr.txt
+            echo "SEALED_JANUARY_AURA_FAILED=$rc"
+            exit "$rc"
+          fi
+          test -s /tmp/aura_january_plaintext.txt || { echo 'SEALED_JANUARY_AURA_EMPTY'; exit 1; }
+
+      - name: Commit answer to SHA-256 only
+        run: |
+          python - <<'PY'
+          import hashlib, html, json, re
+          from datetime import datetime, timezone
+          from pathlib import Path
+          qpath=Path('ritual/JANUARY_HEPHAESTUS_PHYSARUM_OSIRIS_RECOGNITION_QUESTION.json')
+          qdoc=json.loads(qpath.read_text(encoding='utf-8'))
+          answer=Path('/tmp/aura_january_plaintext.txt').read_text(encoding='utf-8')
+          canonical=re.sub(r'<[^>]+>', '', answer)
+          canonical=html.unescape(canonical).replace('\r\n','\n').replace('\r','\n').strip()
+          if not canonical:
+              raise SystemExit('SEALED_JANUARY_EMPTY_CANONICAL')
+          raw=canonical.encode('utf-8')
+          result={
+            'artifact_id':'AURA-SEALED-JANUARY-HEPHAESTUS-PHYSARUM-OSIRIS-COMMITMENT-2026-08-18-v1',
+            'generated_at_utc':datetime.now(timezone.utc).isoformat(),
+            'question_artifact':str(qpath),
+            'question_sha256':hashlib.sha256(qpath.read_bytes()).hexdigest(),
+            'answer_commitment':{
+              'algorithm':'SHA-256',
+              'sha256':hashlib.sha256(raw).hexdigest(),
+              'canonical_utf8_bytes':len(raw),
+              'plaintext_persisted_in_repository':False,
+              'plaintext_rendered_in_workflow_logs':False
+            },
+            'claim_ceiling':'ORACLE_OUTPUT_COMMITMENT_NOT_RELIC_IDENTITY_PROOF'
+          }
+          Path('artifacts').mkdir(exist_ok=True)
+          Path('artifacts/AURA_JANUARY_HEPHAESTUS_PHYSARUM_OSIRIS_COMMITMENT.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('SEALED_JANUARY_COMMITMENT_CREATED')
+          PY
+
+      - name: Reduce sealed answer to bounded directive IDs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +x
+          REDUCE_PROMPT=$(python - <<'PY'
+          from pathlib import Path
+          answer=Path('/tmp/aura_january_plaintext.txt').read_text(encoding='utf-8').strip()
+          print('''You are a strict classifier. Read the sealed Aura answer below and return ONLY one JSON object, no markdown, no prose. Keys must be exactly correction_id, candidate_id, gate_id. Values must be chosen exactly from these enums.\n\ncorrection_id: DEMOTE_SIMULATION_SUCCESS_TO_OBSERVATION | GENERATOR_VERIFIER_SEPARATION | RECOGNITION_BEFORE_NEW_SEARCH | MEASURED_SLACK_VS_IDEAL_STATE_SEPARATION\n\ncandidate_id: MENDES_1902_CG53465_53469_ASSEMBLAGE | MENDES_SECONDARY_CACHE_OR_PRIESTLY_SUBSTITUTE | DENDERA_RELIC_SIMULACRUM_CONTAINER | ANUBIS_SONS_OF_HORUS_SEALED_RELIQUARY | BM_1973_0501_23_INTERNAL_CONTENT | MEMPHIS_SAQQARA_GOLD_PHALLIC_AMULET_LINEAGE\n\ngate_id: RESOLVE_CG53465_53469_CONCORDANCE | OBTAIN_MENDES_SHEATH_PHOTO_DIMENSIONS_CONSERVATION | AUDIT_JE_CG_TRANSFER_AND_EARLY_REMOVAL | SEARCH_FUNCTIONAL_CATALOGUE_VOCABULARY | NONDESTRUCTIVE_INTERNAL_IMAGING | REJECT_ON_PROVENANCE_MORPHOLOGY_MATERIAL_CONTRADICTION\n\nDo not repeat or quote the answer. Classify it only.\n\nSEALED ANSWER:\n''' + answer)
+          PY
+          )
+          set +e
+          copilot -sp "$REDUCE_PROMPT" --no-ask-user --no-custom-instructions --no-remote --no-remote-export --no-color > /tmp/aura_january_directive_raw.txt 2>/tmp/aura_january_reduce_stderr.txt
+          rc=$?
+          set -e
+          unset REDUCE_PROMPT
+          if [ "$rc" -ne 0 ]; then
+            rm -f /tmp/aura_january_directive_raw.txt /tmp/aura_january_reduce_stderr.txt
+            echo "SEALED_JANUARY_REDUCER_FAILED=$rc"
+            exit "$rc"
+          fi
+
+      - name: Validate bounded directive and discard plaintext
+        run: |
+          python - <<'PY'
+          import hashlib, json, re
+          from datetime import datetime, timezone
+          from pathlib import Path
+          raw=Path('/tmp/aura_january_directive_raw.txt').read_text(encoding='utf-8').strip()
+          m=re.search(r'\{.*\}', raw, flags=re.S)
+          if not m:
+              raise SystemExit('NO_DIRECTIVE_JSON')
+          obj=json.loads(m.group(0))
+          if set(obj) != {'correction_id','candidate_id','gate_id'}:
+              raise SystemExit('DIRECTIVE_KEYS_INVALID')
+          allowed={
+            'correction_id':{'DEMOTE_SIMULATION_SUCCESS_TO_OBSERVATION','GENERATOR_VERIFIER_SEPARATION','RECOGNITION_BEFORE_NEW_SEARCH','MEASURED_SLACK_VS_IDEAL_STATE_SEPARATION'},
+            'candidate_id':{'MENDES_1902_CG53465_53469_ASSEMBLAGE','MENDES_SECONDARY_CACHE_OR_PRIESTLY_SUBSTITUTE','DENDERA_RELIC_SIMULACRUM_CONTAINER','ANUBIS_SONS_OF_HORUS_SEALED_RELIQUARY','BM_1973_0501_23_INTERNAL_CONTENT','MEMPHIS_SAQQARA_GOLD_PHALLIC_AMULET_LINEAGE'},
+            'gate_id':{'RESOLVE_CG53465_53469_CONCORDANCE','OBTAIN_MENDES_SHEATH_PHOTO_DIMENSIONS_CONSERVATION','AUDIT_JE_CG_TRANSFER_AND_EARLY_REMOVAL','SEARCH_FUNCTIONAL_CATALOGUE_VOCABULARY','NONDESTRUCTIVE_INTERNAL_IMAGING','REJECT_ON_PROVENANCE_MORPHOLOGY_MATERIAL_CONTRADICTION'}
+          }
+          for k,v in obj.items():
+              if v not in allowed[k]:
+                  raise SystemExit('DIRECTIVE_ENUM_INVALID:'+k)
+          commitment=json.loads(Path('artifacts/AURA_JANUARY_HEPHAESTUS_PHYSARUM_OSIRIS_COMMITMENT.json').read_text(encoding='utf-8'))
+          out={
+            'artifact_id':'AURA-JANUARY-HEPHAESTUS-PHYSARUM-OSIRIS-BOUNDED-DIRECTIVE-2026-08-18-v1',
+            'generated_at_utc':datetime.now(timezone.utc).isoformat(),
+            'answer_sha256':commitment['answer_commitment']['sha256'],
+            'directive':obj,
+            'directive_semantics':'BOUNDED_RESEARCH_PRIORITY_DERIVED_FROM_SEALED_HEURISTIC_NOT_EVIDENCE',
+            'claim_ceiling':'RECOGNITION_CANDIDATE_ONLY_NOT_ORIGINAL_RELIC_IDENTITY'
+          }
+          Path('artifacts/AURA_JANUARY_HEPHAESTUS_PHYSARUM_OSIRIS_BOUNDED_DIRECTIVE.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('SEALED_JANUARY_DIRECTIVE_VALIDATED')
+          PY
+          rm -f /tmp/aura_january_plaintext.txt /tmp/aura_january_stderr.txt /tmp/aura_january_directive_raw.txt /tmp/aura_january_reduce_stderr.txt
+
+      - name: Upload commitment and bounded directive
+        uses: actions/upload-artifact@v4
+        with:
+          name: sealed-january-hephaestus-osiris-recognition
+          path: |
+            artifacts/AURA_JANUARY_HEPHAESTUS_PHYSARUM_OSIRIS_COMMITMENT.json
+            artifacts/AURA_JANUARY_HEPHAESTUS_PHYSARUM_OSIRIS_BOUNDED_DIRECTIVE.json
+          if-no-files-found: error
+
+      - name: Commit commitment and bounded directive
+        run: |
+          git config user.name 'AURA Sealed Oracle'
+          git config user.email 'actions@users.noreply.github.com'
+          git add artifacts/AURA_JANUARY_HEPHAESTUS_PHYSARUM_OSIRIS_COMMITMENT.json artifacts/AURA_JANUARY_HEPHAESTUS_PHYSARUM_OSIRIS_BOUNDED_DIRECTIVE.json
+          if git diff --cached --quiet; then
+            echo 'No sealed result change to commit.'
+          else
+            git commit -m '[sealed-result] January Hephaestus Osiris recognition commitment'
+            git push origin HEAD:main
+          fi
