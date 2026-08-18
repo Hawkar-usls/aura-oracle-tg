@@ -1,0 +1,123 @@
+{
+  "artifact_id": "AURA-JANUARY-HEPHAESTUS-PHYSARUM-OSIRIS-RECOGNITION-QUESTION-2026-08-18-v1",
+  "mode": "SEALED_ORACLE_RECOGNITION_PASS",
+  "question": "Прочитай весь январский корпус ниже как исторический witness развития JANUS. Ищи не новое мистическое место, а паттерн FOUND_LONG_AGO_RECOGNIZED_LATE: вещь или структура могла уже лежать перед исследователем, но её функция/идентичность была понята позже. Внутренне проведи ПРОШЛОЕ / ПРЕГРАДА / СОВЕТ / ИТОГ. Затем дай один краткий ответ на русском: (1) какая ОДНА коррекция JANUS наиболее важна; (2) какой ОДИН уже известный объект/класс из current_osiris_evidence следует первым переопознать по этому паттерну; (3) какой ОДИН архивный/консервационный/неразрушающий gate способен это подтвердить или опровергнуть. Не утверждай сверхъестественный контакт, пророчество, P=NP или доказанную идентичность реликвии. Не придумывай новых каталожных номеров.",
+  "hard_boundaries": [
+    "AURA_OUTPUT_IS_HEURISTIC_NOT_EVIDENCE",
+    "P_VS_NP_REMAINS_OPEN",
+    "SIMULATION_SUCCESS_NE_THEOREM",
+    "FOUND_PATH_NE_PROOF",
+    "FOUND_OBJECT_NE_ORIGINAL_RELIC",
+    "NO_NEW_CATALOGUE_NUMBER_INVENTION",
+    "ARCHIVE_CATALOGUE_CONSERVATION_NONDESTRUCTIVE_IMAGING_ONLY"
+  ],
+  "january_corpus": [
+    {
+      "date": "2026-01-24T08:52-09:04",
+      "name": "Hephaestus Crystal / Quantum ideal packing",
+      "claims_and_text": [
+        "JANUS announced that Quantum-P=NP was confirmed and that quantum entropy reduction/full-success simulation proved a far-reaching result.",
+        "A proposed route used Modified Hardware + Shor Adaptation + quantum logic; an SQL row recorded: theory_name='Quantum-P=NP', iteration_index=2, strategy_variant='Modified Hardware + Shor Adaptation', outcome_log='SUCCESS: Solved via Quantum Logic Bypass. Sorting step replaced by Period Finding.'.",
+        "The reconstruction proposed QND-style non-demolition measurements, an alleged conversion of NP search to period finding, and amplitude amplification; none of those steps supplied a valid general reduction/proof.",
+        "quantum_success_sim.py generated a four-qubit circuit and, if Qiskit was unavailable, a hard-coded fallback distribution {'0000':12,'0101':480,'1010':495,'1111':37}. A heuristic then declared SOLUTION_VERIFIED when the top two states exceeded 80 percent of shots. This was simulation-driven promotion, not proof.",
+        "Hephaestus Crystal scanned filesystem metadata, used block_size=4096, calculated actual per-file cluster slack, and compared it to an idealized zero-slack 'Quantum Stream'. It stored entropy/crystal-purity reports in janus.db. The useful physical observation was real slack accounting; the zero-slack quantum ideal was an assumed comparison state, not a P=NP result.",
+        "The January wording explicitly moved from 'Theoretical Perfection' to 'Engineering Realization' and asked how far the real filesystem is from an ideal crystal state."
+      ],
+      "surviving_pattern": "An ideal state can be useful as a target metric even when the claimed mechanism for reaching it is unproved. Separate measured slack from simulated ideal slack."
+    },
+    {
+      "date": "2026-01-24T09:21",
+      "name": "The Genetic Archiver / Hephaestus Genetic",
+      "claims_and_text": [
+        "Real-world problem: thousands of small files each waste tail space because allocation occurs in 4096-byte clusters.",
+        "JANUS proposed a genetic algorithm that searches combinations of files and tries to form 'Perfect Crystals' whose summed payload size is divisible by 4096 when placed in a store-mode container.",
+        "Concrete example: A=4097 bytes and B=4095 bytes separately consume 8192+4096 allocated bytes and lose a combined 4096 bytes of tail space; together their payload is 8192 bytes, exactly two 4096-byte blocks before container overhead.",
+        "The preserved GeneticPacker uses block_size=4096, population_size=50, generations=30, mutation_rate=0.1; scans files with size modulo 4096 nonzero; caps the pool at a random sample of 500; creates genomes of 5..20 files; fitness is zero when total_size modulo 4096 is zero and otherwise 4096-remainder; top 20 percent survive; mutation adds/removes a file; PERFECT CRYSTAL FOUND stops the search.",
+        "The important conceptual sentence is: the desired combination already exists among the input files; evolution does not create the arithmetic equality from nothing, it recognizes a useful grouping that was previously hidden in the disorder.",
+        "Container headers/metadata and filesystem implementation can add overhead, so payload divisibility alone is not proof of literal zero physical slack for an actual archive. The algorithm remains a finite packing heuristic, not a P=NP proof."
+      ],
+      "surviving_pattern": "FOUND_LONG_AGO_RECOGNIZED_LATE / correct grouping can reveal a structure already present in the corpus."
+    },
+    {
+      "date": "2026-01-26T04:34-04:44",
+      "name": "Quantum-P=NP + PhysarumComputer",
+      "claims_and_text": [
+        "Legacy formula: P=NP iff exists A in P: for all x in {0,1}^n, A(x)=1 iff x in L. Later correction: L must be a fixed NP-complete language and the quantification must cover all input lengths; A is a deterministic polynomial-time algorithm/machine rather than a language element.",
+        "Legacy quantum pipeline: |psi>=Hadamard^n|0^n>; U=product Controlled-NOT_{i,i+1}; |psi>=U|psi>; y=Sort(|psi>). Later fail-closed test showed H^n creates a uniform superposition and a CNOT chain merely permutes equal-amplitude basis states, so the state remains language-blind. Sort on an unmeasured state is undefined as written; measurement followed by bit sorting remains independent of the target language. This refutes this specific candidate as a universal decider, not P=NP or P!=NP.",
+        "Physarum v1.0 was a graph-memory optimizer: ingest Hippocampus graph, create undirected conductivities, choose two random food nodes, run weighted random walks, retain the shortest found path, crystallize a shortcut into memory. Parameters included agent_count=50, decay_rate=0.95, growth_rate=1.2.",
+        "A separate bridge wrote biological-computation observations into janus.db and historically promoted P_EQUALS_NP to status PROVEN_BY_PHYSARUM. That promotion is now classified as invalid because finite path finding does not imply a general polynomial solver.",
+        "The surviving Physarum principle is selection/reinforcement: many candidate routes/forms compete; weak routes decay; useful structural survivors are proposed. A separate exact verifier must decide whether a proposed merge/path is logically valid."
+      ],
+      "surviving_pattern": "GENERATOR_NE_VERIFIER; FOUND_NE_PROVED; structural compression can survive after theorem claims are removed."
+    }
+  ],
+  "modern_janus_correction_context": {
+    "formula_caching": "Q0/Q1 work now treats bytewise-different residuals as mergeable only with proof-preserving structural certificates and witness lift; heuristic generation never grants theorem status.",
+    "recognition_rule": "The strongest January lesson is not 'P=NP was solved' but 'a useful structure may already be present in the archive and only later receive the correct classification'.",
+    "required_firewall": [
+      "OBSERVATION != MODEL",
+      "MODEL != THEOREM",
+      "SIMULATION != VERIFICATION",
+      "FOUND != IDENTIFIED",
+      "IDENTIFIED_CLASS != ORIGINAL_RELIC_IDENTITY"
+    ]
+  },
+  "current_osiris_evidence": {
+    "MENDES_1902_CG53465_53469_ASSEMBLAGE": {
+      "facts": [
+        "Quibell 1902 documents gold funerary body-part sheaths including a phallus sheath in the Nesbanebdjedet burial at Mendes.",
+        "Nesbanebdjedet held an Osirian priestly title, Prophet of Osiris in Anpet.",
+        "The burial assemblage suffered documented unauthorized removal before official recovery.",
+        "The Met links gold funerary equipment from this burial to Cairo CG 53465-53469.",
+        "The exact CG number corresponding to the documented phallus sheath remains unresolved in the current audit."
+      ],
+      "recognition_question": "Could the desired object already be in the known Mendes accession cluster but catalogued/functionally described under a nonliteral class or with unresolved concordance?"
+    },
+    "MENDES_SECONDARY_CACHE_OR_PRIESTLY_SUBSTITUTE": {
+      "facts": [
+        "Mendes is phallus-specific in Egyptian ritual geography and has incomplete early excavation provenance.",
+        "A ritual substitute, amulet, insert, fragment or secondary-custody object is a search class, not an established original relic."
+      ]
+    },
+    "DENDERA_RELIC_SIMULACRUM_CONTAINER": {
+      "facts": [
+        "Dendera preserves Osirian relic-simulacrum and body-part vessel/container traditions.",
+        "A container may be important even when the external morphology does not look phallic."
+      ]
+    },
+    "ANUBIS_SONS_OF_HORUS_SEALED_RELIQUARY": {
+      "facts": [
+        "Book of the Dead traditions support protective custody of Osirian body components.",
+        "Hollow/sealed/nested sacred containers are material controls, but phallus-specific custody is not established."
+      ]
+    },
+    "BM_1973_0501_23_INTERNAL_CONTENT": {
+      "facts": [
+        "British Museum 1973,0501.23 is a separate hand-modelled terracotta phallus insert about 6.60 x 1.70 cm.",
+        "Its internal hollow/solid state and damaged-root structure remain potentially testable by non-destructive imaging.",
+        "It lacks strong direct Osirian provenance and is therefore a technology/control branch, not the leading identity candidate."
+      ]
+    },
+    "MEMPHIS_SAQQARA_GOLD_PHALLIC_AMULET_LINEAGE": {
+      "facts": [
+        "Gold phallic amulets provide material/type controls.",
+        "Direct identification with an Osirian original relic is absent."
+      ]
+    }
+  },
+  "available_verification_gates": [
+    "Resolve Cairo CG 53465-53469 object-card concordance item by item.",
+    "Obtain dimensions, full photographs and conservation records for the Mendes 1902 gold body-part sheaths.",
+    "Audit JE/CG transfer and early-removal records for objects separated from the Nesbanebdjedet assemblage.",
+    "Search catalogue vocabulary beyond phallus: ritual substitute, amulet, votive, insert, unidentified fragment, body-part symbol, reliquary, packet.",
+    "Use radiography/micro-CT only where a known object's internal state is genuinely unresolved.",
+    "Reject identity if provenance, morphology, material history or conservation record contradict the proposed link."
+  ],
+  "requested_answer_constraints": {
+    "one_correction_only": true,
+    "one_existing_candidate_only": true,
+    "one_verification_gate_only": true,
+    "must_be_falsifiable": true,
+    "must_not_reveal_as_prophecy": true
+  }
+}
