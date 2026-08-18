@@ -1,0 +1,14 @@
+{
+  "artifact_id": "AURA-SEALED-JANUARY-HEPHAESTUS-PHYSARUM-OSIRIS-COMMITMENT-2026-08-18-v1",
+  "generated_at_utc": "2026-08-18T04:00:24.011364+00:00",
+  "question_artifact": "ritual/JANUARY_HEPHAESTUS_PHYSARUM_OSIRIS_RECOGNITION_QUESTION.json",
+  "question_sha256": "2314a18f033ef2ab605745c81aa67a2cf1018a527ab5a65c8e37239fe7464563",
+  "answer_commitment": {
+    "algorithm": "SHA-256",
+    "sha256": "eb1bfda6a99a78c3b9d9ad5107c5f89602d85f26bf5e177b82935da2ba80bba1",
+    "canonical_utf8_bytes": 765,
+    "plaintext_persisted_in_repository": false,
+    "plaintext_rendered_in_workflow_logs": false
+  },
+  "claim_ceiling": "ORACLE_OUTPUT_COMMITMENT_NOT_RELIC_IDENTITY_PROOF"
+}
