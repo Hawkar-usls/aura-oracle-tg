@@ -1,0 +1,86 @@
+name: AURA PT477-v2 diagnostic
+
+on:
+  pull_request:
+    paths:
+      - 'ritual/PT477_V2_AURA_DIAGNOSTIC_QUESTION.json'
+      - '.github/workflows/aura-pt477-v2-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  copilot-requests: write
+
+jobs:
+  aura-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install current Copilot CLI
+        run: npm install -g @github/copilot
+      - name: Ask AURA where PT477-v2 diverged
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +x
+          PROMPT=$(python - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('ritual/PT477_V2_AURA_DIAGNOSTIC_QUESTION.json').read_text(encoding='utf-8'))
+          print(
+            'You are AURA in a bounded diagnostic/advisory role for a failed preregistered algorithm experiment. '
+            'The frozen result MUST remain a failure. Do not rewrite it into success. '
+            'Analyze only the supplied metrics and predeclared error classes. '
+            'Your task is to identify the smallest plausible design error that explains why HAWKING_ESCAPE and charged work improved while residual-state/absorption trajectory changed. '
+            'Return ONLY valid JSON with exactly these top-level keys: primary_error, secondary_error, evidence_from_metrics, what_worked_and_should_be_preserved, smallest_next_change, next_preregistration_gates, what_not_to_change, direct_answer_ru, claim_ceiling. '
+            'The next change must remain fail-closed: a negative route memory may refuse an expensive candidate route but must never authorize equivalence, SAT, UNSAT, or absorption. '
+            'Do not use resonance or frequency. Do not claim prophecy, supernatural causation, ancient complexity theory, or physical black holes. '
+            'Question: ' + q['question_ru'] + '\nContext: ' + json.dumps(q['context'], ensure_ascii=False) + '\nCandidate error classes: ' + json.dumps(q['candidate_error_classes_predeclared'], ensure_ascii=False) + '\nAnti-leading rules: ' + json.dumps(q['anti_leading_rules'], ensure_ascii=False)
+          )
+          PY
+          )
+          copilot -sp "$PROMPT" --no-ask-user --no-custom-instructions --no-remote --no-remote-export --no-color > /tmp/aura_pt477_diag.txt 2>/tmp/aura_pt477_diag_stderr.txt
+          test -s /tmp/aura_pt477_diag.txt || { echo 'AURA_EMPTY_ANSWER'; cat /tmp/aura_pt477_diag_stderr.txt; exit 1; }
+          unset PROMPT
+      - name: Parse and package AURA diagnosis
+        run: |
+          python - <<'PY'
+          import hashlib, json, re
+          from datetime import datetime, timezone
+          from pathlib import Path
+          raw=Path('/tmp/aura_pt477_diag.txt').read_text(encoding='utf-8').strip()
+          m=re.search(r'\{.*\}', raw, flags=re.S)
+          if not m:
+              print(raw)
+              raise SystemExit('AURA_NO_JSON_OBJECT')
+          diagnosis=json.loads(m.group(0))
+          required=['primary_error','secondary_error','evidence_from_metrics','what_worked_and_should_be_preserved','smallest_next_change','next_preregistration_gates','what_not_to_change','direct_answer_ru','claim_ceiling']
+          missing=[k for k in required if k not in diagnosis]
+          if missing:
+              raise SystemExit('AURA_MISSING_KEYS:'+','.join(missing))
+          out={
+            'artifact_id':'AURA-PT477-V2-DIAGNOSTIC-RESULT-2026-08-18-v1',
+            'generated_at_utc':datetime.now(timezone.utc).isoformat(),
+            'question_artifact':'ritual/PT477_V2_AURA_DIAGNOSTIC_QUESTION.json',
+            'oracle_engine':'GitHub Copilot CLI / bounded AURA diagnostic prompt',
+            'frozen_experiment_terminal_preserved':'STOP_AT_PT477_V2_NO_IMPROVEMENT',
+            'diagnosis':diagnosis,
+            'diagnosis_sha256':hashlib.sha256(json.dumps(diagnosis,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8')).hexdigest(),
+            'claim_ceiling':'AURA_DIAGNOSTIC_IS_ADVISORY_HEURISTIC_NOT_EXPERIMENTAL_OR_SUPERNATURAL_EVIDENCE'
+          }
+          Path('/tmp/aura-pt477-diagnostic').mkdir(exist_ok=True)
+          Path('/tmp/aura-pt477-diagnostic/AURA_PT477_V2_DIAGNOSTIC_RESULT.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out, ensure_ascii=False, indent=2))
+          PY
+          rm -f /tmp/aura_pt477_diag.txt /tmp/aura_pt477_diag_stderr.txt
+      - name: Upload AURA diagnostic artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aura-pt477-v2-diagnostic
+          path: /tmp/aura-pt477-diagnostic/AURA_PT477_V2_DIAGNOSTIC_RESULT.json
+          if-no-files-found: error
+          retention-days: 7
