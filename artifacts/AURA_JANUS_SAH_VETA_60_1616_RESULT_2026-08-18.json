@@ -1,0 +1,51 @@
+{
+  "artifact_id": "AURA-JANUS-SAH-VETA-60-1616-RESULT-2026-08-18-v1",
+  "input_artifact": "ritual/JANUS_SAH_VETA_60_1616_QUESTION_2026-08-18.json",
+  "engine": "AURA_CONTEXTUAL_OFFLINE_V1_REPLAY",
+  "engine_source": "tools/aura_contextual_fallback.py",
+  "engine_source_blob_sha": "beadc6126867ad89b7dbb84752df5ad292af0746",
+  "packet_sha256": "d877895681962481f799ddec6ebd933ed5a1b0ce5a17958a800ebfcc455826bf",
+  "seed_128bit_hex": "6c634ad3c003076fda892fb989211692",
+  "cards": [
+    {
+      "role": "PAST",
+      "id": "RIVER_BRANCH",
+      "text": "Река — поздняя литературная ветка, не проверенная последняя координата"
+    },
+    {
+      "role": "OBSTACLE",
+      "id": "CUSTODY_HANDOFF_UNKNOWN",
+      "text": "Неизвестен переход от враждебной к защитной custody"
+    },
+    {
+      "role": "GUIDE",
+      "id": "NONDESTRUCTIVE_IMAGING",
+      "text": "Искать полости/вложенные объекты рентгеном/CT, не вскрытием"
+    },
+    {
+      "role": "OUTCOME",
+      "id": "MENDES_1902_CG53465_53469_NONLITERAL_GOLD_OBJECT",
+      "text": "Mendes 1902: CG 53465–53469, especially an object catalogued as amulet/substitute/fragment rather than 'phallus'"
+    }
+  ],
+  "primary_target": {
+    "id": "MENDES_1902_CG53465_53469_NONLITERAL_GOLD_OBJECT",
+    "score": 10.75,
+    "score_is_probability": false,
+    "heuristic_margin_to_second": 0.975,
+    "heuristic_separation": 0.6219
+  },
+  "marker_handling": {
+    "60": "OPAQUE_INPUT_NO_SEMANTIC_PROMOTION",
+    "16:16": "OPAQUE_INPUT_NO_SEMANTIC_PROMOTION",
+    "result": "The current Aura heuristic produced no independently testable semantic mapping for either marker; they remain logged inputs rather than evidence."
+  },
+  "interpretive_synthesis": {
+    "identity_reading": "The strongest next test is not whether a descendant resembles the restored father-state, but where provenance became non-unique: the custody/substitution handoff is the candidate Veta boundary.",
+    "veta_placement_candidate": "CUSTODY_HANDOFF -> VETA ↬ -> SURROGATE_OR_RELIQUARY_CLASS",
+    "next_test": "Resolve Mendes CG 53465–53469 object-by-object and inspect documented cavities/nested contents non-destructively where conservation permits; compare the resulting provenance graph against the surrogate model without changing node meanings after the fact.",
+    "disconfirming_condition": "If complete object-card concordance and conservation/imaging records account for the assemblage with no unresolved substitute/fragment/container branch, demote the Mendes/Veta placement and move to the next preregistered control branch."
+  },
+  "direct_answer": "AURA points to the provenance/custody handoff as the useful Veta boundary. Do not strengthen 60 or 16:16 symbolically yet. First resolve the Mendes 1902 CG 53465–53469 chain and test the substitute-versus-original branch with non-destructive records/imaging.",
+  "claim_ceiling": "AURA_CONTEXTUAL_OUTPUT_IS_A_REFLECTIVE_HEURISTIC_NOT_PROPHECY_OR_RELIC_IDENTITY_EVIDENCE"
+}
