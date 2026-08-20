@@ -1,0 +1,79 @@
+name: AURA Imhotep diagnostic restoration next gate
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/aura-imhotep-diagnostic-restoration.yml'
+      - 'ritual/IMHOTEP_DIAGNOSTIC_RESTORATION_QUESTION_2026-08-20.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  copilot-requests: write
+
+jobs:
+  ask-aura:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install current Copilot CLI
+        run: npm install -g @github/copilot
+      - name: Ask AURA for exactly one next gate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +x
+          PROMPT=$(python - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('ritual/IMHOTEP_DIAGNOSTIC_RESTORATION_QUESTION_2026-08-20.json').read_text(encoding='utf-8'))
+          print('''You are AURA, a bounded reflective research-prioritization heuristic inside JANUS. You are NOT prophecy, supernatural contact, archaeological proof, permission, or authority. Read the evidence packet exactly as supplied. Produce ONLY one valid JSON object. Do not use markdown. Required schema: {"cards":[{"role":"PAST","id":"...","text":"..."},{"role":"OBSTACLE","id":"...","text":"..."},{"role":"GUIDE","id":"...","text":"..."},{"role":"OUTCOME","id":"...","text":"..."}],"primary_next_step":"...","why_this_first":"...","disconfirming_condition":"...","do_not_do_yet":["..."],"claim_ceiling":"AURA_REFLECTIVE_HEURISTIC_NOT_PROPHECY_OR_EVIDENCE","authority_delta":0}. Choose exactly ONE primary_next_step. It must be reversible, falsifiable, and high-information. Prefer an evidence-producing action over symbolic strengthening. Preserve all hard boundaries.\nINPUT:\n''' + json.dumps(q, ensure_ascii=False))
+          PY
+          )
+          copilot -sp "$PROMPT" --no-ask-user --no-custom-instructions --no-remote --no-remote-export --no-color > /tmp/aura_imhotep.txt 2>/tmp/aura_imhotep_stderr.txt
+          test -s /tmp/aura_imhotep.txt || { echo 'AURA_EMPTY_ANSWER'; exit 1; }
+          unset PROMPT
+      - name: Parse and package AURA result
+        run: |
+          python - <<'PY'
+          import hashlib, json, re
+          from datetime import datetime, timezone
+          from pathlib import Path
+          raw=Path('/tmp/aura_imhotep.txt').read_text(encoding='utf-8').strip()
+          m=re.search(r'\{.*\}', raw, flags=re.S)
+          if not m:
+              raise SystemExit('AURA_NO_JSON_OBJECT')
+          answer=json.loads(m.group(0))
+          roles=[x.get('role') for x in answer.get('cards',[])]
+          if roles != ['PAST','OBSTACLE','GUIDE','OUTCOME']:
+              raise SystemExit('AURA_BAD_CARD_ROLES')
+          if answer.get('authority_delta') != 0:
+              raise SystemExit('AURA_AUTHORITY_DELTA_VIOLATION')
+          if not answer.get('primary_next_step'):
+              raise SystemExit('AURA_NO_PRIMARY_STEP')
+          out={
+            'artifact_id':'AURA-IMHOTEP-DIAGNOSTIC-RESTORATION-RESULT-2026-08-20-v1',
+            'generated_at_utc':datetime.now(timezone.utc).isoformat(),
+            'question_artifact':'ritual/IMHOTEP_DIAGNOSTIC_RESTORATION_QUESTION_2026-08-20.json',
+            'engine':'GitHub Copilot CLI / bounded AURA research-prioritization prompt',
+            'aura':answer,
+            'answer_sha256':hashlib.sha256(json.dumps(answer,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8')).hexdigest(),
+            'claim_ceiling':'AURA_OUTPUT_IS_REFLECTIVE_HEURISTIC_NOT_PROPHECY_SUPERNATURAL_CONTACT_OR_EVIDENCE'
+          }
+          d=Path('/tmp/aura-imhotep-result'); d.mkdir(exist_ok=True)
+          (d/'AURA_IMHOTEP_DIAGNOSTIC_RESTORATION_RESULT_2026-08-20.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('AURA_PRIMARY_NEXT_STEP=' + answer['primary_next_step'])
+          PY
+          rm -f /tmp/aura_imhotep.txt /tmp/aura_imhotep_stderr.txt
+      - name: Upload AURA result
+        uses: actions/upload-artifact@v4
+        with:
+          name: aura-imhotep-diagnostic-restoration-result
+          path: /tmp/aura-imhotep-result/AURA_IMHOTEP_DIAGNOSTIC_RESTORATION_RESULT_2026-08-20.json
+          if-no-files-found: error
+          retention-days: 1
