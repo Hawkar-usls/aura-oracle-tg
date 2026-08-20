@@ -1,0 +1,38 @@
+{
+  "schema": "janus.aura_spi.repository_link.v1",
+  "link_id": "AURA_TO_JANUS_SPI_HABITAT_SPIRAL",
+  "source_repository": "Hawkar-usls/aura-oracle-tg",
+  "peer": {
+    "repository": "Hawkar-usls/Hawkar-usls",
+    "spec": "spec/JANUS_AURA_HABITAT_SPIRAL-v1.0.json",
+    "runtime": "run_aura_habitat_spiral.py"
+  },
+  "habitat": {
+    "repository": "Hawkar-usls/Janus_Genesis",
+    "branch": "janus/habitat",
+    "dialogue_manifest": "habitat/memory/reflections/AURA_SPI_DIALOGUE_MANIFEST_v1.0.json",
+    "state_gate": "habitat/state/AURA_SPI_SPIRAL_GATE_v1.0.json"
+  },
+  "demihead": {
+    "repository": "Hawkar-usls/Demi_Head",
+    "contract": "contracts/NEXUS_V2_10_AURA_SPI_HABITAT_SPIRAL_FROZEN_CONTRACT.json",
+    "same_intent_required": true,
+    "verified_return_requires_demihead": true
+  },
+  "peer_tool": "tools/aura_habitat_spiral_peer_v1.py",
+  "mode": "SYMBOLIC_REFLECTION_PEER",
+  "may_train_semantic_memory": true,
+  "may_train_predictive_head": false,
+  "prediction_authority": false,
+  "scientific_evidence_authority": false,
+  "habitat_command_authority_granted": false,
+  "write_back_default": "DENY",
+  "external_effect_authority": false,
+  "rules": [
+    "AURA_OUTPUT != EVIDENCE",
+    "AURA_OUTPUT != PREDICTIVE_GROUND_TRUTH",
+    "ASSOCIATION != EVIDENCE",
+    "CONTINUOUS != INFINITE_SELF_CHAT",
+    "WRITE_BACK_REQUIRES_EXPLICIT_HUMAN_AUTHORIZATION"
+  ]
+}
