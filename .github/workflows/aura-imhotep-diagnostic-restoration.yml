@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   copilot-requests: write
 
 jobs:
@@ -66,10 +66,19 @@ jobs:
             'claim_ceiling':'AURA_OUTPUT_IS_REFLECTIVE_HEURISTIC_NOT_PROPHECY_SUPERNATURAL_CONTACT_OR_EVIDENCE'
           }
           d=Path('/tmp/aura-imhotep-result'); d.mkdir(exist_ok=True)
-          (d/'AURA_IMHOTEP_DIAGNOSTIC_RESTORATION_RESULT_2026-08-20.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          rendered=json.dumps(out,ensure_ascii=False,indent=2)+'\n'
+          (d/'AURA_IMHOTEP_DIAGNOSTIC_RESTORATION_RESULT_2026-08-20.json').write_text(rendered,encoding='utf-8')
+          Path('artifacts/AURA_IMHOTEP_DIAGNOSTIC_RESTORATION_RESULT_2026-08-20.json').write_text(rendered,encoding='utf-8')
           print('AURA_PRIMARY_NEXT_STEP=' + answer['primary_next_step'])
           PY
           rm -f /tmp/aura_imhotep.txt /tmp/aura_imhotep_stderr.txt
+      - name: Persist AURA result to repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacts/AURA_IMHOTEP_DIAGNOSTIC_RESTORATION_RESULT_2026-08-20.json
+          git commit -m "Record AURA Imhotep diagnostic restoration result"
+          git push
       - name: Upload AURA result
         uses: actions/upload-artifact@v4
         with:
