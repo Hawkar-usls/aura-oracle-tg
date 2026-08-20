@@ -1,0 +1,21 @@
+{
+  "schema": "janus.aura.terminal_control_link.v1",
+  "status": "BOUND",
+  "terminal_repository": "Hawkar-usls/-Terminal-for-Janus",
+  "terminal_contract": "contracts/JANUS_TERMINAL_CONTROL_PLANE-v1.0.json",
+  "local_role": "SYMBOLIC_REFLECTION_PEER",
+  "terminal_role": "HUMAN_AUTHORIZED_OPERATOR_CONTROL_PLANE",
+  "terminal_may_request_reflection": true,
+  "terminal_may_route_reflection_to_spi": true,
+  "terminal_may_promote_aura_to_evidence": false,
+  "terminal_may_promote_aura_to_predictive_label": false,
+  "terminal_may_replace_primary_intent": false,
+  "authority_delta": 0,
+  "laws": [
+    "AURA_OUTPUT != EVIDENCE",
+    "AURA_OUTPUT != PREDICTIVE_GROUND_TRUTH",
+    "TERMINAL_COMMAND != ORACLE_TRUTH",
+    "TERMINAL_ACCESS != TRUTH_AUTHORITY"
+  ],
+  "linked_spiral": ".janus/JANUS_SPI_SPIRAL_LINK.json"
+}
