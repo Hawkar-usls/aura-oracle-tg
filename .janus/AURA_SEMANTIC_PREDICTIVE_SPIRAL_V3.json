@@ -1,0 +1,34 @@
+{
+  "schema": "janus.aura.semantic_predictive.repository_link.v3",
+  "link_id": "AURA_PERMANENT_SEMANTIC_PREDICTIVE_SPIRAL_V3",
+  "status": "ACTIVE_CAPABILITY_BINDING_RUNTIME_VALIDATION_TRACKED_SEPARATELY",
+  "contract": "contracts/AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V3.json",
+  "core": "tools/aura_semantic_predictive_core_v3.py",
+  "predictive_input": "tools/aura_predictive_input_v3.py",
+  "deep_engine": "tools/aura_5d_spiral_v3.py",
+  "registry_watcher": "tools/aura_registry_watch_v3.py",
+  "local_http": "tools/aura_intelligence_http_v3.py",
+  "full_registry_gate": "tools/aura_full_registry_gate_v3.py",
+  "source_symbolic_bridge": "Hawkar-usls/janus-meta-registry/data/JANUS-FORTUNA-SPIRAL-RIBBON-GIFT-v1.0.json",
+  "registry": {
+    "repository": "Hawkar-usls/janus-meta-registry",
+    "access": "READ_ONLY_FULL_VALID_CORPUS_INDEX",
+    "incremental_updates": true,
+    "huge_json_streaming": true,
+    "malformed_json_quarantine": true,
+    "write_back": false
+  },
+  "spiral": {
+    "circle": false,
+    "law": "RETURN_TO_QUESTION_AT_HIGHER_STATE__NEVER_RETURN_TO_IDENTICAL_STATE",
+    "semantic_hit_alone_can_promote": false,
+    "zero_delta": "PLATEAU_REACHED",
+    "next_turn_external_trigger": "NEW_RAW_DATA_OR_RESOLVED_BLOCKER"
+  },
+  "predictive_classes": ["TYPING_COMPLETION", "HYPOTHESIS_DISCRIMINATION", "WORLD_FORECAST"],
+  "runtime": {
+    "persistent_template": "deploy/docker-compose.aura-intelligence-v3.yml",
+    "persistent_process_currently_observed": false,
+    "latest_reference_receipt": "receipts/AURA_SEMANTIC_PREDICTIVE_V3_LATEST.json"
+  }
+}
