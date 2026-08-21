@@ -32,7 +32,6 @@ class AuraV2Tests(unittest.TestCase):
             json.dumps({"topic": "HRain structural context", "phrase": "черная дыра горизонт событий"}, ensure_ascii=False) + "\n",
             encoding="utf-8"
         )
-        # Root array forced through ijson streaming path by threshold=1.
         (self.registry / "stream.json").write_text(json.dumps([
             {"topic": "iNaiHR associative semantics", "value": "семантика значение контекст"},
             {"topic": "DemiHead preserves disagreement", "value": "association is not evidence"}
@@ -121,7 +120,10 @@ class AuraV2Tests(unittest.TestCase):
         }]
         out = run_5d(payload, db_path=self.db, patches=patch)
         self.assertEqual(out["analysis_mode"], "SPIRAL_5D")
-        self.assertEqual(out["graph"]["logical_order"][:3], ["S0001", "MID", "S0002"])
+        order = out["graph"]["logical_order"]
+        self.assertEqual(order.index("MID"), order.index("S0001") + 1)
+        self.assertEqual(order.index("S0002"), order.index("MID") + 1)
+        self.assertTrue(all(order.index(r["id"]) < order.index("S0001") for r in out["graph"]["nodes"] if r["kind"] == "RECOVERED_AT_ORIGIN"))
         self.assertEqual(out["axes"]["D5_SPIRAL_ABSTRACTION"]["origin_prime"]["generation"], 5)
         self.assertNotEqual(
             out["origin_state_hash"],
