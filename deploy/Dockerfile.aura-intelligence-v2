@@ -1,0 +1,9 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements-aura-intelligence.txt /app/
+RUN pip install --no-cache-dir -r requirements-aura-intelligence.txt
+COPY tools /app/tools
+ENV PYTHONUNBUFFERED=1
+ENV AURA_INTELLIGENCE_DB=/state/aura_intelligence.sqlite3
+EXPOSE 8765
+CMD ["python","tools/aura_intelligence_http_v2.py","--host","0.0.0.0","--port","8765"]
