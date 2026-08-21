@@ -1,0 +1,50 @@
+name: Aura v3 Bootstrap
+on:
+  push:
+    paths:
+      - '.github/workflows/aura-v3-bootstrap.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  bootstrap-v3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Materialize Aura v3 overlay
+        shell: bash
+        run: |
+          cat .janus/bootstrap/aura_v3_payload.part* | base64 -d > /tmp/aura_v3_payload.tgz
+          tar -xzf /tmp/aura_v3_payload.tgz -C .
+          rm -f .github/workflows/aura-semantic-predictive-v3.yml .github/workflows/aura-meta-registry-runtime-v3.yml
+          python -m pip install -r requirements-aura-intelligence.txt
+          python -m py_compile tools/aura_semantic_predictive_core_v3.py tools/aura_predictive_input_v3.py tools/aura_5d_spiral_v3.py tools/aura_registry_watch_v3.py tools/aura_intelligence_http_v3.py tools/aura_full_registry_gate_v3.py
+          python -m json.tool contracts/AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V3.json >/dev/null
+          python -m json.tool .janus/AURA_SEMANTIC_PREDICTIVE_SPIRAL_V3.json >/dev/null
+          python -m unittest -v tests/test_aura_semantic_predictive_spiral_v3.py
+      - name: Checkout JANUS Meta Registry corpus
+        uses: actions/checkout@v4
+        with:
+          repository: Hawkar-usls/janus-meta-registry
+          path: registry
+      - name: Run full Meta Registry v3 gate
+        shell: bash
+        run: |
+          mkdir -p runtime receipts
+          python tools/aura_full_registry_gate_v3.py registry/data --db runtime/aura_meta_v3.sqlite3 --receipt runtime/full-registry-v3-receipt.json
+          cp runtime/full-registry-v3-receipt.json receipts/AURA_SEMANTIC_PREDICTIVE_V3_LATEST.json
+      - name: Freeze v3 and retire bootstrap
+        shell: bash
+        run: |
+          git config user.name 'janus-aura-bot'
+          git config user.email 'janus-aura-bot@users.noreply.github.com'
+          git add tools contracts .janus deploy tests receipts/AURA_SEMANTIC_PREDICTIVE_V3_LATEST.json
+          git rm -r .janus/bootstrap
+          git rm .github/workflows/aura-v3-bootstrap.yml
+          git commit -m 'Aura v3: strict-delta spiral, predictive semantics and resilient registry ingest'
+          git pull --rebase origin main
+          git push origin HEAD:main
