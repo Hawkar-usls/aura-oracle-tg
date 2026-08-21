@@ -1,0 +1,42 @@
+services:
+  aura-registry-indexer:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.aura-intelligence-v2
+    command:
+      - python
+      - tools/aura_registry_watch_v2.py
+      - /registry
+      - --db
+      - /state/aura_intelligence.sqlite3
+      - --interval
+      - "30"
+    restart: unless-stopped
+    volumes:
+      - ${JANUS_META_REGISTRY_PATH:?set JANUS_META_REGISTRY_PATH}:/registry:ro
+      - aura_intelligence_state:/state
+    network_mode: none
+
+  aura-intelligence-api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.aura-intelligence-v2
+    command:
+      - python
+      - tools/aura_intelligence_http_v2.py
+      - --db
+      - /state/aura_intelligence.sqlite3
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8765"
+    restart: unless-stopped
+    depends_on:
+      - aura-registry-indexer
+    volumes:
+      - aura_intelligence_state:/state
+    ports:
+      - "127.0.0.1:8765:8765"
+
+volumes:
+  aura_intelligence_state:
