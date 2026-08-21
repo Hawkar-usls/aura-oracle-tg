@@ -1,0 +1,125 @@
+name: Aura v2 Owner Smoke
+
+on:
+  push:
+    paths:
+      - '.github/workflows/aura-v2-owner-smoke.yml'
+      - 'tools/aura_semantic_predictive_core_v2.py'
+      - 'tools/aura_5d_spiral_v2.py'
+      - 'tools/aura_habitat_spiral_peer_v2.py'
+      - 'tests/test_aura_semantic_predictive_spiral_v2.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  smoke:
+    if: github.actor == 'Hawkar-usls'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-aura-intelligence.txt
+      - name: Compile and unit test
+        run: |
+          python -m py_compile tools/aura_semantic_predictive_core_v2.py tools/aura_5d_spiral_v2.py tools/aura_habitat_spiral_peer_v2.py tools/aura_registry_watch_v2.py tools/aura_intelligence_http_v2.py
+          python -m unittest -v tests/test_aura_semantic_predictive_spiral_v2.py
+      - name: Build forced-streaming corpus
+        run: |
+          mkdir -p runtime/corpus
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=[]
+          for i in range(5000):
+              data.append({
+                  'id':i,
+                  'topic':'JANUS spiral semantic predictive memory',
+                  'text':f'черная дыра горизонт событий semantic context item {i}',
+                  'state':'ORIGIN_PRIME' if i % 2 == 0 else 'REVERSE_TRANCEPTION'
+              })
+          Path('runtime/corpus/large.json').write_text(json.dumps(data,ensure_ascii=False),encoding='utf-8')
+          PY
+          python tools/aura_semantic_predictive_core_v2.py --db runtime/aura.sqlite3 ingest runtime/corpus/large.json --stream-threshold 1 > runtime/ingest.json
+          python tools/aura_semantic_predictive_core_v2.py --db runtime/aura.sqlite3 search "черная дыра ORIGIN_PRIME" --limit 8 > runtime/search.json
+          python tools/aura_semantic_predictive_core_v2.py --db runtime/aura.sqlite3 suggest "черная " --limit 8 > runtime/suggest.json
+          python tools/aura_semantic_predictive_core_v2.py --db runtime/aura.sqlite3 registry-question "ORIGIN_PRIME" --limit 8 > runtime/question.json
+      - name: Run 5D spiral and forecast firewall
+        env:
+          AURA_INTELLIGENCE_DB: runtime/aura.sqlite3
+        run: |
+          cat > runtime/input.json <<'JSON'
+          {
+            "generation": 7,
+            "intent_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "source_ref": "AURA_V2_OWNER_SMOKE",
+            "text": "Сначала найди структуру черной дыры. Потом найди семантические связи. Но обязательно верни позднее ограничение к истоку и продолжи как спираль, а не круг."
+          }
+          JSON
+          cat > runtime/patch.json <<'JSON'
+          [{"op":"SPLICE_BETWEEN","left_id":"S0001","right_id":"S0002","node":{"id":"MID","label":"non-tail abstraction","kind":"ABSTRACTION","source_segment_ids":["S0001","S0002"]}}]
+          JSON
+          python tools/aura_5d_spiral_v2.py runtime/input.json --db runtime/aura.sqlite3 --patch runtime/patch.json -o runtime/spiral.json
+          python - <<'PY'
+          import json, subprocess
+          open_fc=json.loads(subprocess.check_output(['python','tools/aura_semantic_predictive_core_v2.py','--db','runtime/aura.sqlite3','forecast-open','TEST_EVENT','0.7','1h','{}'],text=True))
+          p=subprocess.run(['python','tools/aura_semantic_predictive_core_v2.py','--db','runtime/aura.sqlite3','forecast-resolve',open_fc['forecast_id'],'1','--resolver','AURA_ORACLE'],text=True,capture_output=True)
+          assert p.returncode != 0, p.stdout+p.stderr
+          json.dump({'self_resolution_rejected':True,'forecast_id':open_fc['forecast_id']},open('runtime/forecast-firewall.json','w'),indent=2)
+          PY
+      - name: Verify and persist receipt
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          ing=json.loads(Path('runtime/ingest.json').read_text())
+          sea=json.loads(Path('runtime/search.json').read_text())
+          sug=json.loads(Path('runtime/suggest.json').read_text())
+          spi=json.loads(Path('runtime/spiral.json').read_text())
+          fw=json.loads(Path('runtime/forecast-firewall.json').read_text())
+          op=spi['axes']['D5_SPIRAL_ABSTRACTION']['origin_prime']
+          assert ing['records_indexed'] == 5000, ing
+          assert len(sea) > 0, sea
+          assert any(x['suggestion']=='дыра' for x in sug), sug
+          assert spi['graph']['logical_order'][:3] == ['R0002','R0001','S0001'] or 'MID' in spi['graph']['logical_order'], spi['graph']['logical_order']
+          assert spi['graph']['logical_order'].index('MID') == spi['graph']['logical_order'].index('S0001') + 1, spi['graph']['logical_order']
+          assert op['generation'] == 8, op
+          assert spi['origin_state_hash'] != op['origin_prime_state_hash']
+          assert spi['integrity']['source_text_mutated'] is False
+          assert fw['self_resolution_rejected'] is True
+          receipt={
+            'schema':'janus.aura.v2.owner_smoke_receipt.v1',
+            'status':'PASS_REFERENCE_RUNTIME',
+            'github_actor':os.environ.get('GITHUB_ACTOR'),
+            'github_run_id':os.environ.get('GITHUB_RUN_ID'),
+            'source_commit':os.environ.get('GITHUB_SHA'),
+            'forced_stream_records':ing['records_indexed'],
+            'semantic_hits':len(sea),
+            'autocomplete_suggestions':len(sug),
+            'non_tail_splice_verified':True,
+            'spiral_generation_in':7,
+            'spiral_generation_out':8,
+            'origin_state_changed':True,
+            'aura_self_forecast_resolution_rejected':True,
+            'source_mutated':False,
+            'world_truth':False
+          }
+          Path('runtime/receipt.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
+          PY
+          mkdir -p receipts
+          cp runtime/receipt.json receipts/AURA_V2_OWNER_SMOKE_LATEST.json
+          git config user.name "janus-aura-bot"
+          git config user.email "janus-aura-bot@users.noreply.github.com"
+          git add receipts/AURA_V2_OWNER_SMOKE_LATEST.json
+          git commit -m "Receipt: Aura v2 owner smoke" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AURA-V2-OWNER-SMOKE
+          path: runtime/
+          retention-days: 30
