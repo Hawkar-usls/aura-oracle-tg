@@ -68,9 +68,11 @@ def apply_patch(graph: dict[str, Any], patch: dict[str, Any]) -> dict[str, Any]:
         add_node(graph, node)
 
     if op == "INSERT_BEFORE":
-        anchor = patch["anchor_id"]; order.insert(order.index(anchor), node["id"])
+        anchor = patch["anchor_id"]
+        order.insert(order.index(anchor), node["id"])
     elif op == "INSERT_AFTER":
-        anchor = patch["anchor_id"]; order.insert(order.index(anchor) + 1, node["id"])
+        anchor = patch["anchor_id"]
+        order.insert(order.index(anchor) + 1, node["id"])
     elif op == "SPLICE_BETWEEN":
         left, right = patch["left_id"], patch["right_id"]
         li, ri = order.index(left), order.index(right)
@@ -97,14 +99,18 @@ def apply_patch(graph: dict[str, Any], patch: dict[str, Any]) -> dict[str, Any]:
         target = patch["node_id"]
         for n in graph["nodes"]:
             if n["id"] == target:
-                n.setdefault("annotations", []).append(patch["annotation"]); break
-        else: raise ValueError("ANNOTATE_NODE_TARGET_NOT_FOUND")
+                n.setdefault("annotations", []).append(patch["annotation"])
+                break
+        else:
+            raise ValueError("ANNOTATE_NODE_TARGET_NOT_FOUND")
     elif op == "ANNOTATE_EDGE":
         source, target = patch["source_id"], patch["target_id"]
         for e in graph["edges"]:
             if e["source"] == source and e["target"] == target:
-                e.setdefault("annotations", []).append(patch["annotation"]); break
-        else: raise ValueError("ANNOTATE_EDGE_TARGET_NOT_FOUND")
+                e.setdefault("annotations", []).append(patch["annotation"])
+                break
+        else:
+            raise ValueError("ANNOTATE_EDGE_TARGET_NOT_FOUND")
     else:
         raise ValueError(f"UNKNOWN_PATCH_OP:{op}")
     return graph
@@ -151,12 +157,13 @@ def reverse_recoveries(text: str, graph: dict[str, Any]) -> list[dict[str, Any]]
                 "source_segment_ids": [node["id"]],
                 "confidence": "HIGH",
             })
-    # Deduplicate by kind + anchors.
-    seen = set(); out = []
+    seen = set()
+    out = []
     for r in recovered:
         key = (r["kind"], tuple(r["source_segment_ids"]))
         if key not in seen:
-            seen.add(key); out.append(r)
+            seen.add(key)
+            out.append(r)
     return out
 
 
@@ -176,10 +183,11 @@ def run(payload: dict[str, Any], *, db_path: str | Path | None = None, patches: 
     recovered = reverse_recoveries(text, graph)
     applied = []
 
-    # Recovered findings are inserted near their anchors, not appended only at the tail.
-    for i, finding in enumerate(recovered, 1):
+    # RECOVERED_AT_ORIGIN belongs before the source origin. It must not break the
+    # original S0001 -> S0002 adjacency needed by later non-tail reasoning patches.
+    # Insert in reverse order so rendered order matches the recovery list.
+    for i, finding in reversed(list(enumerate(recovered, 1))):
         anchors = finding["source_segment_ids"]
-        anchor = anchors[0]
         nid = f"R{i:04d}"
         node = {
             "id": nid,
@@ -190,12 +198,14 @@ def run(payload: dict[str, Any], *, db_path: str | Path | None = None, patches: 
             "confidence": finding["confidence"],
             "validation_status": "SUPPORTED_INFERENCE_NOT_WORLD_TRUTH",
         }
-        patch = {"op": "INSERT_AFTER", "anchor_id": anchor, "node": node, "reason": finding["kind"]}
-        apply_patch(graph, patch); applied.append(patch)
+        patch = {"op": "INSERT_BEFORE", "anchor_id": "S0001", "node": node, "reason": finding["kind"]}
+        apply_patch(graph, patch)
+        applied.append(patch)
 
     if patches:
         for patch in patches:
-            apply_patch(graph, patch); applied.append(patch)
+            apply_patch(graph, patch)
+            applied.append(patch)
 
     semantic_hits = []
     autocomplete = []
@@ -294,11 +304,13 @@ def main() -> int:
     patches = json.loads(Path(args.patch).read_text(encoding="utf-8")) if args.patch else None
     out = run(payload, db_path=args.db, patches=patches)
     text = json.dumps(out, ensure_ascii=False, indent=2) + "\n"
-    if args.output: Path(args.output).write_text(text, encoding="utf-8")
-    else: sys.stdout.write(text)
+    if args.output:
+        Path(args.output).write_text(text, encoding="utf-8")
+    else:
+        import sys
+        sys.stdout.write(text)
     return 0
 
 
 if __name__ == "__main__":
-    import sys
     raise SystemExit(main())
