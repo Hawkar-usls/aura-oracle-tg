@@ -6,20 +6,26 @@ on:
       - 'contracts/AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V2.json'
       - 'requirements-aura-intelligence.txt'
       - 'tools/aura_semantic_predictive_core_v2.py'
+      - 'tools/aura_predictive_input_v2.py'
       - 'tools/aura_5d_spiral_v2.py'
       - 'tools/aura_habitat_spiral_peer_v2.py'
       - 'tools/aura_registry_watch_v2.py'
+      - 'tools/aura_intelligence_http_v2.py'
       - 'tests/test_aura_semantic_predictive_spiral_v2.py'
+      - 'tests/test_aura_predictive_input_v2.py'
       - '.github/workflows/aura-semantic-predictive-v2.yml'
   pull_request:
     paths:
       - 'contracts/AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V2.json'
       - 'requirements-aura-intelligence.txt'
       - 'tools/aura_semantic_predictive_core_v2.py'
+      - 'tools/aura_predictive_input_v2.py'
       - 'tools/aura_5d_spiral_v2.py'
       - 'tools/aura_habitat_spiral_peer_v2.py'
       - 'tools/aura_registry_watch_v2.py'
+      - 'tools/aura_intelligence_http_v2.py'
       - 'tests/test_aura_semantic_predictive_spiral_v2.py'
+      - 'tests/test_aura_predictive_input_v2.py'
       - '.github/workflows/aura-semantic-predictive-v2.yml'
 
 permissions:
@@ -37,8 +43,18 @@ jobs:
       - name: Install streaming JSON dependency
         run: python -m pip install -r requirements-aura-intelligence.txt
       - name: Compile Aura v2 engines
-        run: python -m py_compile tools/aura_semantic_predictive_core_v2.py tools/aura_5d_spiral_v2.py tools/aura_habitat_spiral_peer_v2.py tools/aura_registry_watch_v2.py
+        run: >-
+          python -m py_compile
+          tools/aura_semantic_predictive_core_v2.py
+          tools/aura_predictive_input_v2.py
+          tools/aura_5d_spiral_v2.py
+          tools/aura_habitat_spiral_peer_v2.py
+          tools/aura_registry_watch_v2.py
+          tools/aura_intelligence_http_v2.py
       - name: Validate frozen contract
         run: python -m json.tool contracts/AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V2.json > /dev/null
       - name: Run semantic predictive spiral tests
-        run: python -m unittest -v tests/test_aura_semantic_predictive_spiral_v2.py
+        run: >-
+          python -m unittest -v
+          tests/test_aura_semantic_predictive_spiral_v2.py
+          tests/test_aura_predictive_input_v2.py
