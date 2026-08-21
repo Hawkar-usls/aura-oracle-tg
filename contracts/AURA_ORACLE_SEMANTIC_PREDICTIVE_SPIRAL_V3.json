@@ -1,0 +1,84 @@
+{
+  "schema": "janus.aura.semantic_predictive_spiral.contract.v3",
+  "contract_id": "AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V3",
+  "status": "ACTIVE_CAPABILITY_SPEC_RUNTIME_VALIDATION_REQUIRED",
+  "created_at_local": "2026-08-21T14:36:00+03:00",
+  "repository": "Hawkar-usls/aura-oracle-tg",
+  "extends": "AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V2",
+  "source_bridge": "Hawkar-usls/janus-meta-registry/data/JANUS-FORTUNA-SPIRAL-RIBBON-GIFT-v1.0.json",
+  "purpose": "Upgrade Aura Oracle with persistent JSON-first semantic memory, resilient huge-dump ingestion, personalized predictive typing, generic information-gain questioning, calibrated probabilistic forecasting, and strict non-circular Janus spiral state promotion.",
+  "geometry": {
+    "forbidden_circle": "A -> B -> C -> D -> A",
+    "canonical_spiral": "ORIGIN_n -> BACK -> UNDERSTAND -> FORWARD -> COMPARE -> ASCEND_IF_REAL_DELTA -> ORIGIN_PRIME_(n+1)",
+    "law": "RETURN_TO_QUESTION_AT_HIGHER_STATE__NEVER_RETURN_TO_IDENTICAL_STATE",
+    "return_rule": "RETURN != RESET",
+    "delta_rule": "RETURN + MEMORY + REAL_DELTA = SPIRAL",
+    "plateau_rule": "NoDelta => PLATEAU_REACHED",
+    "turn4_trigger": "NEW_RAW_DATA_OR_RESOLVED_BLOCKER",
+    "semantic_hit_alone_can_promote": false
+  },
+  "registry_ingest": {
+    "source_repository": "Hawkar-usls/janus-meta-registry",
+    "access_mode": "READ_ONLY_FULL_VALID_CORPUS_INDEX",
+    "large_dump": {
+      "bounded_memory": true,
+      "json_scalar_stream": "ijson.parse",
+      "jsonl_ndjson": "line_stream",
+      "incremental_fingerprints": true,
+      "sqlite": "WAL+FTS5",
+      "malformed_file_policy": "QUARANTINE_AND_CONTINUE",
+      "malformed_file_may_poison_whole_corpus": false,
+      "source_path_and_json_path_provenance": true
+    },
+    "write_back": false,
+    "index_is_source_of_truth": false
+  },
+  "predictive_input": {
+    "class": "TYPING_COMPLETION",
+    "models": ["prefix", "1-4gram backoff", "local user-style boost", "accept/reject feedback", "beam phrase completion"],
+    "tap_to_accept": true,
+    "auto_execute": false,
+    "rank_share_is_truth_probability": false,
+    "raw_user_text_storage_required": false
+  },
+  "semantics": {
+    "class": "MEANING_ORIENTED_RETRIEVAL",
+    "methods": ["FTS5/BM25", "lexical overlap", "corpus co-occurrence expansion", "HRain structural projection", "iNaiHR associative projection"],
+    "association_is_evidence": false
+  },
+  "hypothesis_discrimination": {
+    "class": "GENERIC_EXPECTED_INFORMATION_GAIN",
+    "inspiration": "twenty-questions / Akinator-like narrowing",
+    "proprietary_akinator_code_used": false,
+    "candidate_state": "persistent weighted hypotheses",
+    "answers": ["YES", "NO", "PROBABLY", "PROBABLY_NOT", "UNKNOWN"],
+    "question_policy": "maximize expected entropy reduction",
+    "candidate_ready_gate": "posterior top >= 0.85 and margin >= 0.20"
+  },
+  "predictive_ai": {
+    "class": "WORLD_FORECAST",
+    "output": "probability, horizon, calibration metadata",
+    "calibration": ["Brier score", "log loss", "empirical base-rate shrinkage", "calibration bins"],
+    "resolution": "EXTERNAL_OBSERVED_OUTCOME_ONLY",
+    "aura_may_resolve_own_forecast": false,
+    "forecast_probability_is_future_fact": false
+  },
+  "persistent_runtime": {
+    "local_template": "deploy/docker-compose.aura-intelligence-v3.yml",
+    "registry_watcher": "tools/aura_registry_watch_v3.py",
+    "http_service": "tools/aura_intelligence_http_v3.py",
+    "restart_policy": "unless-stopped",
+    "continuous_runtime_claim_requires_observed_running_process": true
+  },
+  "canonical_laws": [
+    "INDEX != SOURCE_OBJECT",
+    "ASSOCIATION != EVIDENCE",
+    "TYPING_PREDICTION != WORLD_FORECAST",
+    "QUESTION_INFORMATION_GAIN != ANSWER_TRUTH",
+    "FORECAST_PROBABILITY != FUTURE_FACT",
+    "POSITION_MAY_REPEAT_BUT_STATE_MUST_ADVANCE",
+    "SEMANTIC_HIT_ALONE != STATE_DELTA",
+    "RETURN != RESET",
+    "NoDelta => PLATEAU_REACHED"
+  ]
+}
