@@ -9,11 +9,12 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from aura_5d_spiral_v2 import run as run_5d
+from aura_predictive_input_v2 import AuraPredictiveInput
 from aura_semantic_predictive_core_v2 import AuraIndex
 
 
 class AuraHandler(BaseHTTPRequestHandler):
-    server_version = "AuraIntelligenceV2/1.0"
+    server_version = "AuraIntelligenceV2/1.1"
 
     def _json(self, status: int, value: object) -> None:
         raw = json.dumps(value, ensure_ascii=False).encode("utf-8")
@@ -27,35 +28,71 @@ class AuraHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(raw)
 
+    def _db_path(self) -> str:
+        return str(getattr(self.server, "db_path"))
+
     def _db(self) -> AuraIndex:
-        return AuraIndex(getattr(self.server, "db_path"))
+        return AuraIndex(self._db_path())
+
+    def _predictive(self) -> AuraPredictiveInput:
+        return AuraPredictiveInput(self._db_path())
 
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
         qs = parse_qs(parsed.query)
         q = (qs.get("q") or [""])[0]
         limit = min(32, max(1, int((qs.get("limit") or ["8"])[0])))
-        idx = self._db()
         try:
             if parsed.path == "/health":
-                out = {"status": "OK", "service": "AURA_SEMANTIC_PREDICTIVE_SPIRAL_V2", "db_exists": Path(getattr(self.server, "db_path")).exists()}
+                out = {
+                    "status": "OK",
+                    "service": "AURA_SEMANTIC_PREDICTIVE_SPIRAL_V2",
+                    "db_exists": Path(self._db_path()).exists(),
+                    "predictive_input": "TOKEN_AND_PHRASE_WITH_LOCAL_USER_STYLE",
+                    "command_authority": False,
+                }
             elif parsed.path == "/suggest":
-                out = {"query": q, "suggestions": idx.autocomplete(q, limit), "auto_execute": False}
+                pred = self._predictive()
+                try:
+                    out = {
+                        "query": q,
+                        "token_suggestions": pred.suggest_tokens(q, limit),
+                        "phrase_suggestions": pred.suggest_phrases(q, min(limit, 8), 3),
+                        "tap_to_accept": True,
+                        "auto_execute": False,
+                        "user_style_weight_boost": 4,
+                    }
+                finally:
+                    pred.close()
             elif parsed.path == "/search":
-                out = {"query": q, "hits": idx.semantic_search(q, limit), "semantic_match_is_evidence": False}
+                idx = self._db()
+                try:
+                    out = {"query": q, "hits": idx.semantic_search(q, limit), "semantic_match_is_evidence": False}
+                finally:
+                    idx.close()
             elif parsed.path == "/question":
-                out = idx.registry_discriminator(q, limit)
+                idx = self._db()
+                try:
+                    out = idx.registry_discriminator(q, limit)
+                finally:
+                    idx.close()
             elif parsed.path == "/stats":
-                out = idx.stats()
+                idx = self._db()
+                try:
+                    out = idx.stats()
+                finally:
+                    idx.close()
             elif parsed.path == "/forecast-prior":
-                out = idx.forecast_prior(q)
+                idx = self._db()
+                try:
+                    out = idx.forecast_prior(q)
+                finally:
+                    idx.close()
             else:
                 self._json(404, {"error": "NOT_FOUND"}); return
             self._json(200, out)
         except Exception as exc:
             self._json(400, {"error": str(exc)})
-        finally:
-            idx.close()
 
     def do_POST(self) -> None:
         parsed = urlparse(self.path)
@@ -67,19 +104,38 @@ class AuraHandler(BaseHTTPRequestHandler):
             if not isinstance(payload, dict):
                 raise ValueError("JSON_OBJECT_REQUIRED")
             if parsed.path == "/spiral":
-                out = run_5d(payload, db_path=getattr(self.server, "db_path"))
+                out = run_5d(payload, db_path=self._db_path())
+            elif parsed.path == "/learn-style":
+                if payload.get("explicit_human_input") is not True:
+                    raise ValueError("EXPLICIT_HUMAN_INPUT_REQUIRED")
+                text = str(payload.get("text", "")).strip()
+                if not text:
+                    raise ValueError("TEXT_REQUIRED")
+                pred = self._predictive()
+                try:
+                    out = pred.learn_user_style(text)
+                finally:
+                    pred.close()
+                out["explicit_human_input"] = True
+                out["raw_text_stored"] = False
             elif parsed.path == "/forecast-open":
                 idx = self._db()
                 try:
                     out = idx.open_forecast(
-                        str(payload["task_key"]), float(payload["probability"]), str(payload.get("horizon", "")), payload.get("features", {}), str(payload.get("model_version", "AURA_V2"))
+                        str(payload["task_key"]),
+                        float(payload["probability"]),
+                        str(payload.get("horizon", "")),
+                        payload.get("features", {}),
+                        str(payload.get("model_version", "AURA_V2")),
                     )
                 finally:
                     idx.close()
             elif parsed.path == "/forecast-resolve":
                 idx = self._db()
                 try:
-                    out = idx.resolve_forecast(str(payload["forecast_id"]), int(payload["outcome"]), resolver=str(payload["resolver"]))
+                    out = idx.resolve_forecast(
+                        str(payload["forecast_id"]), int(payload["outcome"]), resolver=str(payload["resolver"])
+                    )
                 finally:
                     idx.close()
             else:
@@ -109,8 +165,12 @@ def main() -> int:
         "port": args.port,
         "db": str(Path(args.db).resolve()),
         "default_bind_is_localhost": args.host in {"127.0.0.1", "localhost", "::1"},
-        "endpoints": ["/health", "/suggest", "/search", "/question", "/stats", "/forecast-prior", "/spiral", "/forecast-open", "/forecast-resolve"],
-        "command_authority": False
+        "endpoints": [
+            "/health", "/suggest", "/search", "/question", "/stats", "/forecast-prior",
+            "/spiral", "/learn-style", "/forecast-open", "/forecast-resolve"
+        ],
+        "predictive_input": "TOKEN_AND_PHRASE_WITH_LOCAL_USER_STYLE",
+        "command_authority": False,
     }, ensure_ascii=False), flush=True)
     server.serve_forever()
     return 0
