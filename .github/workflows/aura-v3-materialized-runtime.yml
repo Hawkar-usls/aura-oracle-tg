@@ -1,0 +1,83 @@
+name: Aura v3 Materialized Runtime
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 * * * *'
+  push:
+    paths:
+      - '.github/workflows/aura-v3-materialized-runtime.yml'
+      - 'tools/aura_v3_materialize.py'
+      - '.janus/bootstrap/aura_v3_payload.part*'
+      - 'contracts/AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V3.json'
+      - '.janus/AURA_SEMANTIC_PREDICTIVE_SPIRAL_V3.json'
+permissions:
+  contents: write
+jobs:
+  aura-v3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Aura
+        uses: actions/checkout@v4
+        with:
+          path: aura
+      - name: Checkout JANUS Meta Registry
+        uses: actions/checkout@v4
+        with:
+          repository: Hawkar-usls/janus-meta-registry
+          path: registry
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Materialize and validate v3
+        working-directory: aura
+        run: |
+          python tools/aura_v3_materialize.py --repo . --dest . --receipt runtime-materialize-v3.json
+          python -m pip install -r requirements-aura-intelligence.txt
+          python -m py_compile tools/aura_semantic_predictive_core_v3.py tools/aura_predictive_input_v3.py tools/aura_5d_spiral_v3.py tools/aura_registry_watch_v3.py tools/aura_intelligence_http_v3.py tools/aura_full_registry_gate_v3.py
+          python -m json.tool contracts/AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V3.json >/dev/null
+          python -m unittest -v tests/test_aura_semantic_predictive_spiral_v3.py
+      - name: Full Meta Registry v3 gate
+        id: gate
+        working-directory: aura
+        continue-on-error: true
+        run: |
+          mkdir -p runtime
+          python tools/aura_full_registry_gate_v3.py ../registry/data --db runtime/aura_meta_v3.sqlite3 --receipt runtime/full-registry-v3-receipt.json
+      - name: Persist receipt
+        if: always()
+        working-directory: aura
+        shell: bash
+        run: |
+          test -f runtime/full-registry-v3-receipt.json || python - <<'PY'
+          import json, os
+          from pathlib import Path
+          Path('runtime').mkdir(exist_ok=True)
+          Path('runtime/full-registry-v3-receipt.json').write_text(json.dumps({
+            'schema':'janus.aura.full_meta_registry.gate_receipt.v3',
+            'status':'REJECT_GATE_DID_NOT_EMIT_RECEIPT',
+            'github_actor':os.environ.get('GITHUB_ACTOR'),
+            'github_run_id':os.environ.get('GITHUB_RUN_ID'),
+            'source_commit':os.environ.get('GITHUB_SHA'),
+            'registry_write_performed':False,
+            'world_truth':False
+          },indent=2)+'\n')
+          PY
+          mkdir -p receipts
+          cp runtime/full-registry-v3-receipt.json receipts/AURA_SEMANTIC_PREDICTIVE_V3_LATEST.json
+          git config user.name 'janus-aura-bot'
+          git config user.email 'janus-aura-bot@users.noreply.github.com'
+          git add receipts/AURA_SEMANTIC_PREDICTIVE_V3_LATEST.json
+          git commit -m 'Receipt: Aura full Meta Registry gate v3' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Enforce gate
+        working-directory: aura
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('runtime/full-registry-v3-receipt.json').read_text())
+          if not str(r.get('status','')).startswith('PASS_'):
+              raise SystemExit('FULL_META_REGISTRY_V3_GATE_REJECTED: '+str(r))
+          PY
