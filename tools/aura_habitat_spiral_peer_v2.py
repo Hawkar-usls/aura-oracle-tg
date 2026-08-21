@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from aura_5d_spiral_v2 import run as run_5d
+from aura_predictive_input_v2 import AuraPredictiveInput
 from aura_semantic_predictive_core_v2 import AuraIndex, canonical_bytes
 
 PACKET_SCHEMA = "janus.aura_spi.spiral_event.v1"
@@ -51,6 +52,13 @@ def validate(packet: dict[str, Any]) -> None:
         raise ValueError("AURA_INTENT_REPLACEMENT_REJECT")
 
 
+def is_explicit_human_style_event(packet: dict[str, Any]) -> bool:
+    if packet.get("typing_style_event") is True:
+        return True
+    ref = str(packet.get("source_ref") or "").upper()
+    return "EXPLICIT_HUMAN" in ref or ref.startswith("HAWKAR")
+
+
 def reflect(packet: dict[str, Any]) -> dict[str, Any]:
     validate(packet)
     text = packet["trigger_text"]
@@ -60,6 +68,19 @@ def reflect(packet: dict[str, Any]) -> dict[str, Any]:
     db_path = os.environ.get("AURA_INTELLIGENCE_DB", "state/aura_intelligence.sqlite3")
     db_available = Path(db_path).exists()
 
+    style_learning = {"status": "NOT_ATTEMPTED", "raw_text_stored": False}
+    typing_tokens: list[dict[str, Any]] = []
+    typing_phrases: list[dict[str, Any]] = []
+    if db_available:
+        pred = AuraPredictiveInput(db_path)
+        try:
+            if is_explicit_human_style_event(packet):
+                style_learning = pred.learn_user_style(text)
+            typing_tokens = pred.suggest_tokens(text, 8)
+            typing_phrases = pred.suggest_phrases(text, 5, 3)
+        finally:
+            pred.close()
+
     deep = run_5d({
         "text": text,
         "generation": packet["generation"],
@@ -68,7 +89,6 @@ def reflect(packet: dict[str, Any]) -> dict[str, Any]:
     }, db_path=db_path if db_available else None)
 
     semantic_hits = deep["axes"]["D4_INAIHR_ASSOCIATIVE"].get("semantic_hits", [])
-    typing = deep.get("predictive_input", {}).get("suggestions", [])
     next_question = deep.get("information_gain")
 
     forecast_prior = None
@@ -128,7 +148,12 @@ def reflect(packet: dict[str, Any]) -> dict[str, Any]:
         },
         "predictive_input": {
             "enabled": True,
-            "suggestions": typing,
+            "token_suggestions": typing_tokens,
+            "phrase_suggestions": typing_phrases,
+            "style_learning": style_learning,
+            "user_style_weight_boost": 4,
+            "raw_user_text_stored_for_style_learning": False,
+            "tap_to_accept": True,
             "auto_execute": False,
             "distinct_from_world_forecasting": True,
         },
