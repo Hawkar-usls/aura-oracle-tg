@@ -1,0 +1,19 @@
+{
+  "schema": "janus.unexplained_alignment.link.v1",
+  "repository": "Hawkar-usls/aura-oracle-tg",
+  "canonical_principle": "Hawkar-usls/janus-meta-registry:data/JANUS-UNEXPLAINED-ALIGNMENT-PRINCIPLE-2026-08-21-v1.0.json",
+  "role": "INTEREST_ELEVATION_AND_HYPOTHESIS_GENERATION",
+  "on_unexplained_alignment": {
+    "interest_priority": "ELEVATED",
+    "analysis_mode": "SPIRAL_5D",
+    "must_emit": ["RECOVERED_AT_ORIGIN", "ALTERNATIVE_EXPLANATIONS", "INFORMATION_GAIN_QUESTION", "NEXT_GATE"],
+    "may_raise_truth_weight": false,
+    "may_resolve_own_forecast": false
+  },
+  "laws": [
+    "COINCIDENCE != CAUSALITY",
+    "COINCIDENCE != AUTOMATIC_DISMISSAL",
+    "UNEXPLAINED_ALIGNMENT -> INCREASE_ATTENTION_NOT_TRUTH",
+    "AURA_ASSOCIATION != EVIDENCE"
+  ]
+}
