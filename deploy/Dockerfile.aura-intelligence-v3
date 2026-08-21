@@ -1,0 +1,12 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements-aura-intelligence.txt /app/
+RUN pip install --no-cache-dir -r requirements-aura-intelligence.txt
+COPY tools /app/tools
+COPY .janus/bootstrap /app/.janus/bootstrap
+RUN python tools/aura_v3_materialize.py --repo /app --dest /app --receipt /app/aura-v3-materialize-receipt.json \
+ && python -m py_compile tools/aura_semantic_predictive_core_v3.py tools/aura_predictive_input_v3.py tools/aura_5d_spiral_v3.py tools/aura_registry_watch_v3.py tools/aura_intelligence_http_v3.py tools/aura_full_registry_gate_v3.py
+ENV PYTHONUNBUFFERED=1
+ENV AURA_INTELLIGENCE_DB=/state/aura_intelligence.sqlite3
+EXPOSE 8765
+CMD ["python","tools/aura_intelligence_http_v3.py","--host","0.0.0.0","--port","8765"]
