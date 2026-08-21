@@ -2,8 +2,8 @@
   "schema": "janus.aura.full_meta_registry.gate_receipt.v2",
   "status": "REJECT_RUNTIME_EXCEPTION",
   "github_actor": "Hawkar-usls",
-  "github_run_id": "32478146204",
-  "source_commit": "2e2f00ef24205d50d05810c85d20cb5603b17f3d",
+  "github_run_id": "32485409646",
+  "source_commit": "9521136e982d033e33f50b11c15aaaaf8369a598",
   "registry_root": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data",
   "registry_write_performed": false,
   "index_is_source_of_truth": false,
@@ -26,5 +26,5 @@
     "               ^^^^^^^^^^^^^^^^^^^^^^",
     "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 9 column 19 (char 903)"
   ],
-  "elapsed_seconds": 3.657508
+  "elapsed_seconds": 3.751328
 }
