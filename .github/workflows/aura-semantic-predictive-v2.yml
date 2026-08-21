@@ -13,6 +13,7 @@ on:
       - 'tools/aura_intelligence_http_v2.py'
       - 'tests/test_aura_semantic_predictive_spiral_v2.py'
       - 'tests/test_aura_predictive_input_v2.py'
+      - 'tests/test_aura_bom_ingest_v2.py'
       - '.github/workflows/aura-semantic-predictive-v2.yml'
   pull_request:
     paths:
@@ -26,6 +27,7 @@ on:
       - 'tools/aura_intelligence_http_v2.py'
       - 'tests/test_aura_semantic_predictive_spiral_v2.py'
       - 'tests/test_aura_predictive_input_v2.py'
+      - 'tests/test_aura_bom_ingest_v2.py'
       - '.github/workflows/aura-semantic-predictive-v2.yml'
 
 permissions:
@@ -58,3 +60,4 @@ jobs:
           python -m unittest -v
           tests/test_aura_semantic_predictive_spiral_v2.py
           tests/test_aura_predictive_input_v2.py
+          tests/test_aura_bom_ingest_v2.py
