@@ -19,6 +19,7 @@ WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁёЇїІіЄєҐґ0-9_𓀀-𓿿]+", re
 TOKEN_MIN = 2
 DEFAULT_STREAM_THRESHOLD = 16 * 1024 * 1024
 DEFAULT_BATCH = 512
+UTF8_BOM = b"\xef\xbb\xbf"
 STOP = {
     "the", "and", "for", "with", "from", "that", "this", "или", "это", "как", "для", "что",
     "она", "они", "его", "ему", "наш", "наша", "через", "при", "без", "будет", "быть", "так",
@@ -70,6 +71,9 @@ def flatten_scalars(value: Any, *, prefix: str = "$", max_fields: int = 256, max
 
 def first_nonspace(path: Path) -> str:
     with path.open("rb") as f:
+        prefix = f.read(3)
+        if prefix != UTF8_BOM:
+            f.seek(0)
         while True:
             b = f.read(1)
             if not b:
@@ -82,7 +86,7 @@ def first_nonspace(path: Path) -> str:
 def iter_json_records(path: Path, *, stream_threshold: int = DEFAULT_STREAM_THRESHOLD) -> Iterator[tuple[str, Any]]:
     suffix = path.suffix.lower()
     if suffix in {".jsonl", ".ndjson"}:
-        with path.open("r", encoding="utf-8") as f:
+        with path.open("r", encoding="utf-8-sig") as f:
             for line_no, line in enumerate(f, 1):
                 line = line.strip()
                 if not line:
@@ -92,7 +96,7 @@ def iter_json_records(path: Path, *, stream_threshold: int = DEFAULT_STREAM_THRE
 
     size = path.stat().st_size
     if size <= stream_threshold:
-        with path.open("r", encoding="utf-8") as f:
+        with path.open("r", encoding="utf-8-sig") as f:
             root = json.load(f)
         if isinstance(root, list):
             for i, item in enumerate(root):
@@ -114,6 +118,9 @@ def iter_json_records(path: Path, *, stream_threshold: int = DEFAULT_STREAM_THRE
 
     lead = first_nonspace(path)
     with path.open("rb") as f:
+        prefix = f.read(3)
+        if prefix != UTF8_BOM:
+            f.seek(0)
         if lead == "[":
             for i, item in enumerate(ijson.items(f, "item")):
                 yield f"$[{i}]", item
@@ -562,7 +569,7 @@ def update_candidates(candidates: list[dict[str, Any]], feature: str, answer: st
 def parse_json_arg(value: str) -> Any:
     p = Path(value)
     if p.exists():
-        return json.loads(p.read_text(encoding="utf-8"))
+        return json.loads(p.read_text(encoding="utf-8-sig"))
     return json.loads(value)
 
 
