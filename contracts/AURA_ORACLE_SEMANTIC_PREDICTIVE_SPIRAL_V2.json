@@ -1,0 +1,148 @@
+{
+  "schema": "janus.aura.semantic_predictive_spiral.contract.v2",
+  "contract_id": "AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V2",
+  "status": "FROZEN_BEFORE_RUNTIME_VALIDATION",
+  "created_at_local": "2026-08-21T14:13:00+03:00",
+  "repository": "Hawkar-usls/aura-oracle-tg",
+  "primary_interchange": "JSON",
+  "purpose": "Give Aura Oracle permanent access to JANUS JSON-first mirror/reverse/deep-analysis capabilities, large-registry semantic ingestion, predictive text, information-gain questioning and bounded probabilistic forecasting while preserving scientific and command-authority firewalls.",
+  "geometry": {
+    "forbidden_model": "A -> B -> C -> D -> A",
+    "canonical_spiral": "ORIGIN_n -> FORWARD_n -> REVERSE_n -> HRAIN_STRUCTURAL_n -> INAIHR_ASSOCIATIVE_n -> INFORMATION_GAIN_n -> PREDICTIVE_PRIOR_n -> DEMIHEAD_n -> VERIFIED_RETURN_OR_HOLD_n -> ORIGIN_PRIME_(n+1)",
+    "laws": [
+      "POSITION_MAY_REPEAT_BUT_STATE_MUST_ADVANCE",
+      "RETURN != RESET",
+      "CYCLE_WITHOUT_STATE_DELTA = STALL",
+      "ORIGIN_PRIME_(n+1) MUST RECORD WHAT CHANGED FROM ORIGIN_n"
+    ]
+  },
+  "deep_analysis": {
+    "permanent_capability": true,
+    "default_mode": "SPIRAL_5D_ADAPTIVE",
+    "axes": {
+      "D1_FORWARD": "Literal and local dependency pass from origin to tail.",
+      "D2_REVERSE": "Tail-to-origin pass recovering backward scope, contradictions, omitted prerequisites and late constraints.",
+      "D3_HRAIN_STRUCTURAL": "Graph topology, dependency, gate, cycle, bottleneck and symmetry projection compatible with LEFT_HRAIN / STRUCTURAL_CONTEXT.",
+      "D4_INAIHR_ASSOCIATIVE": "Semantic association, analogy, distant-link and counterexample projection compatible with RIGHT_INAIHR / ASSOCIATIVE_CONTEXT.",
+      "D5_SPIRAL_ABSTRACTION": "Move across abstraction levels, then descend to source anchors; surviving state becomes an ORIGIN_PRIME candidate rather than returning to the same state."
+    },
+    "graph_growth": {
+      "tail_only": false,
+      "allowed_patch_ops": [
+        "INSERT_BEFORE",
+        "INSERT_AFTER",
+        "INSERT_CHILD",
+        "INSERT_SIBLING",
+        "SPLICE_BETWEEN",
+        "FORK_BRANCH",
+        "LINK_DISTANT_NODES",
+        "PROMOTE_TO_ABSTRACTION",
+        "DEMOTE_TO_INSTANCE",
+        "ANNOTATE_NODE",
+        "ANNOTATE_EDGE"
+      ],
+      "source_text_mutation": false,
+      "every_inferred_node_requires_source_anchor_or_explicit_unanchored_status": true
+    },
+    "terminal_protocol": "Hawkar-usls/-Terminal-for-Janus/contracts/JANUS_JSON_5D_DEEP_ANALYSIS_PROTOCOL-v1.0.json",
+    "hrain_repository": "Hawkar-usls/Hrain",
+    "inaihr_repository": "Hawkar-usls/iNaiHR",
+    "demihead_repository": "Hawkar-usls/Demi_Head"
+  },
+  "registry_ingest": {
+    "source_repository": "Hawkar-usls/janus-meta-registry",
+    "access_mode": "READ_ONLY_CORPUS_INGEST",
+    "persistent_local_index": "SQLite/WAL + FTS5",
+    "accepted_inputs": ["directory of JSON files", "JSON", "JSONL", "NDJSON", "root JSON array", "root JSON object"],
+    "large_dump_strategy": [
+      "never require the full registry corpus in RAM",
+      "process files incrementally",
+      "stream JSONL line by line",
+      "stream oversized JSON arrays/objects with ijson",
+      "cache file fingerprints and skip unchanged files",
+      "commit transactions in bounded batches",
+      "store source path and JSON path provenance for every indexed record"
+    ],
+    "full_write_access_to_registry": false,
+    "registry_truth_authority": false,
+    "index_is_source_of_truth": false,
+    "laws": [
+      "INDEX != SOURCE_OBJECT",
+      "SEMANTIC_MATCH != EVIDENCE",
+      "REGISTRY_READ_ACCESS != REGISTRY_WRITE_AUTHORITY",
+      "PRIVATE_CONTENT != PUBLIC_INDEX"
+    ]
+  },
+  "predictive_input": {
+    "enabled": true,
+    "purpose": "Typing acceleration and next-token/next-phrase suggestions, distinct from world-event forecasting.",
+    "models": ["prefix vocabulary", "unigram", "bigram", "trigram", "4-gram backoff"],
+    "learning_sources": ["explicit user text", "approved local corpus", "JANUS Meta Registry read-only index"],
+    "personal_style_memory": "LOCAL_PERSISTENT_OPTIONAL",
+    "output": "ranked suggestions with scores and provenance",
+    "may_execute_suggestion_automatically": false
+  },
+  "semantic_layer": {
+    "enabled": true,
+    "functions": [
+      "meaning-oriented retrieval",
+      "context expansion",
+      "synonym/near-concept candidate generation",
+      "cross-document relation discovery",
+      "HRain structural projection",
+      "iNaiHR associative projection"
+    ],
+    "default_retrieval": "FTS/BM25 + lexical semantic overlap + graph context",
+    "optional_embedding_backend": true,
+    "association_is_evidence": false
+  },
+  "twenty_questions_engine": {
+    "enabled": true,
+    "class": "GENERIC_BAYESIAN_INFORMATION_GAIN_NOT_PROPRIETARY_AKINATOR_CODE",
+    "state": "weighted candidate hypotheses",
+    "question_policy": "maximize expected entropy reduction / information gain",
+    "answers": ["YES", "NO", "PROBABLY", "PROBABLY_NOT", "UNKNOWN"],
+    "update": "Bayesian-like posterior reweighting with smoothing",
+    "registry_mode": "top semantic matches may become temporary candidates; discriminating features produce next questions",
+    "question_selection_is_truth": false
+  },
+  "predictive_ai": {
+    "enabled": true,
+    "scope": "probabilistic forecast proposals and calibration, not prophecy",
+    "forecast_record": ["forecast_id", "task_key", "created_at", "horizon", "features_hash", "probability", "model_version", "status"],
+    "resolution": "EXTERNAL_OBSERVED_OUTCOME_ONLY",
+    "metrics": ["Brier score", "log loss", "calibration by task key"],
+    "aura_may_propose_probability": true,
+    "aura_may_resolve_own_forecast": false,
+    "aura_guess_is_predictive_ground_truth": false,
+    "world_truth_authority": false
+  },
+  "authority": {
+    "may_train_semantic_memory": true,
+    "may_train_typing_predictor": true,
+    "may_train_world_predictive_head_on_unresolved_data": false,
+    "may_train_world_predictive_head_on_externally_resolved_outcomes": true,
+    "predictive_label_authority": false,
+    "scientific_evidence_authority": false,
+    "command_authority": false,
+    "may_replace_primary_intent": false,
+    "external_effect_authority": false
+  },
+  "continuity": {
+    "habitat_memory": true,
+    "fresh_external_trigger_required_for_new_dialogue_generation": true,
+    "idle_infinite_self_chat": false,
+    "continuous_runtime_claim_requires_real_running_process": true
+  },
+  "canonical_laws": [
+    "AURA_OUTPUT != EVIDENCE",
+    "AURA_OUTPUT != PREDICTIVE_GROUND_TRUTH",
+    "PREDICTIVE_INPUT != PREDICTIVE_WORLD_MODEL",
+    "ASSOCIATION != EVIDENCE",
+    "QUESTION_INFORMATION_GAIN != ANSWER_TRUTH",
+    "FORECAST_PROBABILITY != FUTURE_FACT",
+    "POSITION_MAY_REPEAT_BUT_STATE_MUST_ADVANCE",
+    "RETURN != RESET",
+    "CONTINUOUS != INFINITE_SELF_CHAT"
+  ]
+}
