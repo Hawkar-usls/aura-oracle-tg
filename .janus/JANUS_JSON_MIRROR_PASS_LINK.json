@@ -1,0 +1,20 @@
+{
+  "schema": "janus.aura.json_mirror_pass_link.v1",
+  "source_repository": "Hawkar-usls/aura-oracle-tg",
+  "target_repository": "Hawkar-usls/-Terminal-for-Janus",
+  "target_contract": "contracts/JANUS_JSON_MIRROR_PASS_PROTOCOL-v1.0.json",
+  "mode": "JSON_PEER_WITH_FORWARD_REVERSE_REFLECTION",
+  "requirements": {
+    "stdin_stdout_json": true,
+    "forward_pass_context": true,
+    "reverse_pass_context": true,
+    "recovered_at_origin_first": true,
+    "source_trace_required": true,
+    "intent_replacement_forbidden": true
+  },
+  "authority": {
+    "aura_output_is_evidence": false,
+    "aura_output_is_predictive_label": false,
+    "reverse_association_is_hidden_truth": false
+  }
+}
