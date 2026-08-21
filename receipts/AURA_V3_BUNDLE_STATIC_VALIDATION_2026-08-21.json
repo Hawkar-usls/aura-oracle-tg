@@ -1,0 +1,48 @@
+{
+  "schema": "janus.aura.v3.bundle_static_validation.receipt.v1",
+  "status": "PASS_BUNDLE_MATERIALIZE_AND_STATIC_COMPILE_LOCAL",
+  "validated_at_local": "2026-08-21T14:36:00+03:00",
+  "source_bridge": "Hawkar-usls/janus-meta-registry/data/JANUS-FORTUNA-SPIRAL-RIBBON-GIFT-v1.0.json",
+  "bundle": {
+    "gzip_bytes": 20331,
+    "base64_chars": 27108,
+    "parts": [
+      {"path": ".janus/bootstrap/aura_v3_payload.part00", "bytes": 6800, "git_blob_sha1": "831dbb3eb017d0c2530ea833e4cf109a29cd583c"},
+      {"path": ".janus/bootstrap/aura_v3_payload.part01", "bytes": 6800, "git_blob_sha1": "cded25c6f9c3afedef2137e38d8df294b053fee4"},
+      {"path": ".janus/bootstrap/aura_v3_payload.part02", "bytes": 6800, "git_blob_sha1": "5dca9c70678458f468c57405dc4035714d762e52"},
+      {"path": ".janus/bootstrap/aura_v3_payload.part03", "bytes": 6708, "git_blob_sha1": "a8bdc711e50cf997dea8e4fce7b5c81e57c458b7"}
+    ],
+    "github_blob_hashes_match_local_source": true,
+    "safe_materializer": "tools/aura_v3_materialize.py"
+  },
+  "materialized_files": [
+    "tools/aura_semantic_predictive_core_v3.py",
+    "tools/aura_predictive_input_v3.py",
+    "tools/aura_5d_spiral_v3.py",
+    "tools/aura_registry_watch_v3.py",
+    "tools/aura_intelligence_http_v3.py",
+    "tools/aura_full_registry_gate_v3.py",
+    "tests/test_aura_semantic_predictive_spiral_v3.py",
+    "contracts/AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V3.json",
+    ".janus/AURA_SEMANTIC_PREDICTIVE_SPIRAL_V3.json",
+    "deploy/docker-compose.aura-intelligence-v3.yml"
+  ],
+  "static_checks": {
+    "bundle_base64_decode": "PASS",
+    "gzip_tar_extract": "PASS",
+    "safe_path_guard": "PRESENT",
+    "python_py_compile_all_v3_tools_and_tests": "PASS",
+    "contract_json_parse": "PASS"
+  },
+  "runtime_truth": {
+    "full_meta_registry_v3_gate_confirmed": false,
+    "persistent_process_currently_observed": false,
+    "reason": "No confirmed GitHub Actions v3 runtime receipt was available during this change set; do not promote static validation to runtime PASS."
+  },
+  "expected_runtime_gate": {
+    "first_novel_fortuna_delta": "ADVANCED_TO_ORIGIN_PRIME",
+    "exact_repeat_same_session": "PLATEAU_REACHED",
+    "semantic_hit_alone": "PLATEAU_REACHED",
+    "malformed_json": "QUARANTINE_AND_CONTINUE"
+  }
+}
