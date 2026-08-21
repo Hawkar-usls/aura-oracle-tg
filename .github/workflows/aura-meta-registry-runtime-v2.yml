@@ -1,0 +1,132 @@
+name: Aura Meta Registry Runtime v2
+
+on:
+  push:
+    paths:
+      - '.github/workflows/aura-meta-registry-runtime-v2.yml'
+      - 'contracts/AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V2.json'
+      - 'tools/aura_semantic_predictive_core_v2.py'
+      - 'tools/aura_5d_spiral_v2.py'
+      - 'tools/aura_habitat_spiral_peer_v2.py'
+      - 'tests/test_aura_semantic_predictive_spiral_v2.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  registry-runtime:
+    if: github.actor == 'Hawkar-usls'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Aura
+        uses: actions/checkout@v4
+        with:
+          path: aura
+      - name: Checkout JANUS Meta Registry read-only corpus
+        uses: actions/checkout@v4
+        with:
+          repository: Hawkar-usls/janus-meta-registry
+          path: registry
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install streaming JSON dependency
+        working-directory: aura
+        run: python -m pip install -r requirements-aura-intelligence.txt
+      - name: Run Aura v2 unit tests
+        working-directory: aura
+        run: python -m unittest -v tests/test_aura_semantic_predictive_spiral_v2.py
+      - name: Ingest complete Meta Registry data directory
+        working-directory: aura
+        shell: bash
+        run: |
+          mkdir -p runtime
+          python tools/aura_semantic_predictive_core_v2.py --db runtime/aura_meta.sqlite3 ingest ../registry/data > runtime/ingest.json
+          python tools/aura_semantic_predictive_core_v2.py --db runtime/aura_meta.sqlite3 stats > runtime/stats.json
+          python tools/aura_semantic_predictive_core_v2.py --db runtime/aura_meta.sqlite3 search "ORIGIN_PRIME reverse tranception" --limit 8 > runtime/search.json
+          python tools/aura_semantic_predictive_core_v2.py --db runtime/aura_meta.sqlite3 suggest "janus " --limit 8 > runtime/suggest.json
+          python tools/aura_semantic_predictive_core_v2.py --db runtime/aura_meta.sqlite3 registry-question "ORIGIN_PRIME reverse tranception" --limit 8 > runtime/question.json
+      - name: Execute Aura 5D spiral against registry index
+        working-directory: aura
+        shell: bash
+        env:
+          AURA_INTELLIGENCE_DB: runtime/aura_meta.sqlite3
+        run: |
+          cat > runtime/spiral-input.json <<'JSON'
+          {
+            "generation": 1,
+            "intent_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "source_ref": "AURA_META_REGISTRY_RUNTIME_V2",
+            "text": "Пройди JANUS Meta Registry через Reverse и Tranception. Но обязательно верни найденное к истоку и не замыкай состояние в круг. Следующий виток должен стать ORIGIN_PRIME."
+          }
+          JSON
+          python tools/aura_5d_spiral_v2.py runtime/spiral-input.json --db runtime/aura_meta.sqlite3 -o runtime/spiral-output.json
+      - name: Verify invariants and build receipt
+        working-directory: aura
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          ingest=json.loads(Path('runtime/ingest.json').read_text())
+          stats=json.loads(Path('runtime/stats.json').read_text())
+          search=json.loads(Path('runtime/search.json').read_text())
+          suggest=json.loads(Path('runtime/suggest.json').read_text())
+          question=json.loads(Path('runtime/question.json').read_text())
+          spiral=json.loads(Path('runtime/spiral-output.json').read_text())
+          assert ingest['files_seen'] > 0, ingest
+          assert ingest['files_indexed'] > 0, ingest
+          assert stats['indexed_records'] > 0, stats
+          assert len(search) > 0, search
+          assert spiral['analysis_mode'] == 'SPIRAL_5D', spiral
+          assert spiral['integrity']['source_text_mutated'] is False, spiral
+          assert spiral['spiral_status'] == 'ADVANCED_TO_ORIGIN_PRIME', spiral
+          op=spiral['axes']['D5_SPIRAL_ABSTRACTION']['origin_prime']
+          assert op and op['generation'] == 2, op
+          assert spiral['origin_state_hash'] != op['origin_prime_state_hash'], spiral
+          receipt={
+            'schema':'janus.aura.semantic_predictive_spiral.runtime_receipt.v2',
+            'status':'PASS_FULL_META_REGISTRY_REFERENCE_RUNTIME',
+            'github_actor':os.environ.get('GITHUB_ACTOR'),
+            'github_run_id':os.environ.get('GITHUB_RUN_ID'),
+            'source_commit':os.environ.get('GITHUB_SHA'),
+            'registry_files_seen':ingest['files_seen'],
+            'registry_files_indexed':ingest['files_indexed'],
+            'registry_records_indexed':stats['indexed_records'],
+            'vocabulary_size':stats['vocabulary_size'],
+            'semantic_search_hits':len(search),
+            'predictive_input_suggestions':len(suggest),
+            'information_gain_status':question.get('status'),
+            'spiral_generation_in':1,
+            'spiral_generation_out':op['generation'],
+            'origin_state_changed':spiral['origin_state_hash'] != op['origin_prime_state_hash'],
+            'recovered_at_origin_count':len(spiral['recovered_at_origin']),
+            'hrain_projection':spiral['axes']['D3_HRAIN_STRUCTURAL']['hemisphere'],
+            'inaihr_projection':spiral['axes']['D4_INAIHR_ASSOCIATIVE']['hemisphere'],
+            'source_mutated':False,
+            'registry_write_performed':False,
+            'aura_predictive_label_authority':False,
+            'world_truth':False,
+            'claim_ceiling':'REFERENCE_RUNTIME_PASS_NOT_SCIENTIFIC_TRUTH'
+          }
+          Path('runtime/receipt.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
+          PY
+      - name: Persist compact receipt into Aura
+        working-directory: aura
+        shell: bash
+        run: |
+          mkdir -p receipts
+          cp runtime/receipt.json receipts/AURA_SEMANTIC_PREDICTIVE_V2_LATEST.json
+          git config user.name "janus-aura-bot"
+          git config user.email "janus-aura-bot@users.noreply.github.com"
+          git add receipts/AURA_SEMANTIC_PREDICTIVE_V2_LATEST.json
+          git commit -m "Receipt: Aura semantic predictive Meta Registry runtime v2" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Upload local Aura index and traces
+        uses: actions/upload-artifact@v4
+        with:
+          name: AURA-SEMANTIC-PREDICTIVE-V2-RUNTIME
+          path: aura/runtime/
+          retention-days: 30
