@@ -248,16 +248,19 @@ def run(payload: dict[str, Any], *, db_path: str | Path | None = None, patches: 
     }
     delta_hash = digest(state_delta)
     advanced = bool(recovered or semantic_hits or applied)
-    origin_prime = None
+    origin_prime_candidate = None
     if advanced:
-        origin_prime = {
+        origin_prime_candidate = {
+            "candidate_kind": "ORIGIN_PRIME_CANDIDATE",
             "generation": generation + 1,
             "parent_origin_state_hash": origin_state_hash,
             "state_delta_sha256": delta_hash,
             "graph_sha256": digest(graph),
+            "advanced": True,
+            "promotion_status": "CANDIDATE_NOT_VERIFIED_RETURN",
             "rule": "POSITION_MAY_REPEAT_BUT_STATE_MUST_ADVANCE",
         }
-        origin_prime["origin_prime_state_hash"] = digest(origin_prime)
+        origin_prime_candidate["candidate_state_hash"] = digest(origin_prime_candidate)
 
     return {
         "schema": "janus.aura.spiral_5d.analysis.v2",
@@ -270,7 +273,12 @@ def run(payload: dict[str, Any], *, db_path: str | Path | None = None, patches: 
             "D2_REVERSE": {"recovered_count": len(recovered), "findings": recovered},
             "D3_HRAIN_STRUCTURAL": structural,
             "D4_INAIHR_ASSOCIATIVE": associative,
-            "D5_SPIRAL_ABSTRACTION": {"state_delta_sha256": delta_hash, "advanced": advanced, "origin_prime": origin_prime},
+            "D5_SPIRAL_ABSTRACTION": {
+                "state_delta_sha256": delta_hash,
+                "advanced": advanced,
+                "origin_prime_candidate": origin_prime_candidate,
+                "final_origin_prime_authority": False,
+            },
         },
         "graph": graph,
         "patch_receipts": applied,
@@ -281,15 +289,16 @@ def run(payload: dict[str, Any], *, db_path: str | Path | None = None, patches: 
             "agreement_is_truth": False,
             "disagreement_is_error": False,
             "requires_same_intent": True,
+            "final_promotion_required": True,
         },
-        "spiral_status": "ADVANCED_TO_ORIGIN_PRIME" if advanced else "HOLD_STALL_NO_STATE_DELTA",
+        "spiral_status": "CANDIDATE_STATE_ADVANCE" if advanced else "HOLD_STALL_NO_STATE_DELTA",
         "integrity": {
             "source_text_mutated": False,
             "source_text_sha256": sha256_json(text),
             "graph_sha256": digest(graph),
             "raw_private_chain_of_thought_stored": False,
         },
-        "claim_ceiling": "STRUCTURED_REASONING_GRAPH_AND_SEARCH_PRIORS_NOT_WORLD_TRUTH",
+        "claim_ceiling": "STRUCTURED_REASONING_GRAPH_AND_ORIGIN_PRIME_CANDIDATE_NOT_WORLD_TRUTH_NOT_FINAL_PROMOTION",
     }
 
 
@@ -300,8 +309,8 @@ def main() -> int:
     ap.add_argument("--patch")
     ap.add_argument("-o", "--output")
     args = ap.parse_args()
-    payload = json.loads(Path(args.input_json).read_text(encoding="utf-8"))
-    patches = json.loads(Path(args.patch).read_text(encoding="utf-8")) if args.patch else None
+    payload = json.loads(Path(args.input_json).read_text(encoding="utf-8-sig"))
+    patches = json.loads(Path(args.patch).read_text(encoding="utf-8-sig")) if args.patch else None
     out = run(payload, db_path=args.db, patches=patches)
     text = json.dumps(out, ensure_ascii=False, indent=2) + "\n"
     if args.output:
