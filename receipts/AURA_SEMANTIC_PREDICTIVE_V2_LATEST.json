@@ -2,29 +2,29 @@
   "schema": "janus.aura.full_meta_registry.gate_receipt.v2",
   "status": "REJECT_RUNTIME_EXCEPTION",
   "github_actor": "Hawkar-usls",
-  "github_run_id": "32477924418",
-  "source_commit": "07e7185767b774c260ab68c5595caedcb78580f4",
+  "github_run_id": "32478146204",
+  "source_commit": "2e2f00ef24205d50d05810c85d20cb5603b17f3d",
   "registry_root": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data",
   "registry_write_performed": false,
   "index_is_source_of_truth": false,
   "world_truth": false,
   "errors": [
-    "Unexpected UTF-8 BOM (decode using utf-8-sig): line 1 column 1 (char 0)"
+    "Expecting property name enclosed in double quotes: line 9 column 19 (char 903)"
   ],
   "exception_type": "JSONDecodeError",
   "traceback_tail": [
-    "               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
-    "  File \"/home/runner/work/aura-oracle-tg/aura-oracle-tg/aura/tools/aura_semantic_predictive_core_v2.py\", line 241, in ingest_file",
-    "    for json_path, value in iter_json_records(path, stream_threshold=stream_threshold):",
-    "  File \"/home/runner/work/aura-oracle-tg/aura-oracle-tg/aura/tools/aura_semantic_predictive_core_v2.py\", line 96, in iter_json_records",
-    "    root = json.load(f)",
-    "           ^^^^^^^^^^^^",
-    "  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/__init__.py\", line 293, in load",
     "    return loads(fp.read(),",
     "           ^^^^^^^^^^^^^^^^",
-    "  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/__init__.py\", line 335, in loads",
-    "    raise JSONDecodeError(\"Unexpected UTF-8 BOM (decode using utf-8-sig)\",",
-    "json.decoder.JSONDecodeError: Unexpected UTF-8 BOM (decode using utf-8-sig): line 1 column 1 (char 0)"
+    "  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/__init__.py\", line 346, in loads",
+    "    return _default_decoder.decode(s)",
+    "           ^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/decoder.py\", line 337, in decode",
+    "    obj, end = self.raw_decode(s, idx=_w(s, 0).end())",
+    "               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/decoder.py\", line 353, in raw_decode",
+    "    obj, end = self.scan_once(s, idx)",
+    "               ^^^^^^^^^^^^^^^^^^^^^^",
+    "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 9 column 19 (char 903)"
   ],
-  "elapsed_seconds": 2.553739
+  "elapsed_seconds": 3.657508
 }
