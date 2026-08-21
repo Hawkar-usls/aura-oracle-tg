@@ -1,0 +1,23 @@
+{
+  "schema": "janus.intelligence_step_policy.link.v1",
+  "node": "AURA_ORACLE",
+  "status": "ACTIVE_REFERENCE",
+  "canonical_policy": {
+    "repository": "Hawkar-usls/Hawkar-usls",
+    "path": "config/JANUS_INTELLIGENCE_STEP_POLICY-v1.0.json",
+    "blob_sha": "d276a7470702d216278473a83460c7aa204b76ac",
+    "commit": "e0402328ef584cc8bffeb569ca7b290c9c7dbdc4"
+  },
+  "role_binding": "GENERATE_BOUNDED_DIVERGENT_CANDIDATES_AND_COUNTERPOINTS",
+  "candidate_limit_default": 3,
+  "required_laws": [
+    "CREATIVE_SYNTHESIS != VERDICT_AUTHORITY",
+    "SYMBOLIC_REFLECTION != EVIDENCE",
+    "SURPRISE -> MORE_ATTENTION_NOT_TRUTH",
+    "CANDIDATES_MUST_REMAIN_REACTIVATABLE_SHADOWS_AFTER_REJECTION"
+  ],
+  "truth_authority": false,
+  "predictive_label_authority": false,
+  "command_authority_delta": 0,
+  "world_truth": false
+}
