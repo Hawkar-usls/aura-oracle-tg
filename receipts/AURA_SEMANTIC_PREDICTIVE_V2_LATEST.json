@@ -2,8 +2,8 @@
   "schema": "janus.aura.full_meta_registry.gate_receipt.v2",
   "status": "REJECT_GATE_DID_NOT_EMIT_RECEIPT",
   "github_actor": "Hawkar-usls",
-  "github_run_id": "32659174858",
-  "source_commit": "e0b48e78a555c4649c461b8e7b7cea80da337ff4",
+  "github_run_id": "32661599389",
+  "source_commit": "95c97f513f298674adb8fb3cd284d4774399ea8f",
   "registry_write_performed": false,
   "world_truth": false
 }
