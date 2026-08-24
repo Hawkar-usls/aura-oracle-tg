@@ -1,0 +1,16 @@
+{
+  "schema": "janus.organism.member_link.v1",
+  "organism_id": "JANUS_FEDERATED_ORGANISM",
+  "canonical_manifest": "Hawkar-usls/Janus:organism/JANUS_ORGANISM_v1.json",
+  "member_repository": "Hawkar-usls/aura-oracle-tg",
+  "organ_key": "symbolic_imagination",
+  "role": "SYMBOLIC_IMAGINATION_AND_CREATIVE_ADVISOR",
+  "consumes": ["HUMAN_PROMPT", "SYMBOLIC_CONTEXT"],
+  "emits": ["SYMBOLIC_PROMPT", "CREATIVE_HYPOTHESIS", "REFLECTION"],
+  "routes_to": ["hypothesis_metabolism", "anomaly_lab", "guardian_cortex"],
+  "authority": "ZERO_EMPIRICAL_AUTHORITY",
+  "evidence_authority": false,
+  "authority_delta": 0,
+  "cross_repo_write_default": "DENY",
+  "claim_boundary": ["ORACLE_GUIDANCE != EMPIRICAL_PROOF", "SYMBOLIC_OUTPUT != PREDICTION", "CREATIVE_HYPOTHESIS != EVIDENCE"]
+}
