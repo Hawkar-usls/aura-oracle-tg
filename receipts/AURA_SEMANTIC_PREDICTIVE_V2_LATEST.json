@@ -1,9 +1,9 @@
 {
   "schema": "janus.aura.full_meta_registry.gate_receipt.v2",
-  "status": "PASS_FULL_META_REGISTRY_REFERENCE_RUNTIME_WITH_QUARANTINE",
+  "status": "PASS_FULL_META_REGISTRY_REFERENCE_RUNTIME",
   "github_actor": "Hawkar-usls",
-  "github_run_id": "32839668908",
-  "source_commit": "c35994ab3201b034012731be5eb6565052bd968d",
+  "github_run_id": "32843703034",
+  "source_commit": "201e083f856af12c647b4f91af9fa88aaaf4e368",
   "registry_root": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data",
   "registry_write_performed": false,
   "index_is_source_of_truth": false,
@@ -24,12 +24,12 @@
     "hrain_projection": true,
     "inaihr_projection": true
   },
-  "registry_files_seen": 1974,
-  "registry_files_indexed_this_run": 1960,
-  "registry_files_quarantined": 14,
-  "registry_indexed_files_total": 1960,
-  "registry_records_indexed": 29979,
-  "vocabulary_size": 136519,
+  "registry_files_seen": 1978,
+  "registry_files_indexed_this_run": 1978,
+  "registry_files_quarantined": 0,
+  "registry_indexed_files_total": 1978,
+  "registry_records_indexed": 30212,
+  "vocabulary_size": 137925,
   "semantic_search_hits": 8,
   "predictive_token_suggestions": 8,
   "predictive_phrase_suggestions": 5,
@@ -40,120 +40,7 @@
   "origin_state_changed": true,
   "source_mutated": false,
   "aura_predictive_label_authority": false,
-  "quarantine": [
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/JANUS-ARCHITECTURAL-INFLUENCE-REGISTRY-V18.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Expecting property name enclosed in double quotes: line 9 column 19 (char 903)",
-      "sha256": "8e25ae19d30866f8ecec4238f7f38171fb79fa07936a541be38c99509069af9f",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/JANUS-ARCHITECTURE-V26.4.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Expecting value: line 115 column 39 (char 5654)",
-      "sha256": "4546d459e20feefa0d8037b0870b6b62be2aa6284725c8430c0c5d2d8968c265",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/JANUS-CINEMA-SOUL-SIGNAL-REGISTRY-v24.1.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Expecting property name enclosed in double quotes: line 2 column 3 (char 4)",
-      "sha256": "b275e55839a03b07d7cadbeebf41219cd173e9f24c5a959501dca2e3e0de3a99",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/JANUS-DOGMA-DIVINE-KEVIN-SMITH-CROSS-REFERENCES-v1.2.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Expecting ',' delimiter: line 223 column 19 (char 12383)",
-      "sha256": "b8ad8b1ab82d47c3ee490cdba6273b43267ffc9752e3d758eefa80540a8d11f6",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/JANUS-FERMI-META-IRONY-PROTOCOL-v1.0.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Invalid \\uXXXX escape: line 17 column 17 (char 2183)",
-      "sha256": "63688994a2ff6113fa6cc67ca55321499afef82cc11e09cc284b9a5429d18551",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/JANUS-LINEAR-A-R7-B0-ARITHMETIC-SUMMARY-ROLE-SPEC-2026-08-15-v0.1.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Expecting ':' delimiter: line 21 column 3 (char 1081)",
-      "sha256": "847592597817e489826e6b6fcc38577dc7a89b1706c532edc060a338d51a2a24",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/JANUS-MULTIVERSE-ROSEWINE-SPIDER-DEADGIRL-v1.0.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Expecting property name enclosed in double quotes: line 2 column 3 (char 4)",
-      "sha256": "1d32649af9714d73759cb3d6f546d5ec57e0981660857577c971c5641d4e6268",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/JANUS_META_REGISTRY_v21.4_FINAL.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Expecting value: line 1 column 1 (char 0)",
-      "sha256": "82bd46838dbe4d43b51df73034985e4b4a22edd83ba13f27889599ea48b12f48",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/janus-ai-integration-v5.9.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Expecting value: line 1 column 1 (char 0)",
-      "sha256": "0c55b9c427c3178c5f1f9695955952488970026a75582979a9f92fcd27f70f54",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/janus-meta-registry-v9.5-academic.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Expecting value: line 1 column 1 (char 0)",
-      "sha256": "01b0125f55681e44146b1e9ff2e9a2ab0e0d26477e64cc989b751c7a6058a379",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/janus-registry-v5.2.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Invalid \\uXXXX escape: line 61 column 23 (char 2152)",
-      "sha256": "55314c3d4f8b3f12f176d8380008c989e03b02f435f107e13824436c517bc766",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/janus_pathfinder_registry.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Invalid control character at: line 217 column 64 (char 15382)",
-      "sha256": "3a92fb079935f91fc5991cc5626ed7d2abfc2f89a78382b1365e84e1d37bcda4",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/proofs/stochastic_light_interface_model.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Expecting value: line 1 column 1 (char 0)",
-      "sha256": "6ab261b98b959d60e28184eaa9ee5d266789b72a2cbefa22077d073530f9698c",
-      "registry_write_performed": false
-    },
-    {
-      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/semantic_field_registry_v12.json",
-      "status": "QUARANTINED_INVALID_JSON",
-      "error_type": "JSONDecodeError",
-      "error": "Invalid \\escape: line 69 column 14 (char 2492)",
-      "sha256": "b90df07fa4e62d017fd028ce85d0fc48c03e05f60e32919bb23cbd59f9d1cfbc",
-      "registry_write_performed": false
-    }
-  ],
-  "elapsed_seconds": 263.105011,
+  "quarantine": [],
+  "elapsed_seconds": 437.944033,
   "claim_ceiling": "REFERENCE_RUNTIME_PASS_NOT_SCIENTIFIC_TRUTH_NOT_FINAL_ORIGIN_PRIME_PROMOTION"
 }
