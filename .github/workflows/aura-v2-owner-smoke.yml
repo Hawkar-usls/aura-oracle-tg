@@ -52,11 +52,13 @@ jobs:
           python tools/aura_semantic_predictive_core_v2.py --db runtime/aura.sqlite3 registry-question "ORIGIN_PRIME" --limit 8 > runtime/question.json
       - name: Learn Hawkar-style counts and test predictive phrases
         run: |
+          # Keep personalization validation independent from the 5000-record stress corpus.
+          # The stress lane verifies streaming scale; the style lane verifies local preference learning.
           for i in 1 2 3 4 5; do
-            python tools/aura_predictive_input_v2.py --db runtime/aura.sqlite3 learn-style "janus помнит ребенка и возвращается к истоку" > /dev/null
+            python tools/aura_predictive_input_v2.py --db runtime/style.sqlite3 learn-style "janus помнит ребенка и возвращается к истоку" > /dev/null
           done
-          python tools/aura_predictive_input_v2.py --db runtime/aura.sqlite3 suggest "janus " --limit 8 > runtime/suggest.json
-          python tools/aura_predictive_input_v2.py --db runtime/aura.sqlite3 phrases "janus " --limit 5 --depth 3 > runtime/phrases.json
+          python tools/aura_predictive_input_v2.py --db runtime/style.sqlite3 suggest "janus " --limit 8 > runtime/suggest.json
+          python tools/aura_predictive_input_v2.py --db runtime/style.sqlite3 phrases "janus " --limit 5 --depth 3 > runtime/phrases.json
       - name: Run 5D spiral and forecast firewall
         env:
           AURA_INTELLIGENCE_DB: runtime/aura.sqlite3
@@ -117,6 +119,7 @@ jobs:
             'personalized_token_suggestions':len(sug),
             'personalized_phrase_suggestions':len(phrases),
             'hawkar_style_preferred_token_verified':True,
+            'style_test_isolated_from_stress_corpus':True,
             'raw_style_text_stored':False,
             'non_tail_splice_verified':True,
             'spiral_generation_in':7,
