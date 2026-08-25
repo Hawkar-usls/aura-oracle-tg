@@ -91,7 +91,8 @@ jobs:
           phrases=json.loads(Path('runtime/phrases.json').read_text())
           spi=json.loads(Path('runtime/spiral.json').read_text())
           fw=json.loads(Path('runtime/forecast-firewall.json').read_text())
-          op=spi['axes']['D5_SPIRAL_ABSTRACTION']['origin_prime']
+          d5=spi['axes']['D5_SPIRAL_ABSTRACTION']
+          op=d5['origin_prime_candidate']
           assert ing['records_indexed'] == 5000, ing
           assert len(sea) > 0, sea
           assert any(x['suggestion']=='помнит' and 'user-style' in x['reason'] for x in sug), sug
@@ -100,12 +101,14 @@ jobs:
           assert order.index('MID') == order.index('S0001') + 1, order
           assert order.index('S0002') == order.index('MID') + 1, order
           assert op['generation'] == 8, op
-          assert spi['origin_state_hash'] != op['origin_prime_state_hash']
+          assert spi['origin_state_hash'] != op['candidate_state_hash']
+          assert op['promotion_status'] == 'CANDIDATE_NOT_VERIFIED_RETURN'
+          assert d5['final_origin_prime_authority'] is False
           assert spi['integrity']['source_text_mutated'] is False
           assert fw['self_resolution_rejected'] is True
           receipt={
             'schema':'janus.aura.v2.owner_smoke_receipt.v2',
-            'status':'PASS_REFERENCE_RUNTIME',
+            'status':'PASS_REFERENCE_RUNTIME_CANDIDATE_ONLY',
             'github_actor':os.environ.get('GITHUB_ACTOR'),
             'github_run_id':os.environ.get('GITHUB_RUN_ID'),
             'source_commit':os.environ.get('GITHUB_SHA'),
@@ -119,6 +122,8 @@ jobs:
             'spiral_generation_in':7,
             'spiral_generation_out':8,
             'origin_state_changed':True,
+            'origin_prime_promotion_status':op['promotion_status'],
+            'final_origin_prime_authority':False,
             'aura_self_forecast_resolution_rejected':True,
             'source_mutated':False,
             'world_truth':False
