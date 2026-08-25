@@ -1,9 +1,30 @@
 {
   "schema": "janus.aura.full_meta_registry.gate_receipt.v2",
-  "status": "REJECT_GATE_DID_NOT_EMIT_RECEIPT",
+  "status": "REJECT_RUNTIME_EXCEPTION",
   "github_actor": "Hawkar-usls",
-  "github_run_id": "32834087918",
-  "source_commit": "9441c1d1fd1dec32da42bc311701f7095841384c",
+  "github_run_id": "32838910246",
+  "source_commit": "fd976239f2df0c61e4bb676ed9a10a3729bcd9ea",
+  "registry_root": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data",
   "registry_write_performed": false,
-  "world_truth": false
+  "index_is_source_of_truth": false,
+  "world_truth": false,
+  "errors": [
+    "Expecting property name enclosed in double quotes: line 9 column 19 (char 903)"
+  ],
+  "exception_type": "JSONDecodeError",
+  "traceback_tail": [
+    "    return loads(fp.read(),",
+    "           ^^^^^^^^^^^^^^^^",
+    "  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/__init__.py\", line 346, in loads",
+    "    return _default_decoder.decode(s)",
+    "           ^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/decoder.py\", line 337, in decode",
+    "    obj, end = self.raw_decode(s, idx=_w(s, 0).end())",
+    "               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/decoder.py\", line 353, in raw_decode",
+    "    obj, end = self.scan_once(s, idx)",
+    "               ^^^^^^^^^^^^^^^^^^^^^^",
+    "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 9 column 19 (char 903)"
+  ],
+  "elapsed_seconds": 4.186554
 }
