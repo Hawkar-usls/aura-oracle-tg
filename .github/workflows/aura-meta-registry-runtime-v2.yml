@@ -20,6 +20,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: aura-meta-registry-runtime-v2
+  cancel-in-progress: false
+
 jobs:
   registry-runtime:
     if: github.actor == 'Hawkar-usls' || github.event_name == 'schedule'
@@ -72,14 +76,40 @@ jobs:
             'world_truth':False
           },indent=2)+'\n')
           PY
-          mkdir -p receipts
-          cp runtime/full-registry-receipt.json receipts/AURA_SEMANTIC_PREDICTIVE_V2_LATEST.json
+
+          receipt_tmp="$(mktemp)"
+          cp runtime/full-registry-receipt.json "$receipt_tmp"
+          trap 'rm -f "$receipt_tmp"' EXIT
+
           git config user.name "janus-aura-bot"
           git config user.email "janus-aura-bot@users.noreply.github.com"
-          git add receipts/AURA_SEMANTIC_PREDICTIVE_V2_LATEST.json
-          git commit -m "Receipt: Aura full Meta Registry gate v2" || exit 0
-          git pull --rebase origin main
-          git push origin HEAD:main
+
+          # LATEST is a generated pointer. Rebase-before-write avoids content conflicts
+          # with an older run, and the bounded retry handles a branch advance between
+          # fetch and push without weakening the gate or dropping the receipt.
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p receipts
+            cp "$receipt_tmp" receipts/AURA_SEMANTIC_PREDICTIVE_V2_LATEST.json
+            git add receipts/AURA_SEMANTIC_PREDICTIVE_V2_LATEST.json
+
+            if git diff --cached --quiet; then
+              echo "Receipt already matches origin/main"
+              exit 0
+            fi
+
+            git commit -m "Receipt: Aura full Meta Registry gate v2"
+            if git push origin HEAD:main; then
+              echo "Receipt persisted on attempt $attempt"
+              exit 0
+            fi
+
+            echo "Concurrent main advance detected; retrying receipt persistence ($attempt/3)" >&2
+          done
+
+          echo "Failed to persist Aura v2 receipt after 3 race-safe attempts" >&2
+          exit 1
       - name: Upload local Aura index and traces
         if: always()
         uses: actions/upload-artifact@v4
