@@ -124,11 +124,12 @@ class AuraV2Tests(unittest.TestCase):
         self.assertEqual(order.index("MID"), order.index("S0001") + 1)
         self.assertEqual(order.index("S0002"), order.index("MID") + 1)
         self.assertTrue(all(order.index(r["id"]) < order.index("S0001") for r in out["graph"]["nodes"] if r["kind"] == "RECOVERED_AT_ORIGIN"))
-        self.assertEqual(out["axes"]["D5_SPIRAL_ABSTRACTION"]["origin_prime"]["generation"], 5)
-        self.assertNotEqual(
-            out["origin_state_hash"],
-            out["axes"]["D5_SPIRAL_ABSTRACTION"]["origin_prime"]["origin_prime_state_hash"]
-        )
+        d5 = out["axes"]["D5_SPIRAL_ABSTRACTION"]
+        candidate = d5["origin_prime_candidate"]
+        self.assertEqual(candidate["generation"], 5)
+        self.assertNotEqual(out["origin_state_hash"], candidate["candidate_state_hash"])
+        self.assertEqual(candidate["promotion_status"], "CANDIDATE_NOT_VERIFIED_RETURN")
+        self.assertFalse(d5["final_origin_prime_authority"])
         self.assertFalse(out["integrity"]["source_text_mutated"])
 
     def test_peer_v2_keeps_authority_firewall(self) -> None:
