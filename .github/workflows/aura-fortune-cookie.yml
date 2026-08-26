@@ -1,0 +1,39 @@
+name: Validate AURA Fortune Cookie
+
+on:
+  push:
+    paths:
+      - 'tools/aura_fortune_cookie.py'
+      - 'docs/AURA_FORTUNE_COOKIE_PROTOCOL.md'
+      - '.janus/AURA_FORTUNE_COOKIE_LINK.json'
+      - 'requirements-aura-intelligence.txt'
+      - '.github/workflows/aura-fortune-cookie.yml'
+  pull_request:
+    paths:
+      - 'tools/aura_fortune_cookie.py'
+      - 'docs/AURA_FORTUNE_COOKIE_PROTOCOL.md'
+      - '.janus/AURA_FORTUNE_COOKIE_LINK.json'
+      - 'requirements-aura-intelligence.txt'
+      - '.github/workflows/aura-fortune-cookie.yml'
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install 'cryptography>=43,<46'
+      - run: python tools/aura_fortune_cookie.py selftest
+      - name: Verify fail-closed without key
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmpdir="$(mktemp -d)"
+          printf 'secret' > "$tmpdir/plain.txt"
+          if python tools/aura_fortune_cookie.py seal "$tmpdir/plain.txt" "$tmpdir/out.json" --label CI-NEGATIVE; then
+            echo 'seal unexpectedly succeeded without key' >&2
+            exit 1
+          fi
+          test ! -e "$tmpdir/out.json"
