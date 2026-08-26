@@ -1,0 +1,24 @@
+{
+  "schema": "janus.aura.fortune_cookie.repository_link.v1",
+  "link_id": "AURA_FORTUNE_COOKIE_SEALED_ORACLE_V1",
+  "status": "ACTIVE",
+  "mechanic_name_en": "Fortune Cookie",
+  "mechanic_name_ru": "Печенье с предсказанием",
+  "implementation": "tools/aura_fortune_cookie.py",
+  "protocol": "docs/AURA_FORTUNE_COOKIE_PROTOCOL.md",
+  "schema_id": "JANUS/AURA/FORTUNE-COOKIE/v1",
+  "default_mode": "JANUS_LOCAL_SEALED_ONLY",
+  "public_commitment": "SHA-256",
+  "sealed_payload": "AES-256-GCM",
+  "kdf": "HKDF-SHA-256",
+  "key_location": "OUTSIDE_REPOSITORY_ONLY",
+  "meta_registry_policy": "Hawkar-usls/janus-meta-registry/registry/JANUS-SEALED-DISCOVERY-US-TRUST-POLICY-v1.0.0.json",
+  "rules": [
+    "NO_KEY_NO_ARTIFACT_WRITE",
+    "NO_PLAINTEXT_SECRET_IN_REPOSITORY",
+    "COMMITMENT_IS_NOT_TRUTH",
+    "SEALED_OUTPUT_IS_NOT_EVIDENCE",
+    "UNSEAL_REQUIRES_EXPLICIT_DECISION",
+    "EXTERNAL_RECIPIENT_REQUIRES_VERIFIED_PUBLIC_KEY"
+  ]
+}
