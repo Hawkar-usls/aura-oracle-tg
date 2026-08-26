@@ -1,17 +1,40 @@
 # AURA // KEM // SET — Sealed Oracle Mode
 
-This mode adapts Aura Oracle to the Kem / Three Kings / Set creative continuity.
+This document preserves the earlier Set / Three Kings sealed-oracle experiment.
 
-## Purpose
+## Status
 
-The canonical question lives in `ritual/SET_ORACLE_QUESTION.json`. The Oracle may generate cards and an interpretation, but the plaintext interpretation is never committed or rendered by the sealed workflow. Only a SHA-256 commitment of a canonicalized answer is persisted.
+The original mode persisted only a SHA-256 commitment of a canonicalized answer. That remains useful as a **blind pre-commitment**, but it is not reversible secrecy.
 
-## Technical boundary
+The canonical reusable mechanism is now **AURA Fortune Cookie / «Печенье с предсказанием»**:
 
-SHA-256 is a one-way hash, not encryption. A hash cannot normally be decoded back into the answer. It proves commitment to a byte sequence if the original is later known, but it does not prove the truth of the Oracle's statement. In the creative canon, Set / Sun / Moon may be treated as the intended symbolic recipients; in real cryptography, recovery would require encryption with recipient keys rather than SHA-256.
+- protocol: [`docs/AURA_FORTUNE_COOKIE_PROTOCOL.md`](docs/AURA_FORTUNE_COOKIE_PROTOCOL.md)
+- implementation: [`tools/aura_fortune_cookie.py`](tools/aura_fortune_cookie.py)
+- JANUS binding: [`.janus/AURA_FORTUNE_COOKIE_LINK.json`](.janus/AURA_FORTUNE_COOKIE_LINK.json)
+
+## Relationship
+
+```text
+LEGACY SET MODE
+canonical answer -> SHA-256 commitment only
+
+FORTUNE COOKIE
+canonical answer -> SHA-256 commitment
+                 -> AES-256-GCM sealed payload
+                 -> explicit UNSEAL gate
+```
+
+SHA-256 remains a one-way commitment and integrity fingerprint. It is not encryption and is not treated as a hidden decryption channel. Reversible confidentiality is provided by authenticated encryption with key material kept outside the repository.
+
+The Set symbolic continuity may still use Fortune Cookie as its sealing transport, but the cryptographic primitive is JANUS-wide and is not tied to any mythological interpretation.
 
 ## Claim ceiling
 
-`ORACLE_OUTPUT_COMMITMENT_NOT_IDENTITY_PROOF`
+```text
+ORACLE_OUTPUT_COMMITMENT_NOT_IDENTITY_PROOF
+COMMITMENT != TRUTH
+SEALED_OUTPUT != EVIDENCE
+SYMBOLIC_RECIPIENT != CRYPTOGRAPHIC_RECIPIENT
+```
 
-Aura remains a creative reflection/oracle application. The sealed answer is not evidence of supernatural contact, prophecy, or literal identity with an ancient or mythological person.
+AURA remains non-authoritative: the sealed answer is not evidence of supernatural contact, prophecy, literal identity, or future-event ground truth.
