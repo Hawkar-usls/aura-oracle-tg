@@ -1,0 +1,48 @@
+{
+  "schema": "janus.oracle_bridge.v1",
+  "bridge_id": "AURA_ORACLE_JANUS_GATEWAY",
+  "status": "ACTIVE_CONTRACT_RUNTIME_DEPENDENT",
+  "frontend": {
+    "repository": "Hawkar-usls/aura-oracle-tg",
+    "pages": "https://hawkar-usls.github.io/aura-oracle-tg/",
+    "entrypoint": "index.html"
+  },
+  "gateway": {
+    "repository": "Hawkar-usls/Janus",
+    "runtime": "janus_core.py",
+    "transport": "HTTPS_JSON",
+    "cors_required": true
+  },
+  "runtime_api": {
+    "state": {"method": "GET", "path": "/api/get_user_state"},
+    "cards": {"method": "POST", "path": "/api/generate_cards"},
+    "interpret": {"method": "POST", "path": "/api/interpret"}
+  },
+  "execution_law": "AURA_UI -> JANUS_GATEWAY -> PYTHIA_ORACLE -> AURA_UI",
+  "persistence": {
+    "janus_store": "oracle_readings",
+    "write_scope": "READING_RECEIPT_ONLY",
+    "identity_write": false
+  },
+  "availability_semantics": {
+    "pages_available_does_not_imply_gateway_available": true,
+    "gateway_unreachable_state": "OFFLINE_NO_ORACLE_EXECUTION",
+    "offline_ui_is_not_negative_evidence": true
+  },
+  "authority": {
+    "empirical_authority": false,
+    "automatic_truth_promotion": false,
+    "automatic_main_merge": false,
+    "firewalls": [
+      "ORACLE_GUIDANCE != EMPIRICAL_PROOF",
+      "SYMBOLIC_OUTPUT != PREDICTION",
+      "AURA_OUTPUT != EVIDENCE",
+      "CONNECTIVITY != AUTHORITY"
+    ]
+  },
+  "compatibility": {
+    "hrain_pattern": "JANUS repository module + gateway endpoint",
+    "inaihr_pattern": "JANUS repository module + gateway endpoint",
+    "same_module_authority_lane": "BRANCH_AND_VERIFY"
+  }
+}
