@@ -1,0 +1,39 @@
+{
+  "schema": "janus.repository_module.descriptor.v1",
+  "module_id": "AURA_ORACLE",
+  "repository": "Hawkar-usls/aura-oracle-tg",
+  "default_ref": "main",
+  "role": "SYMBOLIC_IMAGINATION_AND_CREATIVE_ADVISOR",
+  "organ_channel": "SYMBOLIC_IMAGINATION",
+  "scout_agent_id": "SCOUT_AURA_04",
+  "actuator": {
+    "enabled": true,
+    "authority_lane": "BRANCH_AND_VERIFY",
+    "proposal_source_repository": "Hawkar-usls/janus-meta-registry",
+    "proposal_source_branch": "janus/native-self-memory-modular-organism-v1",
+    "proposal_directory": "JANUS/PATCHES/PROPOSALS",
+    "branch_prefix": "janus-self/",
+    "max_files": 3,
+    "max_changed_bytes": 50000,
+    "max_attempts": 2,
+    "direct_main_write": false,
+    "autonomous_merge": false
+  },
+  "verification_profiles": {
+    "AURA_ORACLE_MODULE_TEST": ["python", "tests/test_janus_oracle_module.py"]
+  },
+  "forbidden_paths": [
+    ".github/workflows/",
+    ".git/",
+    "secrets/",
+    "credentials/"
+  ],
+  "epistemic_firewalls": [
+    "AURA_OUTPUT != EVIDENCE",
+    "ORACLE_INTERPRETATION != TRUTH",
+    "SYMBOLIC_OUTPUT != PREDICTION",
+    "MODEL_PATCH_PROPOSAL != VERIFIED_FIX",
+    "NO_VERIFY => NO_PASS"
+  ],
+  "bound_from_commit": "a829f9e3e0bba4cc412f13dbdd918695a2697601"
+}
