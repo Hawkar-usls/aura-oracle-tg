@@ -2,8 +2,8 @@
   "schema": "janus.aura.full_meta_registry.gate_receipt.v3",
   "status": "PASS_FULL_META_REGISTRY_V3",
   "github_actor": "Hawkar-usls",
-  "github_run_id": "33919012250",
-  "source_commit": "95ed8b73409b27e93dedf9345024043937f7c74a",
+  "github_run_id": "33928820405",
+  "source_commit": "e4c4c228cd2dac647615e96ae85a51053f83ff16",
   "registry_root": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data",
   "registry_write_performed": false,
   "index_is_source_of_truth": false,
@@ -23,9 +23,9 @@
     "semantic_hit_alone_cannot_promote": true,
     "circle_forbidden": true
   },
-  "registry_files_seen": 2516,
+  "registry_files_seen": 2519,
   "registry_files_quarantined": 0,
-  "registry_records_total": 38227,
+  "registry_records_total": 38275,
   "semantic_hits": 8,
   "semantic_neighbors": 12,
   "question_feature": "closure",
@@ -38,5 +38,5 @@
   "fortuna_generation_after_repeat": 1,
   "quarantine": [],
   "claim_ceiling": "REFERENCE_RUNTIME_PASS_NOT_WORLD_TRUTH",
-  "elapsed_seconds": 339.2084
+  "elapsed_seconds": 305.400855
 }
