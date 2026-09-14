@@ -1,9 +1,9 @@
 {
   "schema": "janus.aura.full_meta_registry.gate_receipt.v2",
-  "status": "PASS_FULL_META_REGISTRY_REFERENCE_RUNTIME",
+  "status": "PASS_FULL_META_REGISTRY_REFERENCE_RUNTIME_WITH_QUARANTINE",
   "github_actor": "Hawkar-usls",
-  "github_run_id": "34812713839",
-  "source_commit": "6266e7876cb794da1885faa857b0da3e206d2748",
+  "github_run_id": "34845883411",
+  "source_commit": "2eec62d9061ba78598b69f465018ad334304a4c3",
   "registry_root": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data",
   "registry_write_performed": false,
   "index_is_source_of_truth": false,
@@ -24,12 +24,12 @@
     "hrain_projection": true,
     "inaihr_projection": true
   },
-  "registry_files_seen": 2704,
-  "registry_files_indexed_this_run": 2704,
-  "registry_files_quarantined": 0,
-  "registry_indexed_files_total": 2704,
-  "registry_records_indexed": 41467,
-  "vocabulary_size": 175294,
+  "registry_files_seen": 2708,
+  "registry_files_indexed_this_run": 2706,
+  "registry_files_quarantined": 2,
+  "registry_indexed_files_total": 2706,
+  "registry_records_indexed": 41503,
+  "vocabulary_size": 175344,
   "semantic_search_hits": 8,
   "predictive_token_suggestions": 8,
   "predictive_phrase_suggestions": 5,
@@ -40,7 +40,24 @@
   "origin_state_changed": true,
   "source_mutated": false,
   "aura_predictive_label_authority": false,
-  "quarantine": [],
-  "elapsed_seconds": 493.970439,
+  "quarantine": [
+    {
+      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/raw/JANUS-TRUMP-APMA-CARDINALITY-HALL-MATCHING-QUOTIENT-RAW-2026-09-14.json",
+      "status": "QUARANTINED_INVALID_JSON",
+      "error_type": "UnicodeDecodeError",
+      "error": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte",
+      "sha256": "688e0269869a508baa5730bfa4d49fe23a0ec21c7836270253e0cfd4550ab4ce",
+      "registry_write_performed": false
+    },
+    {
+      "source_path": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data/raw/JANUS-TRUMP-APMA-INCIDENCE-2CORE-FIXED-C-FAMILY-SCALING-RAW-2026-09-14.json",
+      "status": "QUARANTINED_INVALID_JSON",
+      "error_type": "UnicodeDecodeError",
+      "error": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte",
+      "sha256": "e593e77968600f61f4db246397855acb9c44cec83b4b817bc25f96775e0c5bdb",
+      "registry_write_performed": false
+    }
+  ],
+  "elapsed_seconds": 348.320446,
   "claim_ceiling": "REFERENCE_RUNTIME_PASS_NOT_SCIENTIFIC_TRUTH_NOT_FINAL_ORIGIN_PRIME_PROMOTION"
 }
