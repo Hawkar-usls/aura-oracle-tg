@@ -1,0 +1,29 @@
+name: AURA CHRONOS-002 digit timing protocol
+
+on:
+  push:
+    paths:
+      - 'tools/aura_chronos_002.py'
+      - 'tests/test_aura_chronos_002.py'
+      - 'experiments/CHRONOS-002-baseline-*.json'
+      - '.github/workflows/aura-chronos-002.yml'
+  pull_request:
+    paths:
+      - 'tools/aura_chronos_002.py'
+      - 'tests/test_aura_chronos_002.py'
+      - 'experiments/CHRONOS-002-baseline-*.json'
+      - '.github/workflows/aura-chronos-002.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m py_compile tools/aura_chronos_002.py
+      - run: python -m unittest discover -s tests -p 'test_aura_chronos_002.py' -v
