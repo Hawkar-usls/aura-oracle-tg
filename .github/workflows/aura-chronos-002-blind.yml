@@ -1,0 +1,35 @@
+name: AURA CHRONOS-002 prospective independent-runner draw
+
+# Only a newly committed frozen forecast starts an outcome run. This workflow
+# never prepares predictions; runner generates outcome digits after checkout.
+on:
+  push:
+    branches:
+      - 'feat/aura-chronos-retrocausal-lab-v1-20261020'
+    paths:
+      - 'experiments/CHRONOS-002-aura-5d-frozen.json'
+
+permissions:
+  contents: read
+
+jobs:
+  draw-after-frozen-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify committed forecast and draw 100 unseen digits
+        run: |
+          python tools/aura_chronos_002.py reveal \
+            --frozen experiments/CHRONOS-002-aura-5d-frozen.json \
+            --output chronos-002-aura-5d-result.json
+      - name: Print exact summary and SHA-256 integrity receipt
+        run: |
+          python -c 'import json; x=json.load(open("chronos-002-aura-5d-result.json")); print(json.dumps({k:x[k] for k in ("forecast_commitment_sha256", "source", "hits", "expected_hits_under_null", "exact_one_sided_p_value", "statistical_flag", "clock", "completed_at_utc")}, sort_keys=True))'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chronos-002-aura-blind-result
+          path: chronos-002-aura-5d-result.json
+          retention-days: 90
