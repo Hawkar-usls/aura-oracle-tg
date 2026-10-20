@@ -1,0 +1,16 @@
+{
+  "schema": "janus.aura.chronos003.software_one_shot_marker.v1",
+  "experiment": "CHRONOS-003-SOFTONLY-NATIVE10-R1",
+  "forecast_sha256": "c1dd23d52fc283b53f300a9b349845491d8a56a0ad024ff773cd9bf71741e129",
+  "model_sha256": "c0525ea5c052f8e2c255ff2ade9be66be11e94af034176263c39187d9656f66e",
+  "freeze_git_commit": "4162f4beb5a927ef45eacbf109aefdb6dad1cfc8",
+  "new_outcomes_generated_before_trigger": false,
+  "primary_run_policy": "FIRST_GITHUB_RUN_ATTEMPT_ONLY_NO_SUBSTITUTION",
+  "purpose": "SOFTWARE_ONLY_BLIND_CONTROL_NO_ATOMIC_TIME_HARDWARE",
+  "hardware_clock_attested": false,
+  "hardware_rng_attested": false,
+  "stop_after_first_100": true,
+  "primary_point_hit_null_probability": 0.1,
+  "primary_alpha": 0.01,
+  "future_outcome_record_location": "GITHUB_ACTIONS_ARTIFACT_READ_ONLY_90_DAY_RETENTION"
+}
