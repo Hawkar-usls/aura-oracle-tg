@@ -4,12 +4,18 @@ on:
   push:
     paths:
       - 'tools/aura_chronos_002.py'
+      - 'tools/aura_chronos_oracle_adapter_v1.py'
+      - 'tools/aura_5d_spiral_v2.py'
+      - 'tools/aura_semantic_predictive_core_v2.py'
       - 'tests/test_aura_chronos_002.py'
       - 'experiments/CHRONOS-002-baseline-*.json'
       - '.github/workflows/aura-chronos-002.yml'
   pull_request:
     paths:
       - 'tools/aura_chronos_002.py'
+      - 'tools/aura_chronos_oracle_adapter_v1.py'
+      - 'tools/aura_5d_spiral_v2.py'
+      - 'tools/aura_semantic_predictive_core_v2.py'
       - 'tests/test_aura_chronos_002.py'
       - 'experiments/CHRONOS-002-baseline-*.json'
       - '.github/workflows/aura-chronos-002.yml'
