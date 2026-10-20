@@ -1,0 +1,30 @@
+name: AURA ↔ JANUS Corpus advisory peer (offline)
+
+on:
+  pull_request:
+    paths:
+      - '.janus/JANUS_CORPUS_CALLOSUM_ADVISORY_PEER.json'
+      - 'tests/test_janus_corpus_callosum_peer_link.py'
+      - 'tools/aura_shabitat_heuristic.py'
+      - '.github/workflows/aura-corpus-peer-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  advisory-peer-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout the AURA research branch without write credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify reciprocal link and genuine bounded heuristic engine
+        run: |
+          python -m unittest discover -v -s tests -p 'test_janus_corpus_callosum_peer_link.py'
+          python -m unittest discover -v -s tests -p 'test_aura_shabitat_heuristic.py'
