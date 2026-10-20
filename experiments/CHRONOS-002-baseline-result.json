@@ -1,0 +1,828 @@
+{
+  "alpha_predeclared": 0.01,
+  "clock": {
+    "atomic_or_gps_ptp_time_attested": false,
+    "max_measured_wait_ms": 1.238773,
+    "min_measured_wait_ms": 1.032553,
+    "monotonic": "time.perf_counter_ns",
+    "nominal_resolution_ns": 1,
+    "total_measured_ms": 108.638401
+  },
+  "completed_at_utc": "2026-10-20T00:28:29.253236Z",
+  "exact_one_sided_p_value": 0.882844384564,
+  "expected_hits_under_null": 10.0,
+  "experiment": "CHRONOS-002",
+  "external_timestamp_attested": false,
+  "forecast_commitment_sha256": "a23cd0db51b3b66b8f9a07b249f83c9c3687a5c736828b3bada3af749b747ecb",
+  "hit_rate": 0.07,
+  "hits": 7,
+  "number_of_trials": 100,
+  "observations": [
+    {
+      "actual_wait_ms": 1.080705,
+      "draw_unix_ns": 1792456109145601536,
+      "hit": false,
+      "outcome": 9,
+      "prediction": 0,
+      "trial": 1
+    },
+    {
+      "actual_wait_ms": 1.073604,
+      "draw_unix_ns": 1792456109146685086,
+      "hit": false,
+      "outcome": 6,
+      "prediction": 1,
+      "trial": 2
+    },
+    {
+      "actual_wait_ms": 1.076259,
+      "draw_unix_ns": 1792456109147768145,
+      "hit": false,
+      "outcome": 4,
+      "prediction": 2,
+      "trial": 3
+    },
+    {
+      "actual_wait_ms": 1.067445,
+      "draw_unix_ns": 1792456109148847448,
+      "hit": false,
+      "outcome": 8,
+      "prediction": 3,
+      "trial": 4
+    },
+    {
+      "actual_wait_ms": 1.101597,
+      "draw_unix_ns": 1792456109149955595,
+      "hit": false,
+      "outcome": 1,
+      "prediction": 4,
+      "trial": 5
+    },
+    {
+      "actual_wait_ms": 1.072924,
+      "draw_unix_ns": 1792456109151035609,
+      "hit": false,
+      "outcome": 3,
+      "prediction": 5,
+      "trial": 6
+    },
+    {
+      "actual_wait_ms": 1.07714,
+      "draw_unix_ns": 1792456109152122444,
+      "hit": false,
+      "outcome": 9,
+      "prediction": 6,
+      "trial": 7
+    },
+    {
+      "actual_wait_ms": 1.071672,
+      "draw_unix_ns": 1792456109153201366,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 7,
+      "trial": 8
+    },
+    {
+      "actual_wait_ms": 1.084476,
+      "draw_unix_ns": 1792456109154297400,
+      "hit": false,
+      "outcome": 7,
+      "prediction": 8,
+      "trial": 9
+    },
+    {
+      "actual_wait_ms": 1.069458,
+      "draw_unix_ns": 1792456109155372677,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 9,
+      "trial": 10
+    },
+    {
+      "actual_wait_ms": 1.066474,
+      "draw_unix_ns": 1792456109156453703,
+      "hit": false,
+      "outcome": 5,
+      "prediction": 0,
+      "trial": 11
+    },
+    {
+      "actual_wait_ms": 1.069248,
+      "draw_unix_ns": 1792456109157527899,
+      "hit": false,
+      "outcome": 0,
+      "prediction": 1,
+      "trial": 12
+    },
+    {
+      "actual_wait_ms": 1.085753,
+      "draw_unix_ns": 1792456109158619621,
+      "hit": false,
+      "outcome": 6,
+      "prediction": 2,
+      "trial": 13
+    },
+    {
+      "actual_wait_ms": 1.082784,
+      "draw_unix_ns": 1792456109159714002,
+      "hit": false,
+      "outcome": 9,
+      "prediction": 3,
+      "trial": 14
+    },
+    {
+      "actual_wait_ms": 1.069739,
+      "draw_unix_ns": 1792456109160791824,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 4,
+      "trial": 15
+    },
+    {
+      "actual_wait_ms": 1.074186,
+      "draw_unix_ns": 1792456109161872339,
+      "hit": false,
+      "outcome": 0,
+      "prediction": 5,
+      "trial": 16
+    },
+    {
+      "actual_wait_ms": 1.068557,
+      "draw_unix_ns": 1792456109162946444,
+      "hit": false,
+      "outcome": 8,
+      "prediction": 6,
+      "trial": 17
+    },
+    {
+      "actual_wait_ms": 1.079143,
+      "draw_unix_ns": 1792456109164033990,
+      "hit": false,
+      "outcome": 8,
+      "prediction": 7,
+      "trial": 18
+    },
+    {
+      "actual_wait_ms": 1.075477,
+      "draw_unix_ns": 1792456109165117289,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 8,
+      "trial": 19
+    },
+    {
+      "actual_wait_ms": 1.072243,
+      "draw_unix_ns": 1792456109166196422,
+      "hit": false,
+      "outcome": 4,
+      "prediction": 9,
+      "trial": 20
+    },
+    {
+      "actual_wait_ms": 1.081562,
+      "draw_unix_ns": 1792456109167287978,
+      "hit": false,
+      "outcome": 6,
+      "prediction": 0,
+      "trial": 21
+    },
+    {
+      "actual_wait_ms": 1.067756,
+      "draw_unix_ns": 1792456109168362164,
+      "hit": false,
+      "outcome": 3,
+      "prediction": 1,
+      "trial": 22
+    },
+    {
+      "actual_wait_ms": 1.078913,
+      "draw_unix_ns": 1792456109169448798,
+      "hit": false,
+      "outcome": 5,
+      "prediction": 2,
+      "trial": 23
+    },
+    {
+      "actual_wait_ms": 1.074015,
+      "draw_unix_ns": 1792456109170530996,
+      "hit": false,
+      "outcome": 9,
+      "prediction": 3,
+      "trial": 24
+    },
+    {
+      "actual_wait_ms": 1.069709,
+      "draw_unix_ns": 1792456109171606473,
+      "hit": false,
+      "outcome": 9,
+      "prediction": 4,
+      "trial": 25
+    },
+    {
+      "actual_wait_ms": 1.093029,
+      "draw_unix_ns": 1792456109172708897,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 5,
+      "trial": 26
+    },
+    {
+      "actual_wait_ms": 1.072253,
+      "draw_unix_ns": 1792456109173789432,
+      "hit": false,
+      "outcome": 7,
+      "prediction": 6,
+      "trial": 27
+    },
+    {
+      "actual_wait_ms": 1.072734,
+      "draw_unix_ns": 1792456109174866983,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 7,
+      "trial": 28
+    },
+    {
+      "actual_wait_ms": 1.095267,
+      "draw_unix_ns": 1792456109175969692,
+      "hit": false,
+      "outcome": 7,
+      "prediction": 8,
+      "trial": 29
+    },
+    {
+      "actual_wait_ms": 1.080184,
+      "draw_unix_ns": 1792456109177067914,
+      "hit": false,
+      "outcome": 6,
+      "prediction": 9,
+      "trial": 30
+    },
+    {
+      "actual_wait_ms": 1.071492,
+      "draw_unix_ns": 1792456109178145254,
+      "hit": false,
+      "outcome": 3,
+      "prediction": 0,
+      "trial": 31
+    },
+    {
+      "actual_wait_ms": 1.162979,
+      "draw_unix_ns": 1792456109179315705,
+      "hit": false,
+      "outcome": 0,
+      "prediction": 1,
+      "trial": 32
+    },
+    {
+      "actual_wait_ms": 1.088538,
+      "draw_unix_ns": 1792456109180410632,
+      "hit": false,
+      "outcome": 1,
+      "prediction": 2,
+      "trial": 33
+    },
+    {
+      "actual_wait_ms": 1.070681,
+      "draw_unix_ns": 1792456109181487451,
+      "hit": false,
+      "outcome": 0,
+      "prediction": 3,
+      "trial": 34
+    },
+    {
+      "actual_wait_ms": 1.097846,
+      "draw_unix_ns": 1792456109182595172,
+      "hit": false,
+      "outcome": 7,
+      "prediction": 4,
+      "trial": 35
+    },
+    {
+      "actual_wait_ms": 1.088197,
+      "draw_unix_ns": 1792456109183693444,
+      "hit": false,
+      "outcome": 0,
+      "prediction": 5,
+      "trial": 36
+    },
+    {
+      "actual_wait_ms": 1.08697,
+      "draw_unix_ns": 1792456109184790239,
+      "hit": true,
+      "outcome": 6,
+      "prediction": 6,
+      "trial": 37
+    },
+    {
+      "actual_wait_ms": 1.070119,
+      "draw_unix_ns": 1792456109185864996,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 7,
+      "trial": 38
+    },
+    {
+      "actual_wait_ms": 1.07042,
+      "draw_unix_ns": 1792456109186938170,
+      "hit": false,
+      "outcome": 9,
+      "prediction": 8,
+      "trial": 39
+    },
+    {
+      "actual_wait_ms": 1.075408,
+      "draw_unix_ns": 1792456109188019145,
+      "hit": false,
+      "outcome": 7,
+      "prediction": 9,
+      "trial": 40
+    },
+    {
+      "actual_wait_ms": 1.077351,
+      "draw_unix_ns": 1792456109189100311,
+      "hit": false,
+      "outcome": 1,
+      "prediction": 0,
+      "trial": 41
+    },
+    {
+      "actual_wait_ms": 1.238773,
+      "draw_unix_ns": 1792456109190347457,
+      "hit": false,
+      "outcome": 4,
+      "prediction": 1,
+      "trial": 42
+    },
+    {
+      "actual_wait_ms": 1.071742,
+      "draw_unix_ns": 1792456109191424457,
+      "hit": false,
+      "outcome": 3,
+      "prediction": 2,
+      "trial": 43
+    },
+    {
+      "actual_wait_ms": 1.0837,
+      "draw_unix_ns": 1792456109192516940,
+      "hit": false,
+      "outcome": 0,
+      "prediction": 3,
+      "trial": 44
+    },
+    {
+      "actual_wait_ms": 1.07078,
+      "draw_unix_ns": 1792456109193592628,
+      "hit": false,
+      "outcome": 9,
+      "prediction": 4,
+      "trial": 45
+    },
+    {
+      "actual_wait_ms": 1.068667,
+      "draw_unix_ns": 1792456109194663619,
+      "hit": false,
+      "outcome": 7,
+      "prediction": 5,
+      "trial": 46
+    },
+    {
+      "actual_wait_ms": 1.082719,
+      "draw_unix_ns": 1792456109195752096,
+      "hit": false,
+      "outcome": 8,
+      "prediction": 6,
+      "trial": 47
+    },
+    {
+      "actual_wait_ms": 1.07691,
+      "draw_unix_ns": 1792456109196834614,
+      "hit": true,
+      "outcome": 7,
+      "prediction": 7,
+      "trial": 48
+    },
+    {
+      "actual_wait_ms": 1.09684,
+      "draw_unix_ns": 1792456109197937202,
+      "hit": false,
+      "outcome": 4,
+      "prediction": 8,
+      "trial": 49
+    },
+    {
+      "actual_wait_ms": 1.067826,
+      "draw_unix_ns": 1792456109199017497,
+      "hit": true,
+      "outcome": 9,
+      "prediction": 9,
+      "trial": 50
+    },
+    {
+      "actual_wait_ms": 1.071692,
+      "draw_unix_ns": 1792456109200092955,
+      "hit": false,
+      "outcome": 6,
+      "prediction": 0,
+      "trial": 51
+    },
+    {
+      "actual_wait_ms": 1.075908,
+      "draw_unix_ns": 1792456109201171447,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 1,
+      "trial": 52
+    },
+    {
+      "actual_wait_ms": 1.070911,
+      "draw_unix_ns": 1792456109202248377,
+      "hit": false,
+      "outcome": 7,
+      "prediction": 2,
+      "trial": 53
+    },
+    {
+      "actual_wait_ms": 1.078432,
+      "draw_unix_ns": 1792456109203335623,
+      "hit": false,
+      "outcome": 6,
+      "prediction": 3,
+      "trial": 54
+    },
+    {
+      "actual_wait_ms": 1.069819,
+      "draw_unix_ns": 1792456109204410419,
+      "hit": false,
+      "outcome": 6,
+      "prediction": 4,
+      "trial": 55
+    },
+    {
+      "actual_wait_ms": 1.070069,
+      "draw_unix_ns": 1792456109205484004,
+      "hit": false,
+      "outcome": 3,
+      "prediction": 5,
+      "trial": 56
+    },
+    {
+      "actual_wait_ms": 1.068407,
+      "draw_unix_ns": 1792456109206555376,
+      "hit": false,
+      "outcome": 4,
+      "prediction": 6,
+      "trial": 57
+    },
+    {
+      "actual_wait_ms": 1.078963,
+      "draw_unix_ns": 1792456109207638855,
+      "hit": true,
+      "outcome": 7,
+      "prediction": 7,
+      "trial": 58
+    },
+    {
+      "actual_wait_ms": 1.088397,
+      "draw_unix_ns": 1792456109208734243,
+      "hit": false,
+      "outcome": 1,
+      "prediction": 8,
+      "trial": 59
+    },
+    {
+      "actual_wait_ms": 1.080245,
+      "draw_unix_ns": 1792456109209824422,
+      "hit": false,
+      "outcome": 1,
+      "prediction": 9,
+      "trial": 60
+    },
+    {
+      "actual_wait_ms": 1.069789,
+      "draw_unix_ns": 1792456109210909575,
+      "hit": true,
+      "outcome": 0,
+      "prediction": 0,
+      "trial": 61
+    },
+    {
+      "actual_wait_ms": 1.071572,
+      "draw_unix_ns": 1792456109211985272,
+      "hit": false,
+      "outcome": 3,
+      "prediction": 1,
+      "trial": 62
+    },
+    {
+      "actual_wait_ms": 1.076068,
+      "draw_unix_ns": 1792456109213065447,
+      "hit": false,
+      "outcome": 8,
+      "prediction": 2,
+      "trial": 63
+    },
+    {
+      "actual_wait_ms": 1.068597,
+      "draw_unix_ns": 1792456109214137219,
+      "hit": true,
+      "outcome": 3,
+      "prediction": 3,
+      "trial": 64
+    },
+    {
+      "actual_wait_ms": 1.08419,
+      "draw_unix_ns": 1792456109215226297,
+      "hit": false,
+      "outcome": 8,
+      "prediction": 4,
+      "trial": 65
+    },
+    {
+      "actual_wait_ms": 1.074486,
+      "draw_unix_ns": 1792456109216309446,
+      "hit": false,
+      "outcome": 6,
+      "prediction": 5,
+      "trial": 66
+    },
+    {
+      "actual_wait_ms": 1.071331,
+      "draw_unix_ns": 1792456109217385615,
+      "hit": false,
+      "outcome": 9,
+      "prediction": 6,
+      "trial": 67
+    },
+    {
+      "actual_wait_ms": 1.068748,
+      "draw_unix_ns": 1792456109218459219,
+      "hit": false,
+      "outcome": 1,
+      "prediction": 7,
+      "trial": 68
+    },
+    {
+      "actual_wait_ms": 1.068647,
+      "draw_unix_ns": 1792456109219540976,
+      "hit": false,
+      "outcome": 5,
+      "prediction": 8,
+      "trial": 69
+    },
+    {
+      "actual_wait_ms": 1.074666,
+      "draw_unix_ns": 1792456109220619348,
+      "hit": false,
+      "outcome": 7,
+      "prediction": 9,
+      "trial": 70
+    },
+    {
+      "actual_wait_ms": 1.0708,
+      "draw_unix_ns": 1792456109221695938,
+      "hit": false,
+      "outcome": 1,
+      "prediction": 0,
+      "trial": 71
+    },
+    {
+      "actual_wait_ms": 1.078362,
+      "draw_unix_ns": 1792456109222777324,
+      "hit": false,
+      "outcome": 3,
+      "prediction": 1,
+      "trial": 72
+    },
+    {
+      "actual_wait_ms": 1.069989,
+      "draw_unix_ns": 1792456109223852341,
+      "hit": false,
+      "outcome": 6,
+      "prediction": 2,
+      "trial": 73
+    },
+    {
+      "actual_wait_ms": 1.096279,
+      "draw_unix_ns": 1792456109224960097,
+      "hit": false,
+      "outcome": 8,
+      "prediction": 3,
+      "trial": 74
+    },
+    {
+      "actual_wait_ms": 1.07026,
+      "draw_unix_ns": 1792456109226038409,
+      "hit": false,
+      "outcome": 3,
+      "prediction": 4,
+      "trial": 75
+    },
+    {
+      "actual_wait_ms": 1.092668,
+      "draw_unix_ns": 1792456109227143877,
+      "hit": false,
+      "outcome": 3,
+      "prediction": 5,
+      "trial": 76
+    },
+    {
+      "actual_wait_ms": 1.032553,
+      "draw_unix_ns": 1792456109228182639,
+      "hit": false,
+      "outcome": 0,
+      "prediction": 6,
+      "trial": 77
+    },
+    {
+      "actual_wait_ms": 1.083905,
+      "draw_unix_ns": 1792456109229279254,
+      "hit": false,
+      "outcome": 9,
+      "prediction": 7,
+      "trial": 78
+    },
+    {
+      "actual_wait_ms": 1.073164,
+      "draw_unix_ns": 1792456109230358908,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 8,
+      "trial": 79
+    },
+    {
+      "actual_wait_ms": 1.07047,
+      "draw_unix_ns": 1792456109231433514,
+      "hit": false,
+      "outcome": 3,
+      "prediction": 9,
+      "trial": 80
+    },
+    {
+      "actual_wait_ms": 1.075517,
+      "draw_unix_ns": 1792456109232515441,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 0,
+      "trial": 81
+    },
+    {
+      "actual_wait_ms": 1.068557,
+      "draw_unix_ns": 1792456109233588265,
+      "hit": false,
+      "outcome": 9,
+      "prediction": 1,
+      "trial": 82
+    },
+    {
+      "actual_wait_ms": 1.06998,
+      "draw_unix_ns": 1792456109234663392,
+      "hit": false,
+      "outcome": 8,
+      "prediction": 2,
+      "trial": 83
+    },
+    {
+      "actual_wait_ms": 1.068497,
+      "draw_unix_ns": 1792456109235734843,
+      "hit": false,
+      "outcome": 9,
+      "prediction": 3,
+      "trial": 84
+    },
+    {
+      "actual_wait_ms": 1.073544,
+      "draw_unix_ns": 1792456109236812083,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 4,
+      "trial": 85
+    },
+    {
+      "actual_wait_ms": 1.072974,
+      "draw_unix_ns": 1792456109237889484,
+      "hit": true,
+      "outcome": 5,
+      "prediction": 5,
+      "trial": 86
+    },
+    {
+      "actual_wait_ms": 1.105923,
+      "draw_unix_ns": 1792456109239000304,
+      "hit": false,
+      "outcome": 1,
+      "prediction": 6,
+      "trial": 87
+    },
+    {
+      "actual_wait_ms": 1.08397,
+      "draw_unix_ns": 1792456109240094300,
+      "hit": false,
+      "outcome": 8,
+      "prediction": 7,
+      "trial": 88
+    },
+    {
+      "actual_wait_ms": 1.081406,
+      "draw_unix_ns": 1792456109241192912,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 8,
+      "trial": 89
+    },
+    {
+      "actual_wait_ms": 1.06998,
+      "draw_unix_ns": 1792456109242267288,
+      "hit": false,
+      "outcome": 0,
+      "prediction": 9,
+      "trial": 90
+    },
+    {
+      "actual_wait_ms": 1.076309,
+      "draw_unix_ns": 1792456109243350948,
+      "hit": false,
+      "outcome": 6,
+      "prediction": 0,
+      "trial": 91
+    },
+    {
+      "actual_wait_ms": 1.075909,
+      "draw_unix_ns": 1792456109244434949,
+      "hit": false,
+      "outcome": 5,
+      "prediction": 1,
+      "trial": 92
+    },
+    {
+      "actual_wait_ms": 1.074556,
+      "draw_unix_ns": 1792456109245516355,
+      "hit": false,
+      "outcome": 4,
+      "prediction": 2,
+      "trial": 93
+    },
+    {
+      "actual_wait_ms": 1.073145,
+      "draw_unix_ns": 1792456109246597181,
+      "hit": false,
+      "outcome": 2,
+      "prediction": 3,
+      "trial": 94
+    },
+    {
+      "actual_wait_ms": 1.072093,
+      "draw_unix_ns": 1792456109247674522,
+      "hit": false,
+      "outcome": 8,
+      "prediction": 4,
+      "trial": 95
+    },
+    {
+      "actual_wait_ms": 1.086134,
+      "draw_unix_ns": 1792456109248765282,
+      "hit": false,
+      "outcome": 7,
+      "prediction": 5,
+      "trial": 96
+    },
+    {
+      "actual_wait_ms": 1.075418,
+      "draw_unix_ns": 1792456109249847450,
+      "hit": false,
+      "outcome": 5,
+      "prediction": 6,
+      "trial": 97
+    },
+    {
+      "actual_wait_ms": 1.121407,
+      "draw_unix_ns": 1792456109250972873,
+      "hit": false,
+      "outcome": 6,
+      "prediction": 7,
+      "trial": 98
+    },
+    {
+      "actual_wait_ms": 1.071732,
+      "draw_unix_ns": 1792456109252049903,
+      "hit": false,
+      "outcome": 5,
+      "prediction": 8,
+      "trial": 99
+    },
+    {
+      "actual_wait_ms": 1.076348,
+      "draw_unix_ns": 1792456109253129547,
+      "hit": false,
+      "outcome": 7,
+      "prediction": 9,
+      "trial": 100
+    }
+  ],
+  "oracle_ability_established": false,
+  "retrocausality_established": false,
+  "schema": "janus.aura.chronos.digits.result.v1",
+  "source": "BASELINE_CYCLE_NOT_AURA",
+  "started_at_utc": "2026-10-20T00:28:29.144477Z",
+  "statistical_flag": "NO_EVIDENCE_ABOVE_CHANCE"
+}
