@@ -11,6 +11,7 @@ from urllib.parse import parse_qs, urlparse
 from aura_5d_spiral_v2 import run as run_5d
 from aura_predictive_input_v2 import AuraPredictiveInput
 from aura_semantic_predictive_core_v2 import AuraIndex
+from aura_retrocausal_lab_v1 import plan as retrocausal_plan, resolve as retrocausal_resolve
 
 
 class AuraHandler(BaseHTTPRequestHandler):
@@ -105,6 +106,10 @@ class AuraHandler(BaseHTTPRequestHandler):
                 raise ValueError("JSON_OBJECT_REQUIRED")
             if parsed.path == "/spiral":
                 out = run_5d(payload, db_path=self._db_path())
+            elif parsed.path == "/retrocausal-plan":
+                out = retrocausal_plan(payload)
+            elif parsed.path == "/retrocausal-resolve":
+                out = retrocausal_resolve(payload.get("frozen"), payload.get("observation"))
             elif parsed.path == "/learn-style":
                 if payload.get("explicit_human_input") is not True:
                     raise ValueError("EXPLICIT_HUMAN_INPUT_REQUIRED")
@@ -167,7 +172,8 @@ def main() -> int:
         "default_bind_is_localhost": args.host in {"127.0.0.1", "localhost", "::1"},
         "endpoints": [
             "/health", "/suggest", "/search", "/question", "/stats", "/forecast-prior",
-            "/spiral", "/learn-style", "/forecast-open", "/forecast-resolve"
+            "/spiral", "/learn-style", "/forecast-open", "/forecast-resolve",
+            "/retrocausal-plan", "/retrocausal-resolve"
         ],
         "predictive_input": "TOKEN_AND_PHRASE_WITH_LOCAL_USER_STYLE",
         "command_authority": False,
@@ -178,3 +184,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

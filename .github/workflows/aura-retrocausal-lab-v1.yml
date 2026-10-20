@@ -1,0 +1,38 @@
+name: AURA Retrocausal Lab v1 validation
+
+on:
+  push:
+    paths:
+      - 'tools/aura_retrocausal_lab_v1.py'
+      - 'tools/aura_intelligence_http_v2.py'
+      - 'tests/test_aura_retrocausal_lab_v1.py'
+      - 'retrocausal-lab.html'
+      - 'index.html'
+      - 'README.md'
+      - 'docs/AURA_RETROCAUSAL_LAB_V1.md'
+      - '.janus/AURA_RETROCAUSAL_LAB_LINK.json'
+      - '.github/workflows/aura-retrocausal-lab-v1.yml'
+  pull_request:
+    paths:
+      - 'tools/aura_retrocausal_lab_v1.py'
+      - 'tools/aura_intelligence_http_v2.py'
+      - 'tests/test_aura_retrocausal_lab_v1.py'
+      - 'retrocausal-lab.html'
+      - 'index.html'
+      - 'README.md'
+      - 'docs/AURA_RETROCAUSAL_LAB_V1.md'
+      - '.janus/AURA_RETROCAUSAL_LAB_LINK.json'
+      - '.github/workflows/aura-retrocausal-lab-v1.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -p 'test_aura_retrocausal_lab_v1.py' -v
+      - run: python tools/aura_retrocausal_lab_v1.py plan examples/AURA_RETROCAUSAL_DEMO_REQUEST.json

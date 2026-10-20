@@ -17,6 +17,14 @@ It is an active JANUS peer for semantic retrieval, hypothesis discrimination, bo
 
 ---
 
+## ⏳ CHRONOS — Retrocausal Lab v1 (experimental)
+
+[Open the Retrocausal Lab](retrocausal-lab.html) · [Protocol](docs/AURA_RETROCAUSAL_LAB_V1.md) · [JANUS link](.janus/AURA_RETROCAUSAL_LAB_LINK.json)
+
+This is **backward planning**, not proven physics-based retrocausality: start from a desired future outcome, compare present-day actions under explicitly supplied conditional probabilities, freeze the forecast before the event, then calibrate against an independently recorded outcome. The laboratory never executes actions or promotes an Oracle scenario to evidence. Forecast freezing can reuse the existing Fortune Cookie encryption.
+
+**Boundaries:** no reverse-time information channel, no reliable prophecy claim, no established causal identification, and no automatic effect on the world. The web page is local scenario analysis; exact SHA-256 commitments and external outcome scoring are implemented in `tools/aura_retrocausal_lab_v1.py`.
+
 ## What AURA is now
 
 AURA combines its original symbolic/oracle interface with a machine-readable analytical layer. The current repository contains:
@@ -146,3 +154,4 @@ For the machine-readable capability ceiling and current runtime status, see [`PR
 `REFLECT → DISCRIMINATE → COMMIT → SEAL → OBSERVE → VERIFY → RETURN′`
 
 </div>
+

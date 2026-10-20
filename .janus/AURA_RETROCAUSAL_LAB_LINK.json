@@ -1,0 +1,14 @@
+{
+  "schema": "janus.aura.retrocausal_lab.link.v1",
+  "module": "AURA_RETROCAUSAL_LAB_V1",
+  "status": "EXPERIMENTAL_NO_PHYSICAL_RETROCAUSALITY_CLAIM",
+  "engine": "tools/aura_retrocausal_lab_v1.py",
+  "protocol": "docs/AURA_RETROCAUSAL_LAB_V1.md",
+  "sample_input": "examples/AURA_RETROCAUSAL_DEMO_REQUEST.json",
+  "http_api": ["POST /retrocausal-plan", "POST /retrocausal-resolve"],
+  "web_ui": "retrocausal-lab.html",
+  "fortune_cookie": "tools/aura_fortune_cookie.py",
+  "claims": {"retrocausal_physical_signal": false, "literal_knowledge_of_future": false, "independent_outcome_verification": false, "forecast_is_fact": false, "causal_effect_established": false},
+  "permissions": {"auto_execute_action": false, "write_registry": false, "auto_merge": false, "auto_unseal": false, "replace_human_choice": false},
+  "validation": "python -m unittest discover -s tests -p test_aura_retrocausal_lab_v1.py"
+}
