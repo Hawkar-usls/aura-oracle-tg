@@ -67,6 +67,25 @@ class Chronos002Tests(unittest.TestCase):
         self.assertEqual(observed["exact_one_sided_p_value"],
                          round(chronos.upper_binomial_tail(observed["hits"]), 12))
 
+    def test_real_aura_5d_adapter_provenance_and_determinism(self):
+        import sys
+        sys.path.insert(0, str(SOURCE.parent))
+        from aura_chronos_oracle_adapter_v1 import predict_batch
+        first, provenance = predict_batch()
+        second, again = predict_batch()
+        self.assertEqual(first, second)
+        self.assertEqual(provenance, again)
+        self.assertEqual(len(first), 100)
+        self.assertTrue(provenance["aura_5d_algorithm_executed"])
+        self.assertFalse(provenance["native_aura_digit_head"])
+        wrapped = chronos.freeze(first, source="AURA_5D_DERIVED_DIGIT_DECODER_PILOT",
+                                 oracle_provenance=provenance)
+        self.assertEqual(chronos.check_freeze(wrapped)["predictions"], first)
+
+    def test_claim_aura_without_provenance_fails(self):
+        with self.assertRaisesRegex(ValueError, "PROVENANCE_REQUIRED"):
+            chronos.freeze([0] * 100, source="AURA_5D_DERIVED_DIGIT_DECODER_PILOT")
+
 
 if __name__ == "__main__":
     unittest.main()
