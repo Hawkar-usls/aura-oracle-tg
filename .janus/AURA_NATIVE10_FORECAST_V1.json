@@ -1,0 +1,23 @@
+{
+  "schema": "janus.aura.science_gate.native10.v1",
+  "experiment": "CHRONOS-002-NATIVE10-ORACLE-MODE",
+  "module": "tools/aura_native_digit_head_v1.py",
+  "forecast_artifact": "experiments/AURA-NATIVE10-forecast-v1-frozen.json",
+  "model_artifact": "experiments/AURA-NATIVE10-model-v1.json",
+  "ten_class_trainable_probabilistic_head": true,
+  "hash_based_graph_digit_projection": false,
+  "training_evidence": "PRIOR_CHRONOS_002_BASELINE_80_DIGITS",
+  "heldout_trials": 20,
+  "heldout_logloss_nats": 2.361538001409,
+  "uniform_logloss_nats": 2.302585092994,
+  "heldout_hits": 0,
+  "out_of_sample_advantage": "NOT_DETECTED",
+  "future_independent_100_digit_run": "NOT_STARTED",
+  "hardware_time_attested": false,
+  "millisecond_prediction_horizon_demonstrated": false,
+  "independent_rng_attested": false,
+  "physical_retrocausality_established": false,
+  "execution_authority": false,
+  "production_authority": false,
+  "gate": "RESEARCH_DRAFT_ONLY__EXTERNAL_HARDWARE_BLIND_TEST_PENDING"
+}

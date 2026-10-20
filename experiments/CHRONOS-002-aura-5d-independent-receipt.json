@@ -1,0 +1,57 @@
+{
+  "schema": "janus.aura.chronos.digits.external_run_receipt.v1",
+  "experiment": "CHRONOS-002",
+  "study_class": "PROSPECTIVE_AURA_5D_DERIVED_DECODER_PILOT",
+  "forecast": {
+    "prepared_at_utc": "2026-10-20T00:39:28.664737Z",
+    "commitment_sha256": "4fb1514e2109da755e847eb7761e2c054455eb823fecc1eedb648240556b7997",
+    "git_commit_sha": "b5fee559b0ef5f6111c52ab1f159735db544fd63",
+    "git_commit_timestamp_utc": "2026-10-20T00:39:45Z",
+    "file": "experiments/CHRONOS-002-aura-5d-frozen.json",
+    "prediction_source": "AURA_5D_DERIVED_DIGIT_DECODER_PILOT",
+    "native_aura_digit_model": false
+  },
+  "external_draw": {
+    "provider": "GITHUB_ACTIONS_HOSTED_RUNNER",
+    "execution_region": "Azure southcentralus",
+    "runner_os": "ubuntu-24.04",
+    "workflow": ".github/workflows/aura-chronos-002-blind.yml",
+    "workflow_run_id": 39348964217,
+    "first_run_attempt": 1,
+    "workflow_event": "push",
+    "runner_started_utc": "2026-10-20T00:39:51.998094Z",
+    "draw_completed_utc": "2026-10-20T00:39:55.167303Z",
+    "status": "success",
+    "steps": ["VERIFY_FROZEN_AURA_TRACE", "DRAW_100_OS_CSPRNG_DIGITS", "SCORE", "UPLOAD_EVIDENCE"],
+    "number_of_trials": 100,
+    "hits": 7,
+    "expected_hits_under_uniform_independence": 10,
+    "one_sided_exact_binomial_p_value": 0.882844384564,
+    "alpha_predeclared": 0.01,
+    "statistical_flag": "NO_EVIDENCE_ABOVE_CHANCE",
+    "clock": {
+      "monotonic": "time.perf_counter_ns",
+      "minimum_measured_wait_ms": 1.010772,
+      "maximum_measured_wait_ms": 1.075649,
+      "total_measured_ms": 107.777091,
+      "atomic_clock_or_gnss_ptp_attested": false
+    }
+  },
+  "evidence": {
+    "workflow_run_url": "https://github.com/Hawkar-usls/aura-oracle-tg/actions/runs/39348964217",
+    "artifact_id": 12231868667,
+    "artifact_url": "https://github.com/Hawkar-usls/aura-oracle-tg/actions/runs/39348964217/artifacts/12231868667",
+    "artifact_zip_sha256": "c3f1c759c2bbd9ff6f31bab844c32a5148a1d7399c65c6ee2f37845a461865be",
+    "artifact_expires_at_utc": "2027-01-18T00:39:48Z",
+    "full_trial_data_preserved_in_artifact": true,
+    "independence_ceiling": "DIFFERENT_HOSTED_RUNNER_AFTER_GIT_COMMIT; NOT_THIRD_PARTY_HARDWARE_ATTESTATION"
+  },
+  "conclusions": {
+    "chronos_002_oracle_adapter_execution": "PASS",
+    "prospective_commit_before_random_draw": "VERIFIED_BY_GITHUB_COMMIT_AND_RUN_LOG",
+    "chance_advantage": "NOT_DETECTED",
+    "native_aura_digit_forecasting_ability_tested": false,
+    "physical_retrocausality_established": false,
+    "clock_traceable_to_atomic_standard": false
+  }
+}

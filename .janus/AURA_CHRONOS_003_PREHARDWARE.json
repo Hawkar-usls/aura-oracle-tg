@@ -1,0 +1,20 @@
+{
+  "schema": "janus.aura.chronos003.prehardware_gate.v1",
+  "run_id": "CHRONOS-003-NATIVE10-EXTERNAL",
+  "initial_forecast_commit": "4162f4beb5a927ef45eacbf109aefdb6dad1cfc8",
+  "forecast_commitment_sha256": "c1dd23d52fc283b53f300a9b349845491d8a56a0ad024ff773cd9bf71741e129",
+  "software_verifier": "tools/aura_chronos_003_hardware_gate.py",
+  "nominal_inter_event_interval_ms": 1,
+  "actual_forecast_to_event_lead_ms": null,
+  "device_clock_evidence": "NOT_PROVIDED",
+  "independent_hardware_rng_evidence": "NOT_PROVIDED",
+  "real_trial_outcomes": "NOT_GENERATED",
+  "out_of_band_observer_key_verified": false,
+  "physical_clock_traceability_verified": false,
+  "physical_rng_independence_verified": false,
+  "hardware_gate": "BLOCKED_NO_DEVICE",
+  "physical_retrocausality_established": false,
+  "scientific_authority": false,
+  "execution_authority": false,
+  "environment": "RESEARCH_DRAFT_ONLY"
+}

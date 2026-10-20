@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>AURA · Chronos Lab</title>
+  <style>
+    :root { color-scheme: dark; --gold:#f7d77b; --sky:#82e0e7; --dim:#bdb4cb; --line:#534266; }
+    * { box-sizing:border-box } body {margin:0; background:radial-gradient(ellipse at 30% 0%,#362050 0%,#120b22 50%,#080611 100%);color:#f5f0fd;font:16px/1.5 system-ui,-apple-system,sans-serif;min-height:100vh}
+    main { max-width:1000px;margin:auto;padding:24px 16px 60px } h1,h2 {font-family:Georgia,serif;font-weight:normal} h1 {font-size:clamp(2rem,6vw,3.5rem);margin:.4rem 0} h2{color:var(--gold);font-size:1.4rem} p{color:var(--dim)} a{color:var(--sky)}
+    .eyebrow{letter-spacing:.18em;color:var(--sky);font-size:.75rem;text-transform:uppercase}.tag{display:inline-block;background:#402c4c;border:1px solid #846b9a;padding:4px 12px;border-radius:22px;color:var(--gold);font-size:.77rem}
+    .timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:25px 0}.timeline div{padding:14px;background:#231830;border:1px solid var(--line);border-radius:14px;text-align:center;font-size:.86rem}.timeline strong{display:block;color:var(--gold);font-size:1rem}
+    .panel{background:#161023e8;border:1px solid var(--line);box-shadow:0 12px 60px #05020870;border-radius:18px;padding:22px;margin:16px 0} textarea{width:100%;min-height:300px;background:#0a0913;color:#ece8f7;border:1px solid #6a567c;border-radius:12px;padding:14px;font:13px/1.5 ui-monospace,SFMono-Regular,monospace;resize:vertical}
+    button{border:1px solid #f5d57d;background:linear-gradient(135deg,#ffe6a4,#bf8c38);color:#1d1125;padding:12px 18px;border-radius:30px;font-weight:700;cursor:pointer;font-size:1rem}button.secondary{color:var(--sky);background:#261d32;border-color:#517f91}button:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid var(--sky);outline-offset:3px}button:disabled{opacity:.5;cursor:not-allowed}
+    .buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}.error{color:#ffaaa8;white-space:pre-wrap}.note{font-size:.85rem;color:var(--dim)}table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{padding:12px 9px;border-bottom:1px solid #544466;text-align:left}th{color:var(--sky)}.scroll{overflow:auto}.win{color:#9de9bf}.meter{background:#31283f;height:8px;border-radius:20px;min-width:90px;overflow:hidden}.meter div{height:100%;background:linear-gradient(90deg,#9272db,#65e4e0)}
+    @media(max-width:560px){.timeline{grid-template-columns:1fr}.panel{padding:16px}textarea{min-height:340px}th,td{padding:9px 5px;font-size:.8rem}}
+  </style>
+</head>
+<body><main>
+  <a href="./index.html">← Вернуться к Оракулу</a>
+  <div class="eyebrow" style="margin-top:26px">AURA / JANUS · Experimental</div>
+  <h1>Ретрокаузальная лаборатория</h1>
+  <span class="tag">CHRONOS · V1 · Без автономных действий</span>
+  <p>Представь желаемое будущее → посмотри, какие действия сегодня могли бы увеличить его вероятность по твоей модели → зафиксируй прогноз до наступления события.</p>
+  <div class="timeline"><div><strong>01 · Будущее</strong>Цель и срок</div><div><strong>02 · Настоящее</strong>Сценарии действий</div><div><strong>03 · Проверка</strong>Независимый результат</div></div>
+  <section class="panel"><h2>Сценарий</h2><p>Отредактируй JSON. Вероятности условные, вводятся человеком; пример демонстрационный и не основан на наблюдениях.</p>
+    <label for="scenario">Входные данные (UTC)</label>
+    <textarea id="scenario" spellcheck="false" aria-label="JSON сценария"></textarea>
+    <div class="buttons"><button id="calculate">Просчитать будущее</button><button id="download" class="secondary" disabled>Сохранить сценарий</button></div>
+    <p class="error" id="error" role="alert"></p>
+  </section>
+  <section class="panel" id="results" hidden><h2>Обратный ход к настоящему</h2><p id="context"></p><div class="scroll"><table><thead><tr><th>Действие</th><th>P(исхода)*</th><th>Ожид. полезность</th><th>Разница к базе</th></tr></thead><tbody id="rows"></tbody></table></div><p class="note">* Показывается вероятность первого исхода. Сравнение основано на заданных предположениях и не доказывает причинный эффект.</p><p id="conclusion" class="win"></p></section>
+  <section class="panel"><h2>Что это доказывает?</h2><p>Модуль может помогать принимать решения <em>сейчас</em>, но не передаёт сигналы из будущего. Физическая ретрокаузальность не установлена. Для научного прогноза нужен заранее опубликованный отпечаток прогноза и проверяемый независимый исход.</p><p class="note">Локальная страница ничего не отправляет на сервер; для полноценной фиксации и последующего подсчёта Brier/log-loss используй <a href="./docs/AURA_RETROCAUSAL_LAB_V1.md">протокол Python и Fortune Cookie</a>. Скачанный JSON сам по себе не содержит доверенной временной метки.</p></section>
+</main>
+<script>
+  'use strict';
+  const example={schema:'janus.aura.retrocausal_lab.request.v1',question:'Какой эксперимент повысит шанс успеха к 1 ноября?',as_of:'2026-10-19T22:00:00Z',target_at:'2026-11-01T00:00:00Z',evidence:[{id:'DEMO',observed_at:'2026-10-19T00:00:00Z',available_at:'2026-10-19T00:00:00Z'}],outcome_utilities:{SUCCESS:1,FAILURE:0},baseline_action_id:'WAIT',actions:[{id:'WAIT',label:'Ничего не менять',cost:0,reversible:true,forecast:{SUCCESS:.3,FAILURE:.7}},{id:'PILOT',label:'Малый обратимый тест',cost:.05,reversible:true,forecast:{SUCCESS:.6,FAILURE:.4}}]};
+  document.querySelector('#scenario').value=JSON.stringify(example,null,2);
+  const $=x=>document.querySelector(x); let validated=null;
+  function validUTC(s){return typeof s==='string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(s) && Number.isFinite(Date.parse(s));}
+  function ensure(condition,message){if(!condition)throw Error(message);}
+  function check(d){
+    ensure(d && d.schema===example.schema,'Неизвестная схема.');
+    ensure(typeof d.question==='string'&&d.question.trim(),'Укажи вопрос.');
+    ensure(validUTC(d.as_of)&&validUTC(d.target_at),'Нужны даты UTC вида YYYY-MM-DDTHH:MM:SSZ.');
+    ensure(Date.parse(d.as_of)<Date.parse(d.target_at),'Дата цели должна быть позднее исходной.');
+    ensure(Date.parse(d.as_of)<=Date.now(),'Дата исходных данных ещё не наступила.');
+    ensure(Array.isArray(d.evidence),'evidence должен быть массивом.');
+    for(const e of d.evidence){ensure(e&&typeof e.id==='string'&&e.id.trim(),'Укажи ID свидетельства.');ensure(validUTC(e.observed_at)&&validUTC(e.available_at),'Неверное время свидетельства.');ensure(Date.parse(e.observed_at)<=Date.parse(d.as_of)&&Date.parse(e.available_at)<=Date.parse(d.as_of),'Запрещено использовать информацию из будущего.');}
+    const outcomes=Object.keys(d.outcome_utilities||{});
+    ensure(outcomes.length>=2 && outcomes.length<=32,'Нужно от 2 до 32 исходов.');
+    ensure(outcomes.every(k=>Number.isFinite(d.outcome_utilities[k])),'Полезности должны быть конечными числами.');
+    ensure(Array.isArray(d.actions)&&d.actions.length>=2&&d.actions.length<=32,'Нужно от 2 до 32 действий.');
+    const ids=new Set();
+    const scored=d.actions.map(a=>{
+      ensure(a&&typeof a.id==='string'&&a.id.trim()&&!ids.has(a.id),'Пустой или повторяющийся ID действия.');ids.add(a.id);
+      ensure(a.forecast&&Object.keys(a.forecast).length===outcomes.length&&outcomes.every(k=>Object.hasOwn(a.forecast,k)),'Прогноз обязан содержать все исходы.');
+      let sum=0, utility=0;for(const k of outcomes){const p=a.forecast[k];ensure(typeof p==='number'&&Number.isFinite(p)&&p>=0&&p<=1,'Каждая вероятность должна лежать от 0 до 1.');sum+=p;utility+=p*d.outcome_utilities[k];}
+      ensure(Math.abs(sum-1)<1e-9,'Сумма вероятностей для каждого действия должна равняться 1.');
+      const cost=a.cost??0;ensure(typeof cost==='number'&&Number.isFinite(cost)&&cost>=0,'Стоимость должна быть неотрицательным числом.');
+      return {id:a.id,label:a.label||a.id,p:a.forecast[outcomes[0]],score:utility-cost};
+    });
+    ensure(ids.has(d.baseline_action_id),'Не найдено базовое действие.');
+    const base=scored.find(x=>x.id===d.baseline_action_id).score;
+    return {scored:scored.sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id)),base,outcome:outcomes[0],prospective:Date.now()<Date.parse(d.target_at)};
+  }
+  $('#calculate').addEventListener('click',()=>{
+    $('#error').textContent='';$('#results').hidden=true;$('#download').disabled=true;validated=null;
+    try{const input=JSON.parse($('#scenario').value);const r=check(input);validated=input;
+      const rows=$('#rows');rows.replaceChildren();
+      for(const x of r.scored){const tr=document.createElement('tr');for(const t of [x.label,(x.p*100).toFixed(1)+'%',x.score.toFixed(3),(x.score-r.base>=0?'+':'')+(x.score-r.base).toFixed(3)]){const td=document.createElement('td');td.textContent=t;tr.appendChild(td);}rows.appendChild(tr);}
+      $('#context').textContent=`Цель: ${input.question} · срок ${input.target_at} · исход ${r.outcome}`;
+      $('#conclusion').textContent=`Наибольшая ожидаемая полезность в заданной модели: «${r.scored[0].label}». Решение принимает только человек. ${r.prospective?'Возможна регистрация до исхода.':'Целевая дата прошла — это ретроспективный анализ, не прогноз.'}`;
+      $('#results').hidden=false;$('#download').disabled=false;
+    }catch(e){$('#error').textContent='Ошибка сценария: '+e.message;}
+  });
+  $('#download').addEventListener('click',()=>{if(!validated)return;const blob=new Blob([JSON.stringify(validated,null,2)+'\n'],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='aura-retrocausal-request.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);});
+</script></body></html>
