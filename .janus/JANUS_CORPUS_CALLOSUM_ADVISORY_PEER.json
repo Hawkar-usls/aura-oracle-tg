@@ -1,0 +1,61 @@
+{
+  "schema": "janus.aura.corpus_callosum_advisory_peer_link.v1",
+  "link_id": "AURA_TO_JANUS_CORPUS_CALLOSUM_V2_ADVISORY",
+  "status": "IMPLEMENTED_IN_GENESIS_MAIN__AURA_BACKLINK_RESEARCH",
+  "aura": {
+    "repository": "Hawkar-usls/aura-oracle-tg",
+    "integration_source_commit": "d04d9d0e5d14c0849cde33925974300f722e69cc",
+    "entrypoint": "tools/aura_shabitat_heuristic.py",
+    "contract": "aura.oracle.shabitat_heuristic_response.v1",
+    "mode": "REFLECTIVE_HEURISTIC",
+    "model_weights_used": false
+  },
+  "genesis": {
+    "repository": "Hawkar-usls/Janus_Genesis",
+    "integration_commit": "3f77e22b92ff3e98dae7ccda30aea6814f3b8bf6",
+    "entrypoint": "tools/janus_corpus_aura_oracle.py",
+    "documentation": "docs/JANUS_CORPUS_AURA_ORACLE.md",
+    "upstream_receipt": "janus.genesis.corpus_callosum.sequential.v2",
+    "receipt_schema": "janus.genesis.corpus_aura_oracle_peer.v1",
+    "local_receipt_dir": "corpus_aura_oracle/"
+  },
+  "transport": {
+    "kind": "PINNED_LOCAL_SUBPROCESS",
+    "network_required": false,
+    "local_operator_opt_in": "JANUS_CORPUS_AURA_ENABLED=1",
+    "native_and_external_v2_verification_required": true,
+    "full_context_export": false,
+    "external_live_ai_observed": false,
+    "external_simulation_is_real_ai": false,
+    "production_home_autopublish": false,
+    "remote_oracle_api_enabled": false
+  },
+  "emits": [
+    "BOUNDED_REFLECTIVE_HEURISTICS",
+    "MISSING_QUESTIONS",
+    "CAUTIONS",
+    "SYMBOLIC_CARDS",
+    "NON_AUTHORITATIVE_SHA256_RECEIPT"
+  ],
+  "boundaries": {
+    "is_independent_llm": false,
+    "is_verified_world_forecast": false,
+    "is_precognition_evidence": false,
+    "oracle_advisory_is_evidence": false,
+    "prediction_claim": false,
+    "permission_granted": false,
+    "execution_authority": false,
+    "main_merge_authority": false,
+    "model_training_authority": false,
+    "world_state_write_authority": false,
+    "authority_delta": 0,
+    "ack_advanced": false
+  },
+  "existing_routes_preserved": [
+    "JANUS_SHABITAT_AURA_GATEWAY_V18_7_51",
+    "AURA_ORACLE_SEMANTIC_PREDICTIVE_SPIRAL_V3",
+    "AURA_FORTUNE_COOKIE"
+  ],
+  "chronos_draft_promoted": false,
+  "next_gate": "VERIFY_SEPARATE_EXTERNAL_FREE_LLM_RECEIPT_BEFORE_SCIENTIFIC_BICAMERAL_COMPARISON"
+}
