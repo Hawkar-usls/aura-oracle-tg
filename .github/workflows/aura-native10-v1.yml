@@ -1,0 +1,35 @@
+name: AURA Native10 probabilistic forecast checks
+
+on:
+  pull_request:
+    paths:
+      - 'tools/aura_native_digit_head_v1.py'
+      - 'tests/test_aura_native_digit_head_v1.py'
+      - 'experiments/AURA-NATIVE10-*'
+      - 'experiments/CHRONOS-002-baseline-result.json'
+      - 'docs/AURA_NATIVE_10_CLASS_FORECAST_V1.md'
+      - '.github/workflows/aura-native10-v1.yml'
+  push:
+    paths:
+      - 'tools/aura_native_digit_head_v1.py'
+      - 'tests/test_aura_native_digit_head_v1.py'
+      - 'experiments/AURA-NATIVE10-*'
+      - '.github/workflows/aura-native10-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  replay-and-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile forecasting head
+        run: python -m py_compile tools/aura_native_digit_head_v1.py
+      - name: Replay native ten-class train/freeze and negative holdout
+        run: python -m unittest discover -s tests -p 'test_aura_native_digit_head_v1.py' -v
+      - name: Protect prior CHRONOS-002 protocol
+        run: python -m unittest discover -s tests -p 'test_aura_chronos_002.py' -v
