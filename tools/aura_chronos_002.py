@@ -45,12 +45,20 @@ def validate_digits(digits: Any) -> list[int]:
     return digits
 
 
-def freeze(digits: list[int], *, source: str, delay_ms: int = 1) -> dict[str, Any]:
+def freeze(digits: list[int], *, source: str, delay_ms: int = 1,
+           oracle_provenance: dict[str, Any] | None = None) -> dict[str, Any]:
     validate_digits(digits)
     if not isinstance(delay_ms, int) or isinstance(delay_ms, bool) or not 1 <= delay_ms <= 1000:
         raise ValueError("DELAY_MS_OUT_OF_RANGE_1_TO_1000")
-    if source not in {"BASELINE_CYCLE_NOT_AURA", "EXTERNAL_ORACLE_FILE_UNVERIFIED"}:
+    if source not in {"BASELINE_CYCLE_NOT_AURA", "EXTERNAL_ORACLE_FILE_UNVERIFIED",
+                      "AURA_5D_DERIVED_DIGIT_DECODER_PILOT"}:
         raise ValueError("UNSUPPORTED_SOURCE")
+    if source == "AURA_5D_DERIVED_DIGIT_DECODER_PILOT" and (
+        not isinstance(oracle_provenance, dict) or
+        oracle_provenance.get("aura_5d_algorithm_executed") is not True or
+        oracle_provenance.get("native_aura_digit_head") is not False
+    ):
+        raise ValueError("AURA_5D_PROVENANCE_REQUIRED")
     record = {
         "schema": SCHEMA,
         "experiment": "CHRONOS-002",
@@ -58,6 +66,7 @@ def freeze(digits: list[int], *, source: str, delay_ms: int = 1) -> dict[str, An
         "prepared_at_utc": utc_now(),
         "prepared_at_unix_ns": time.time_ns(),
         "source": source,
+        "oracle_provenance": oracle_provenance,
         "predictions": list(digits),
         "trials": N,
         "outcome_generation": "secrets.randbelow(10) from OS CSPRNG, called only after freeze verification",
@@ -81,6 +90,10 @@ def check_freeze(wrapper: Any) -> dict[str, Any]:
     validate_digits(record.get("predictions"))
     if record.get("trials") != N or record.get("target_minimum_delay_ms_per_trial") not in range(1, 1001):
         raise ValueError("UNSUPPORTED_FROZEN_PROTOCOL")
+    if record.get("source") == "AURA_5D_DERIVED_DIGIT_DECODER_PILOT":
+        provenance = record.get("oracle_provenance")
+        if not isinstance(provenance, dict) or provenance.get("native_aura_digit_head") is not False:
+            raise ValueError("AURA_PROVENANCE_MISSING_OR_MISLABELED")
     return record
 
 
@@ -94,6 +107,13 @@ def execute(wrapper: dict[str, Any], *,
             sleep: Callable[[float], None] = time.sleep) -> dict[str, Any]:
     """A separate phase: generate each actual outcome strictly after the freeze."""
     record = check_freeze(wrapper)
+    if record["source"] == "AURA_5D_DERIVED_DIGIT_DECODER_PILOT":
+        # An isolated outcome runner must verify the frozen model trace before RNG.
+        from aura_chronos_oracle_adapter_v1 import predict_batch
+        independent_digits, independent_provenance = predict_batch()
+        if (independent_digits != record["predictions"] or
+                independent_provenance != record["oracle_provenance"]):
+            raise ValueError("FROZEN_AURA_TRACE_NOT_REPRODUCIBLE")
     if time.time_ns() <= record["prepared_at_unix_ns"]:
         raise ValueError("DRAW_BEFORE_FREEZE")
     delay_ms = record["target_minimum_delay_ms_per_trial"]
@@ -159,7 +179,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="CHRONOS-002 preregistered millisecond digit forecast lab")
     sub = parser.add_subparsers(dest="action", required=True)
     prepare = sub.add_parser("prepare")
-    prepare.add_argument("--provider", choices=["baseline", "oracle-file"], default="baseline")
+    prepare.add_argument("--provider", choices=["baseline", "oracle-file", "aura-5d"], default="baseline")
     prepare.add_argument("--predictions", type=Path, help="JSON list of 100 digits from the real Oracle")
     prepare.add_argument("--delay-ms", type=int, default=1)
     prepare.add_argument("--output", type=Path, required=True)
@@ -168,7 +188,14 @@ def main() -> int:
     reveal.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.action == "prepare":
-        if args.provider == "oracle-file":
+        provenance = None
+        if args.provider == "aura-5d":
+            if args.predictions is not None:
+                parser.error("--predictions cannot override AURA 5D output")
+            from aura_chronos_oracle_adapter_v1 import predict_batch
+            digits, provenance = predict_batch()
+            source = "AURA_5D_DERIVED_DIGIT_DECODER_PILOT"
+        elif args.provider == "oracle-file":
             if args.predictions is None:
                 parser.error("--predictions required for oracle-file")
             digits = validate_digits(json.loads(args.predictions.read_text(encoding="utf-8")))
@@ -178,7 +205,7 @@ def main() -> int:
                 parser.error("--predictions only allowed with oracle-file")
             digits = list(range(ALPHABET)) * (N // ALPHABET)
             source = "BASELINE_CYCLE_NOT_AURA"
-        wrapper = freeze(digits, source=source, delay_ms=args.delay_ms)
+        wrapper = freeze(digits, source=source, delay_ms=args.delay_ms, oracle_provenance=provenance)
         write_new_json(args.output, wrapper)
         print(json.dumps({"phase": "FORECAST_FROZEN", "source": source,
                           "commitment_sha256": wrapper["commitment_sha256"],
