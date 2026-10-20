@@ -1,5 +1,6 @@
 """Independent protocol checks for the millisecond digit experiment."""
 import importlib.util
+import json
 from pathlib import Path
 import unittest
 
@@ -55,6 +56,16 @@ class Chronos002Tests(unittest.TestCase):
         self.assertAlmostEqual(chronos.upper_binomial_tail(0), 1, places=12)
         self.assertGreater(chronos.upper_binomial_tail(10), chronos.upper_binomial_tail(20))
         self.assertLess(chronos.upper_binomial_tail(20), 0.01)
+
+    def test_committed_baseline_artifacts_consistent(self):
+        folder = Path(__file__).resolve().parents[1] / "experiments"
+        frozen = json.loads((folder / "CHRONOS-002-baseline-frozen.json").read_text(encoding="utf-8"))
+        observed = json.loads((folder / "CHRONOS-002-baseline-result.json").read_text(encoding="utf-8"))
+        self.assertEqual(chronos.check_freeze(frozen)["source"], "BASELINE_CYCLE_NOT_AURA")
+        self.assertEqual(observed["forecast_commitment_sha256"], frozen["commitment_sha256"])
+        self.assertEqual(observed["hits"], sum(int(row["hit"]) for row in observed["observations"]))
+        self.assertEqual(observed["exact_one_sided_p_value"],
+                         round(chronos.upper_binomial_tail(observed["hits"]), 12))
 
 
 if __name__ == "__main__":
