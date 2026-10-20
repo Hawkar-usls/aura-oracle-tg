@@ -1,0 +1,52 @@
+{
+  "schema": "janus.aura.chronos004.signal10_controls.v1",
+  "experiment": "CHRONOS-004-SIGNAL10-CALIBRATION-R0",
+  "scope": "DRAFT_RESEARCH_ONLY",
+  "model_id": "AURA_SIGNAL10_CALIBRATED_V2",
+  "seed": 20261020,
+  "train_examples_including_validation": 800,
+  "coefficient_training_examples": 640,
+  "internal_validation_examples": 160,
+  "unseen_synthetic_control_examples_each": 300,
+  "nominal_simulated_spacing_ns": 1000000,
+  "physical_time_accuracy_attested": false,
+  "physical_randomness_attested": false,
+  "hardware_gate": "BLOCKED_NO_DEVICE",
+  "tests": {
+    "informative_pre_event_signal": {
+      "source": "PRE_EVENT_OBSERVABLE_SIGNAL",
+      "validation_gate": "VALIDATED_CONDITIONAL",
+      "internal_validation_logloss_nats": 0.939030082545,
+      "holdout_matches": 238,
+      "holdout_trials": 300,
+      "holdout_logloss_nats": 0.995209254877,
+      "holdout_brier_divided_by_ten": 0.037304850864
+    },
+    "irrelevant_pre_event_signal": {
+      "source": "PRE_EVENT_OBSERVABLE_SIGNAL",
+      "validation_gate": "UNIFORM_FALLBACK_NO_VALIDATED_SKILL",
+      "internal_validation_logloss_nats": 2.397348785465,
+      "holdout_matches": 34,
+      "holdout_trials": 300,
+      "holdout_logloss_nats": 2.302585092994,
+      "holdout_brier_divided_by_ten": 0.09
+    },
+    "independent_uniform_without_signal": {
+      "source": "DECLARED_INDEPENDENT_UNIFORM_NO_SIGNAL",
+      "validation_gate": "UNIFORM_NULL",
+      "holdout_matches": 32,
+      "holdout_trials": 300,
+      "holdout_logloss_nats": 2.302585092994,
+      "holdout_brier_divided_by_ten": 0.09
+    }
+  },
+  "benchmark_kind": "REPRODUCIBLE_SYNTHETIC_SOFTWARE_SIMULATIONS",
+  "unseen_real_world_digit_test_performed": false,
+  "model_tuned_on_chronos003_r1_outcomes": false,
+  "chronos003_original_results_modified": false,
+  "historical_r1_hits": 8,
+  "historical_r1_scientific_verdict": "NO_EVIDENCE_ABOVE_CHANCE__PRIMARY_RESULT_IMMUTABLE",
+  "physical_retrocausality_established": false,
+  "production_authority": false,
+  "next_gate": "PREREGISTER_NEW_REAL_PRE_EVENT_SIGNAL_AND_UNSEEN_HOLDOUT"
+}
