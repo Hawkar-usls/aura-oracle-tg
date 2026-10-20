@@ -1,0 +1,36 @@
+name: AURA CHRONOS-003 pre-hardware verification
+
+on:
+  pull_request:
+    paths:
+      - 'tools/aura_chronos_003_hardware_gate.py'
+      - 'tests/test_aura_chronos_003_hardware_gate.py'
+      - 'docs/AURA_CHRONOS_003_HARDWARE_BLIND_PROTOCOL.md'
+      - '.janus/AURA_CHRONOS_003_PREHARDWARE.json'
+      - '.github/workflows/aura-chronos-003-prehardware.yml'
+  push:
+    paths:
+      - 'tools/aura_chronos_003_hardware_gate.py'
+      - 'tests/test_aura_chronos_003_hardware_gate.py'
+      - '.janus/AURA_CHRONOS_003_PREHARDWARE.json'
+      - '.github/workflows/aura-chronos-003-prehardware.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-contract-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: OpenSSL availability for synthetic Ed25519 verification
+        run: openssl version
+      - name: Syntax checks
+        run: python -m py_compile tools/aura_chronos_003_hardware_gate.py
+      - name: Verify CHRONOS-003 signed format and fail-closed gates (fixtures only)
+        run: python -m unittest discover -s tests -p 'test_aura_chronos_003_hardware_gate.py' -v
+      - name: Ensure frozen native forecaster still replays
+        run: python -m unittest discover -s tests -p 'test_aura_native_digit_head_v1.py' -v
