@@ -1,0 +1,75 @@
+name: CHRONOS-003 software-only independent primary challenge
+
+# Intentionally ONE named trigger file. Register this workflow, runner and
+# independent verifier first. Push the immutable trigger in a separate commit.
+# No manual dispatch or PR events: reruns cannot replace the first result.
+on:
+  push:
+    paths:
+      - 'experiments/CHRONOS-003-NATIVE10-software-trigger-v1.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chronos003-native10-software-primary-v1
+  cancel-in-progress: false
+
+jobs:
+  primary-one-time-software-draw:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Require first immutable marker-only commit
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          changed_paths="$(git diff-tree --no-commit-id --name-only -r "$GITHUB_SHA")"
+          test "$changed_paths" = 'experiments/CHRONOS-003-NATIVE10-software-trigger-v1.json'
+
+      - name: Prove forecast already existed at older committed SHA
+        shell: bash
+        run: |
+          frozen_sha='4162f4beb5a927ef45eacbf109aefdb6dad1cfc8'
+          git merge-base --is-ancestor "$frozen_sha" "$GITHUB_SHA"
+          git show "$frozen_sha:experiments/AURA-NATIVE10-forecast-v1-frozen.json" | cmp - experiments/AURA-NATIVE10-forecast-v1-frozen.json
+
+      - name: Pre-draw frozen model replay and synthetic negative controls
+        run: python -m unittest discover -s tests -p 'test_chronos003_software_blind.py' -v
+
+      - name: Draw first 100 unseen OS-CSPRNG digits after provenance checks
+        env:
+          PYTHONHASHSEED: '0'
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/chronos003"
+          python tools/chronos003_software_blind_runner.py \
+            --forecast experiments/AURA-NATIVE10-forecast-v1-frozen.json \
+            --model experiments/AURA-NATIVE10-model-v1.json \
+            --native-source tools/aura_native_digit_head_v1.py \
+            --marker experiments/CHRONOS-003-NATIVE10-software-trigger-v1.json \
+            --output "$RUNNER_TEMP/chronos003/CHRONOS-003-primary-raw-results.json"
+
+      - name: Independently verify data, clocks and proper probability scores
+        shell: bash
+        run: |
+          python tools/chronos003_independent_verify.py \
+            --forecast experiments/AURA-NATIVE10-forecast-v1-frozen.json \
+            --receipt "$RUNNER_TEMP/chronos003/CHRONOS-003-primary-raw-results.json" \
+            --output "$RUNNER_TEMP/chronos003/CHRONOS-003-primary-independent-audit.json"
+
+      - name: Preserve raw record and separate audit, even on a failed verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CHRONOS-003-NATIVE10-PRIMARY-SOFTWARE-ONLY
+          path: ${{ runner.temp }}/chronos003/*.json
+          if-no-files-found: warn
+          retention-days: 90
