@@ -1,0 +1,54 @@
+name: AURA Rowan Hypothesis & Falsifier Bridge
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '19 */6 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/aura_rowan_research.py'
+      - '.github/workflows/aura-rowan-falsifier-bridge.yml'
+  pull_request:
+    paths:
+      - 'tools/aura_rowan_research.py'
+      - 'tests/test_aura_rowan_research.py'
+      - '.github/workflows/aura-rowan-falsifier-bridge.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aura-rowan-falsifier
+  cancel-in-progress: false
+
+jobs:
+  hypotheses:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate hypothesis and epistemic firewalls
+        run: python -m unittest discover -s tests -p 'test_aura_rowan_research.py'
+      - name: Prepare source-bound hypotheses from Meta Registry
+        if: github.event_name != 'pull_request'
+        run: python tools/aura_rowan_research.py
+      - name: Persist only changed source-bound proposals
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add research/rowan/LATEST_HYPOTHESES.json
+          if git diff --cached --quiet; then echo 'AURA_ROWAN=NO_NEW_SOURCE'; exit 0; fi
+          git config user.name 'AURA Research Falsifier'
+          git config user.email 'actions@users.noreply.github.com'
+          git commit -m '[aura] Refresh Rowan hypothesis-only falsifier packet'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
