@@ -1,0 +1,84 @@
+{
+  "bounded_authority": {
+    "may_change_model_weights": false,
+    "may_modify_rowan_credit_budget": false,
+    "may_notify_demiurge_of_test_proposals": true,
+    "may_promote_TOPA_scientific_gate": false,
+    "may_resolve_own_forecast": false,
+    "may_steer_beetle_metadata_search": true,
+    "may_submit_rowan_jobs": false
+  },
+  "brier_score": "NOT_COMPUTABLE_WITHOUT_PRE-REGISTERED_PROBABILITY_AND_EXTERNAL_OUTCOME",
+  "decision_rule": "Independent source verification and TOPA adversarial replay before scientific promotion",
+  "epistemic_status": "HYPOTHESIS_AND_FALSIFIER_PROPOSAL_ONLY",
+  "generator": "EXISTING_AURA_ORACLE_REPOSITORY__DETERMINISTIC_HYPOTHESIS_PROTOCOL",
+  "hypotheses": [
+    {
+      "empirical_truth_probability": null,
+      "id": "H_CONFIDENCE_SIGNAL",
+      "statement": "Delta pTM / lDDT may have rank association with processed BBC1 assay labels",
+      "status": "HYPOTHESIS_ONLY__NOT_MEASURED"
+    },
+    {
+      "empirical_truth_probability": null,
+      "id": "H_NULL_SIGNAL",
+      "statement": "Confidence may be nearly invariant under point mutations despite distinct assay labels",
+      "status": "HYPOTHESIS_ONLY__NOT_MEASURED"
+    },
+    {
+      "empirical_truth_probability": null,
+      "id": "H_ASSAY_CONFOUND",
+      "statement": "Source preprocessing or position-based selection may explain an apparent relationship",
+      "status": "HYPOTHESIS_ONLY__NOT_MEASURED"
+    },
+    {
+      "empirical_truth_probability": null,
+      "id": "H_DOMAIN_SHIFT",
+      "statement": "Any within-BBC1 relationship may fail on unseen proteins or independent assays",
+      "status": "HYPOTHESIS_ONLY__NOT_MEASURED"
+    }
+  ],
+  "hypothesis_priority_is_probabilistic_forecast": false,
+  "information_gain": "NOT_ESTIMATED_NO_CALIBRATED_HYPOTHESIS_PRIORS",
+  "next_discriminating_question_id": "RAW_ASSAY_LINEAGE",
+  "packet_digest_sha256": "26089187546ecd94147a31b559b40aaea0b43af3c4d689ada225f63d50ed1a41",
+  "question": "Does structural confidence correspond to independent experimental mutation effects?",
+  "schema_id": "janus.aura.rowan_hypothesis_packet.v1",
+  "search_proposals": [
+    {
+      "id": "RAW_ASSAY_LINEAGE",
+      "kind": "BEETLE_DISCOVERY_ONLY",
+      "question": "Locate original Tsuboyama BBC1/1TG0 raw assay tables, units, replicates, and score transformation",
+      "terms": [
+        "Tsuboyama 2023 BBC1 1TG0 cDNA proteolysis raw stability ddG assay",
+        "ProteinGym BBC1 processing normalization Tsuboyama 2023"
+      ]
+    },
+    {
+      "id": "NEGATIVE_CONTROLS",
+      "kind": "BEETLE_DISCOVERY_ONLY",
+      "question": "Locate independent mutation-stability controls and confidence/fold-score failure cases",
+      "terms": [
+        "Boltz-2 protein stability prediction pTM mutation limitations",
+        "protein structure confidence versus thermodynamic mutation stability validation"
+      ]
+    },
+    {
+      "id": "EXTERNAL_HOLDOUT",
+      "kind": "BEETLE_DISCOVERY_ONLY",
+      "question": "Find external proteins with experimental mutational stability where prediction can be independently tested",
+      "terms": [
+        "ProteinGym independent DMS proteolysis assays mutation heldout proteins benchmark"
+      ]
+    }
+  ],
+  "source": {
+    "completed_mutants": 0,
+    "path": "data/rowan/CANONICAL_STATE.json",
+    "repository": "Hawkar-usls/janus-meta-registry",
+    "state_sha256": "82d83df48327ea4c32275f4f974b6f1a00cd4e01f9000f53cabf0c1e0f7c1a36",
+    "upstream_artifact_sha256": "f7cbdd46d0f5a620dec8054e7e143f6137081586e471bd3790d7674f9ba0c604",
+    "upstream_run": 40147900977
+  },
+  "source_has_unseen_outcome": false
+}
