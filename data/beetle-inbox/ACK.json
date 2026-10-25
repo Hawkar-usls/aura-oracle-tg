@@ -1,0 +1,10 @@
+{
+  "acknowledged_at": "2026-10-25T13:53:46.065981Z",
+  "batch_id": "55a087b82e8102ea4863",
+  "last_sequence": 3,
+  "schema": "janus.beetle.inbox_ack.v1",
+  "scientific_authority_delta": 0,
+  "sha256": "f005ce7c9ee59fe99cffb57696ee73d6cfef1e0bee268c5649410200f752c4c8",
+  "status": "INBOX_DURABLE_UNVERIFIED__NOT_RUNTIME_CONSUMPTION",
+  "target_repository": "Hawkar-usls/aura-oracle-tg"
+}
