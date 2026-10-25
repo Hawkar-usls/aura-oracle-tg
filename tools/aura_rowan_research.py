@@ -63,7 +63,7 @@ def make_packet(state):
              "may_notify_demiurge_of_test_proposals":True,
              "may_resolve_own_forecast":False,"may_submit_rowan_jobs":False,
              "may_modify_rowan_credit_budget":False,"may_change_model_weights":False,
-             "may_promote_TPOA_scientific_gate":False},
+             "may_promote_TOPA_scientific_gate":False},
         "epistemic_status":"HYPOTHESIS_AND_FALSIFIER_PROPOSAL_ONLY",
     }
     proposal["packet_digest_sha256"]=digest(proposal)
