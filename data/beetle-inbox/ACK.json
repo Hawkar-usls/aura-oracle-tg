@@ -1,10 +1,10 @@
 {
-  "acknowledged_at": "2026-10-27T11:04:32.424742Z",
-  "batch_id": "d3178c903374a80f2744",
-  "last_sequence": 10,
+  "acknowledged_at": "2026-10-27T16:52:39.210231Z",
+  "batch_id": "3f3f1a41673217c00fdd",
+  "last_sequence": 11,
   "schema": "janus.beetle.inbox_ack.v1",
   "scientific_authority_delta": 0,
-  "sha256": "f9e8cea28b5d8b5719da8484ed105921a30576c1037399c1e4313a3837873af2",
+  "sha256": "28fb11badbcf4ddfa34f4f8137a4c37b14e8edf7eeffc9c104016398c9632252",
   "status": "INBOX_DURABLE_UNVERIFIED__NOT_RUNTIME_CONSUMPTION",
   "target_repository": "Hawkar-usls/aura-oracle-tg"
 }
