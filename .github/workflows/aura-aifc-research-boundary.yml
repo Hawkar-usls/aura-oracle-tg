@@ -1,0 +1,78 @@
+name: AURA AIFC future-trial admission boundary (read-only)
+on:
+  pull_request:
+    paths:
+      - 'research/aifc/**'
+      - '.github/workflows/aura-aifc-research-boundary.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  aifc-research-boundary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Hawkar-usls/AIFC
+          ref: 86bf957815911658edad330d5948e1bea2ea59b1
+          path: aifc
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Execute real AIFC canonical validator and enforce no-admission boundary
+        run: |
+          python - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,"aifc/reference/verifier")
+          from canonical import loads_strict,domain_hash,CanonicalizationError
+          p=Path("research/aifc/AURA_AIFC_RESEARCH_ADMISSION_BOUNDARY_20261028.json")
+          d=loads_strict(p.read_text(encoding="utf-8"))
+          assert d["schema"]=="janus.aura.aifc_future_trial_research_boundary.v1"
+          assert d["source_bindings"]["aifc_pinned_commit"]=="86bf957815911658edad330d5948e1bea2ea59b1"
+          assert d["aifc_full_admission"]=="NOT_ADMITTED"
+          assert d["runtime_activation"] is False
+          assert d["future_prediction_trial_created"] is False
+          assert d["target_generated"] is False
+          assert d["external_witness_quorum_verified"] is False
+          assert d["provider_calls"]==0 and d["paid_credits"]==0
+          assert d["authority_policy"]["release_disabled"] is True
+          required={"TRIAL_SLOT_EXTERNALLY_CERTIFIED_BEFORE_CANDIDATE_PRODUCTION",
+                    "PRE_TARGET_CANDIDATE_BYTES_EXACTLY_FROZEN",
+                    "FUTURE_TARGET_GENERATED_ONLY_AFTER_FREEZE",
+                    "CAUSAL_ISOLATION_AND_SOURCE_INDEPENDENCE"}
+          assert required <= set(d["mandatory_missing_gates"])
+          assert "RETROCAUSALITY_PROVED" in d["forbidden_claims"]
+          assert "P_EQ_NP_PROVEN" in d["forbidden_claims"]
+          assert "AURA_COMMITMENT_IS_AIFC_ADMISSION" in d["forbidden_claims"]
+          assert Path("docs/AURA_FORTUNE_COOKIE_PROTOCOL.md").is_file()
+          h=domain_hash("JANUS:AURA:AIFC-RESEARCH-BOUNDARY:v1",d)
+          for bad in ('{"x":1,"x":2}','{"x":2.4}'):
+              try:loads_strict(bad)
+              except (CanonicalizationError,ValueError):pass
+              else:raise AssertionError("INVALID_JSON_ACCEPTED")
+          out={"schema":"janus.aura.aifc_research_check.v1",
+               "source_aifc_commit":d["source_bindings"]["aifc_pinned_commit"],
+               "domain_sha256":h,
+               "result":"PASS_RESEARCH_BOUNDARY_NOT_ADMITTED",
+               "aifc_reference_code_executed":True,
+               "new_forecasts":0,
+               "external_witnesses":0,
+               "retrocause_claim":False,
+               "p_vs_np":"OPEN"}
+          Path("/tmp/aura-aifc-research-receipt.json").write_text(
+              json.dumps(out,indent=2,sort_keys=True)+"\n")
+          print(json.dumps(out,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aura-aifc-research-boundary
+          path: /tmp/aura-aifc-research-receipt.json
+          retention-days: 14

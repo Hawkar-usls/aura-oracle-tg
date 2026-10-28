@@ -1,0 +1,61 @@
+{
+  "schema": "janus.aura.aifc_future_trial_research_boundary.v1",
+  "artifact_id": "AURA-AIFC-RESEARCH-ADMISSION-2026-10-28-v1",
+  "date": "2026-10-28",
+  "source_bindings": {
+    "aura": "Hawkar-usls/aura-oracle-tg",
+    "aura_compatible_precommitment": "docs/AURA_FORTUNE_COOKIE_PROTOCOL.md",
+    "aifc": "Hawkar-usls/AIFC",
+    "aifc_pinned_commit": "86bf957815911658edad330d5948e1bea2ea59b1",
+    "aifc_normative_draft": "spec/AIFC-SPEC-v1.0-draft.md",
+    "aifc_strict_canonicalization": "reference/verifier/canonical.py",
+    "aifc_reference_status": "DRAFT_NOT_FROZEN"
+  },
+  "mode": "RESEARCH_READ_ONLY_INTEGRATION_PLAN",
+  "runtime_activation": false,
+  "aifc_full_admission": "NOT_ADMITTED",
+  "future_prediction_trial_created": false,
+  "target_generated": false,
+  "external_witness_quorum_verified": false,
+  "candidate_causally_isolated": false,
+  "provider_calls": 0,
+  "paid_credits": 0,
+  "possible_roles": {
+    "fortune_cookie": "AURA may seal/commit a prediction; secrecy and tamper protection only",
+    "aifc": "Independent audit of temporal order, externally witnessed freeze, conditioning, target unpredictability, ledger completeness, sequential evidence",
+    "janus_meta_registry": "Research evidence record with explicit provenance, not scientific proof",
+    "fundamentum": "Independent mathematical Exact-One proofs must not be conflated with future forecasting",
+    "lapis": "Source translation and inspection only, never scientific or mathematical authority"
+  },
+  "mandatory_missing_gates": [
+    "TRIAL_SLOT_EXTERNALLY_CERTIFIED_BEFORE_CANDIDATE_PRODUCTION",
+    "GLOBAL_APPEND_ONLY_TRIAL_LEDGER_COMPLETE",
+    "PRE_TARGET_CANDIDATE_BYTES_EXACTLY_FROZEN",
+    "EXTERNAL_WITNESS_QUORUM_AND_FRESHNESS_PROOF",
+    "FUTURE_TARGET_GENERATED_ONLY_AFTER_FREEZE",
+    "FULL_CONDITIONING_VIEW_AND_ENTROPY_EVIDENCE",
+    "MULTIPLICITY_AND_OPTIONAL_STOPPING_ACCOUNTED",
+    "CAUSAL_ISOLATION_AND_SOURCE_INDEPENDENCE",
+    "EXTERNAL_INDEPENDENT_VERIFIER_AND_REPLICATION"
+  ],
+  "allowed_claims": [
+    "AURA_FORTUNE_COOKIE_CAN_PRECOMMIT_BYTES",
+    "AIFC_CAN_HELP_AUDIT_PROTOCOL_EVIDENCE"
+  ],
+  "forbidden_claims": [
+    "PRECOGNITION_PROVEN",
+    "RETROCAUSALITY_PROVED",
+    "FORECAST_IS_GROUND_TRUTH",
+    "AURA_COMMITMENT_IS_AIFC_ADMISSION",
+    "JANUS_EXACTONE_FROM_ROWAN_CONFIDENCE",
+    "P_EQ_NP_PROVEN"
+  ],
+  "epistemic_status": "PROTOCOL_COMPATIBILITY_RESEARCH_ONLY",
+  "next_experiment": "Preregister a blind external future random target with independent witness quorum and source-bound entropy proof before attempting any strong future-information claim",
+  "authority_policy": {
+    "main_branch_unchanged": true,
+    "secret_keys_not_in_repository": true,
+    "provider_compute_not_started": true,
+    "release_disabled": true
+  }
+}
