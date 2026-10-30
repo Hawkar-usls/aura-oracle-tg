@@ -39,4 +39,29 @@ class Tests(unittest.TestCase):
         self.assertFalse(p["bounded_authority"]["may_resolve_own_forecast"])
         self.assertEqual(p["brier_score"],"NOT_COMPUTABLE_WITHOUT_PRE-REGISTERED_PROBABILITY_AND_EXTERNAL_OUTCOME")
 
+    def test_new_canonical_generation_requires_new_digest_without_authority_change(self):
+        old = state(8)
+        newer = state(8)
+        newer["latest_durable_external_run"] = old["latest_durable_external_run"] + 42
+        first, second = m.make_packet(old), m.make_packet(newer)
+        self.assertNotEqual(first["source"]["upstream_run"], second["source"]["upstream_run"])
+        self.assertNotEqual(first["packet_digest_sha256"], second["packet_digest_sha256"])
+        self.assertEqual(second["source"]["state_sha256"], m.digest(newer))
+        for packet in (first, second):
+            self.assertFalse(packet["bounded_authority"]["may_submit_rowan_jobs"])
+            self.assertFalse(packet["bounded_authority"]["may_modify_rowan_credit_budget"])
+
+    def test_wake_contract_checks_origin_before_reusing_write_token(self):
+        workflow = (Path(__file__).resolve().parents[1] /
+                    ".github/workflows/aura-rowan-falsifier-bridge.yml").read_text()
+        self.assertIn("workflow_run:", workflow)
+        self.assertIn("Aura Meta Registry Runtime v2", workflow)
+        self.assertIn("JANUS Beetle Memory Receiver", workflow)
+        self.assertIn("types: [completed]", workflow)
+        self.assertIn("branches: [main]", workflow)
+        self.assertIn("github.event.workflow_run.conclusion == 'success'", workflow)
+        self.assertIn("github.event.workflow_run.head_branch == 'main'", workflow)
+        self.assertIn("github.event.workflow_run.head_repository.full_name == github.repository", workflow)
+        self.assertIn("cron: '39 * * * *'", workflow)
+
 if __name__=="__main__":unittest.main()

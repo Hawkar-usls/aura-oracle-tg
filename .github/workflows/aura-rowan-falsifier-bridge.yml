@@ -2,6 +2,13 @@ name: AURA Rowan Hypothesis & Falsifier Bridge
 
 on:
   workflow_dispatch:
+  # Independent cloud wake paths: a delayed GitHub cron must not indefinitely
+  # strand a newer canonical Rowan generation behind an old AURA packet.
+  # These workflows already run on this same repository; no cross-repo token.
+  workflow_run:
+    workflows: ['Aura Meta Registry Runtime v2', 'JANUS Beetle Memory Receiver']
+    types: [completed]
+    branches: [main]
   schedule:
     - cron: '39 * * * *'
   push:
@@ -14,6 +21,7 @@ on:
       - 'tools/aura_rowan_research.py'
       - 'tests/test_aura_rowan_research.py'
       - '.github/workflows/aura-rowan-falsifier-bridge.yml'
+      - 'tests/test_aura_rowan_research.py'
 
 permissions:
   contents: write
@@ -24,6 +32,13 @@ concurrency:
 
 jobs:
   hypotheses:
+    # workflow_run can report untrusted/failed events; never use those with
+    # the existing contents:write permission.
+    if: >-
+      ${{ github.event_name != 'workflow_run' ||
+          (github.event.workflow_run.conclusion == 'success' &&
+           github.event.workflow_run.head_branch == 'main' &&
+           github.event.workflow_run.head_repository.full_name == github.repository) }}
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
