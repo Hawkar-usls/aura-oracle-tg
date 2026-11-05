@@ -41,7 +41,7 @@
   "hypothesis_priority_is_probabilistic_forecast": false,
   "information_gain": "NOT_ESTIMATED_NO_CALIBRATED_HYPOTHESIS_PRIORS",
   "next_discriminating_question_id": "EXTERNAL_HOLDOUT",
-  "packet_digest_sha256": "55f2f05f4aa7eb1d4bdf5ec62fdec36a418bb70519c0d37be50960cf78ccd876",
+  "packet_digest_sha256": "6e0cfdd6c75894affd0cabf3e5c916a3a095f5b5ac2bdf008f84f3aeced340d0",
   "question": "Does structural confidence correspond to independent experimental mutation effects?",
   "schema_id": "janus.aura.rowan_hypothesis_packet.v1",
   "search_proposals": [
@@ -76,9 +76,9 @@
     "completed_mutants": 8,
     "path": "data/rowan/CANONICAL_STATE.json",
     "repository": "Hawkar-usls/janus-meta-registry",
-    "state_sha256": "9f4c31ac8a1d210af73cd752489c5d1d4e3f6dc1ad6a0529c16fcde35d64842c",
+    "state_sha256": "bd32a8249e90515a8125b8c235f4cddb948523a72e6e1f83683111db9cb9a19d",
     "upstream_artifact_sha256": "36fcad17ce38f0781ca7adc0ae750dd99bc0c1fcd7be79ece56cafe52cc649e7",
-    "upstream_run": 41944469012
+    "upstream_run": 42055142702
   },
   "source_has_unseen_outcome": false
 }
