@@ -1,0 +1,39 @@
+name: ESSENCE single-root offline contract
+on:
+  pull_request:
+    paths:
+      - '.janus/essence/**'
+      - '.github/workflows/essence-root-contract.yml'
+permissions:
+  contents: read
+jobs:
+  root-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exactly one inert ESSENCE root and bounded factory
+        env:
+          ESSENCE_REPO: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import importlib.util,json,os,pathlib
+          base=pathlib.Path('.janus/essence')
+          m=json.loads((base/'manifest.json').read_text())
+          spec=importlib.util.spec_from_file_location('essence_root',base/'kernel.py')
+          root=importlib.util.module_from_spec(spec);spec.loader.exec_module(root)
+          root.validate_manifest(m,os.environ['ESSENCE_REPO'])
+          spec=importlib.util.spec_from_file_location('collective_seed',base/'collective_seed.py')
+          factory=importlib.util.module_from_spec(spec);spec.loader.exec_module(factory)
+          factory.validate_manifest(m,os.environ['ESSENCE_REPO'])
+          factory.validate_innovations(json.loads((base/'innovations.json').read_text()),os.environ['ESSENCE_REPO'])
+          assert len(list(base.glob('kernel.py')))==1
+          assert set(x['role'] for x in m['microkernels'])==set(factory.ROLES)
+          assert m['enabled'] is False and all(not v for v in m['capabilities'].values())
+          print('ESSENCE_ROOT_SINGLETON_OFFLINE_PASS')
+          PY
