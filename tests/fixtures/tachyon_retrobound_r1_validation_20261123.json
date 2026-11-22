@@ -1,0 +1,154 @@
+{
+  "schema": "janus.demihead.tachyon.retrobound_r1.validation_result.v1",
+  "artifact_id": "TACHYON-RETROBOUND-R1-VALIDATION-2026-11-23",
+  "date_utc": "2026-11-23",
+  "status": "ORIGINAL_PORT_PARITY_PASS__PAIRED_SYNTHETIC_CONTROLS_PASS__PHYSICAL_RETROCAUSALITY_HOLD",
+  "implementation": {
+    "repository": "Hawkar-usls/Demi_Head",
+    "branch": "research/tachyon-retrobound-r1-integration-20261123",
+    "ci_tested_commit": "182e6e5e9f67e6030b9119cb1f8f1f5a87a97478",
+    "integration_pr": "https://github.com/Hawkar-usls/Demi_Head/pull/118",
+    "runner_python": "3.11",
+    "validation_script": "tools/tachyon_retrobound_r1_paired_validation.py",
+    "immutable_source_r1_python_sha256": "690e6d8fd4ca21f0b2a3cc1784ae1d265ce08c6817624efc9cbbab1a7157c3b8",
+    "immutable_archive_sha256": "5dd340abe60a7ed05fb24078598684869e6a7392053584498301d2db5e83f9ba",
+    "golden_reference_fixture": "research/tachyon/retrobound_r1_original_golden_fixture_20261123.json",
+    "unchanged_R5F_source_git_blob": "ea3ebbbd14594291adcde4f403a7e040d65f76a3",
+    "production_models_changed": false
+  },
+  "validation_evidence": {
+    "push": {
+      "conclusion": "success",
+      "run": "https://github.com/Hawkar-usls/Demi_Head/actions/runs/45081949821"
+    },
+    "pull_request": {
+      "conclusion": "success",
+      "run": "https://github.com/Hawkar-usls/Demi_Head/actions/runs/45081955109"
+    },
+    "unit_tests_total": 16,
+    "unit_tests_passed": 16,
+    "original_standalone_tests_passed": 8,
+    "port_golden_replay_checks": {
+      "passed": 9,
+      "total": 9
+    },
+    "common_choice_paired_main_checks": {
+      "passed": 11,
+      "total": 11
+    },
+    "common_choice_paired_alternative_checks": {
+      "passed": 11,
+      "total": 11
+    },
+    "artifact": {
+      "github_artifact_id": 14777716658,
+      "name": "tachyon-retrobound-r1-validation",
+      "zip_sha256": "14724041468e6b8113a544d280c3892b762cb2980ed4fd3bcfff42aa3bc92992",
+      "files": {
+        "paired_default.json": "bb8c0f567d69edbf8ad479f3296fd73532658f88962e0653a991f0eb305a8805",
+        "paired_control.json": "31bd2d8e2f6350597741155db300e6741565e191cf9b328143f200a14a6b462c",
+        "port_golden_replay.json": "50f996901f0b57174b3a627d39e49cf5764566696ef32395bb587d7a05451af6"
+      }
+    }
+  },
+  "paired_default": {
+    "steps": 8,
+    "rho": 0.85,
+    "eta": 0.9,
+    "seed": 20261123,
+    "trajectories_per_arm": 40000,
+    "total_accepted_trajectories": 120000,
+    "all_arms_same_future_parameter_sequence": true,
+    "future_parameter_counts": {
+      "1": 20269,
+      "-1": 19731
+    },
+    "theoretical_hidden_past_future_correlation": 0.2452414725351562,
+    "exact_public_parity_total_variation": 0,
+    "arms": {
+      "two_boundary": {
+        "hidden_past_future_correlation": 0.2402,
+        "endpoint_correlation": 0.9031,
+        "early_public_parity_delta": 0.00030679550007295386,
+        "early_public_parity_z": 0.11646842463792555,
+        "forward_draws_per_accepted": 1
+      },
+      "causal_null": {
+        "hidden_past_future_correlation": -0.00615,
+        "endpoint_correlation": -0.00435,
+        "early_public_parity_delta": -0.004461787148449692,
+        "early_public_parity_z": -1.6938231497075633,
+        "forward_draws_per_accepted": 1
+      },
+      "postselection": {
+        "hidden_past_future_correlation": 0.243,
+        "endpoint_correlation": 0.9006,
+        "early_public_parity_delta": 0.0017698376680588268,
+        "early_public_parity_z": 0.6718814487652361,
+        "forward_draws_per_accepted": 1.891875
+      }
+    },
+    "paired_hidden_two_boundary_minus_postselection": -0.0028,
+    "paired_difference_standard_error": 0.006857549099313197,
+    "paired_difference_z": -0.4083091436094024,
+    "theoretical_expected_postselection_draws_per_accepted": 1.9,
+    "result": "NO_5SIGMA_DISCREPANCY_ON_PREDECLARED_METRICS__NOT_PROOF_OF_PHYSICAL_EQUIVALENCE"
+  },
+  "paired_alternative": {
+    "steps": 5,
+    "rho": 0.65,
+    "eta": 0.7,
+    "seed": 20261124,
+    "trajectories_per_arm": 10000,
+    "total_accepted_trajectories": 30000,
+    "all_arms_same_future_parameter_sequence": true,
+    "future_parameter_counts": {
+      "1": 5074,
+      "-1": 4926
+    },
+    "theoretical_hidden_past_future_correlation": 0.08122034375000001,
+    "exact_public_parity_total_variation": 0,
+    "arms": {
+      "two_boundary": {
+        "hidden_past_future_correlation": 0.073,
+        "early_public_parity_delta": -0.008821932356063211,
+        "early_public_parity_z": -1.1607539226408017,
+        "forward_draws_per_accepted": 1
+      },
+      "causal_null": {
+        "hidden_past_future_correlation": -0.0018,
+        "early_public_parity_delta": -0.008630770483966765,
+        "early_public_parity_z": -1.135601622221857,
+        "forward_draws_per_accepted": 1
+      },
+      "postselection": {
+        "hidden_past_future_correlation": 0.0806,
+        "early_public_parity_delta": -0.007572618706401468,
+        "early_public_parity_z": -0.9963743217864722,
+        "forward_draws_per_accepted": 1.7205
+      }
+    },
+    "paired_difference": -0.0076,
+    "paired_difference_se": 0.014085952768859501,
+    "paired_difference_z": -0.5395446175853783,
+    "theoretical_expected_postselection_draws_per_accepted": 1.7
+  },
+  "scientific_interpretation": {
+    "mathematical_two_boundary_bias_reproduced": true,
+    "source_port_deterministic_golden_replayed": true,
+    "postselection_same_exact_distribution_by_model_derivation": true,
+    "selected_public_early_parity_invariant_by_symmetry": true,
+    "no_signalling_for_arbitrary_observable_established": false,
+    "independently_generated_future_physical_entropy": false,
+    "externally_frozen_early_record_before_late_choice": false,
+    "external_timekeeping_or_hardware_run": false,
+    "physical_retrocausality_demonstrated": false,
+    "usable_information_from_future_demonstrated": false,
+    "conventional_postselection_explanation_excluded": false,
+    "independent_external_replication": false,
+    "real_human_subject_or_consciousness_measurement": false,
+    "production_or_frozen_R5F_adoption": false,
+    "claim_ceiling": "CLASSICAL_SYNTHETIC_MATHEMATICAL_VALIDATION_ONLY",
+    "next_gate": "R2_PROSPECTIVE_INDEPENDENT_LATE_CHOICE_AND_IMMUTABLE_PRECHOICE_EARLY_RECORD__PREREGISTERED_COMPETITIVE_NULL"
+  }
+}

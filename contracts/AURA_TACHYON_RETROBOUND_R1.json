@@ -1,0 +1,57 @@
+{
+  "schema": "janus.aura.tachyon.retrobound_r1.peer_contract.v1",
+  "contract_id": "AURA_TACHYON_RETROBOUND_R1_ADVISORY",
+  "status": "DEVELOPMENT_REVIEW_ONLY__NO_PRODUCTION_ACTIVATION",
+  "created_utc": "2026-11-23",
+  "source": {
+    "repository": "Hawkar-usls/Demi_Head",
+    "pinned_git_commit": "a6f84e3707828f59946be3848e0bc128d9e2b8cc",
+    "path": "research/tachyon/retrobound_r1_validation_result_20261123.json",
+    "expected_git_blob_sha1": "44f422bd450e1a29d4927235502868c49955002c",
+    "source_pr": "https://github.com/Hawkar-usls/Demi_Head/pull/118",
+    "classified_as": "PREVIOUSLY_TESTED_SYNTHETIC_VALIDATION_RESULT"
+  },
+  "source_ingest": {
+    "adapter": "tools/aura_tachyon_retrobound_bridge.py",
+    "input_schema": "janus.demihead.tachyon.retrobound_r1.validation_result.v1",
+    "allowed_methods": [
+      "LOCAL_FILE_FROM_PINNED_SOURCE_ONLY"
+    ],
+    "network_fetch_default": false,
+    "automatic_pipeline_enabled": false,
+    "exact_git_blob_match_required": true,
+    "all_three_arms_required": true,
+    "science_HOLD_required": true,
+    "deterministic_source_binding": true
+  },
+  "output": {
+    "schema": "janus.aura.tachyon.retrobound_r1.advisory.v1",
+    "class": "HYPOTHESIS_DISCRIMINATION_ONLY",
+    "mode": "OFFLINE_READ_ONLY_ADVISORY",
+    "axes": [
+      "D1_TEMPORAL_ORDER",
+      "D2_MODEL_FIT",
+      "D3_EARLY_OBSERVABLE",
+      "D4_PROVENANCE",
+      "D5_EVIDENCE_ASCENT"
+    ],
+    "axes_are_physical_spacetime_dimensions": false,
+    "calibrated_predictions": false,
+    "authority_to_modify_tachyon": false,
+    "source_authentication": "GIT_BLOB_SHA_AND_SOURCE_PATH_NOT_EXTERNAL_PHYSICAL_WITNESS",
+    "output_integrity": "CANONICAL_JSON_SHA256_NOT_DIGITAL_SIGNATURE"
+  },
+  "receiver": {
+    "repository": "Hawkar-usls/Demi_Head",
+    "bridge": "tools/tachyon_aura_oracle_ingress.py",
+    "treatment": "NON_AUTHORITATIVE_QUESTIONS_AND_OPEN_SCIENCE_GATES",
+    "forbidden": [
+      "AUTO_MODEL_UPDATE",
+      "RETROCAUSALITY_CLAIM",
+      "AUTONOMOUS_LATE_CHOICE_TRIAL",
+      "FORECAST_TRUTH_PROMOTION",
+      "R5F_REWRITE"
+    ]
+  },
+  "next_test": "Run both repository CI and test read-only cross-repository packet exchange; no physical R2 outcome is claimed."
+}

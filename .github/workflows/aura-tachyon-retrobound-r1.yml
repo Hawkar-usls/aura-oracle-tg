@@ -1,0 +1,67 @@
+name: AURA TACHYON RETROBOUND R1 Read-only Peer
+
+on:
+  pull_request:
+    paths:
+      - 'tools/aura_tachyon_retrobound_bridge.py'
+      - 'tests/test_aura_tachyon_retrobound_bridge.py'
+      - 'tests/fixtures/tachyon_retrobound_r1_validation_20261123.json'
+      - 'contracts/AURA_TACHYON_RETROBOUND_R1.json'
+      - '.janus/TACHYON_RETROBOUND_R1_LINK.json'
+      - '.github/workflows/aura-tachyon-retrobound-r1.yml'
+  push:
+    branches:
+      - research/aura-tachyon-retrobound-advisory-20261123
+    paths:
+      - 'tools/aura_tachyon_retrobound_bridge.py'
+      - 'tests/test_aura_tachyon_retrobound_bridge.py'
+      - 'tests/fixtures/tachyon_retrobound_r1_validation_20261123.json'
+      - 'contracts/AURA_TACHYON_RETROBOUND_R1.json'
+      - '.janus/TACHYON_RETROBOUND_R1_LINK.json'
+      - '.github/workflows/aura-tachyon-retrobound-r1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  advisory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate source-bound AURA and TACHYON research interface
+        run: |
+          set -euo pipefail
+          python -m py_compile tools/aura_tachyon_retrobound_bridge.py tests/test_aura_tachyon_retrobound_bridge.py
+          python -m unittest discover -s tests -p 'test_aura_tachyon_retrobound_bridge.py' -v
+      - name: Generate bounded AURA hypotheses from pinned TACHYON receipt
+        run: |
+          set -euo pipefail
+          mkdir -p out/aura-tachyon
+          python tools/aura_tachyon_retrobound_bridge.py \
+            --input tests/fixtures/tachyon_retrobound_r1_validation_20261123.json \
+            --output out/aura-tachyon/retrobound_r1_aura_advisory.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from tools.aura_tachyon_retrobound_bridge import verify_advisory
+          p = json.loads(Path('out/aura-tachyon/retrobound_r1_aura_advisory.json').read_text())
+          assert verify_advisory(p)
+          assert not p['governance']['external_effect_authorized']
+          assert p['hypothesis_discrimination']['R1_identifiability'] == 'TWO_BOUNDARY_VS_POSTSELECTION_NOT_IDENTIFIABLE'
+          assert all(h['physical_truth_probability'] is None for h in p['hypotheses'])
+          assert not p['five_axis_spiral']['real_physical_spacetime_dimensions_measured']
+          print('AURA_TACHYON_READONLY_ADVISORY_PASS__NO_PHYSICAL_CLAIM')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aura-tachyon-retrobound-r1-advisory
+          path: out/aura-tachyon/*.json
+          if-no-files-found: error
+          retention-days: 60

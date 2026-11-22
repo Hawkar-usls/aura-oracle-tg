@@ -1,0 +1,12 @@
+{
+  "schema": "janus.aura.peer_link.v1",
+  "id": "AURA_TACHYON_RETROBOUND_R1",
+  "status": "PROPOSED_READ_ONLY_REFERENCE",
+  "contract": "contracts/AURA_TACHYON_RETROBOUND_R1.json",
+  "producer": "Hawkar-usls/Demi_Head",
+  "consumer": "Hawkar-usls/aura-oracle-tg",
+  "allow_auto_prediction": false,
+  "allow_production_changes": false,
+  "source_repository_commit": "a6f84e3707828f59946be3848e0bc128d9e2b8cc",
+  "source_git_blob_sha1": "44f422bd450e1a29d4927235502868c49955002c"
+}
