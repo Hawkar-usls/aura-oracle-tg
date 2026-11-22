@@ -5,6 +5,7 @@ import copy
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from tools import aura_tachyon_retrobound_bridge as bridge
@@ -110,7 +111,8 @@ class AuraTachyonBridgeTests(unittest.TestCase):
     def test_cli_writes_advisory_local_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "advisory.json"
-            self.assertEqual(bridge.main_argv([str(FIXTURE), str(out)]), 0)
+            with patch("sys.argv", ["aura_tachyon", "--input", str(FIXTURE), "--output", str(out)]):
+                self.assertEqual(bridge.main(), 0)
             packet = json.loads(out.read_text(encoding="utf-8"))
             self.assertTrue(bridge.verify_advisory(packet))
 
