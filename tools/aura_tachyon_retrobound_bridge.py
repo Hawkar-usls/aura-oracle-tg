@@ -162,6 +162,8 @@ def validate_source(obj: dict) -> dict:
 def make_advisory(obj: dict, raw: bytes) -> dict:
     if git_blob_sha(raw) != PINNED_BLOB_SHA1:
         raise ValueError("INPUT_DIGEST_NOT_PINNED")
+    if not isinstance(obj, dict) or obj != json.loads(raw.decode("utf-8-sig")):
+        raise ValueError("SOURCE_OBJECT_BYTES_MISMATCH")
     metrics = validate_source(obj)
     primary = metrics["default"]
     # All scores are descriptive statistics, NOT calibrated physical forecast probabilities.
