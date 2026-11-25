@@ -2,8 +2,8 @@
   "schema": "janus.aura.full_meta_registry.gate_receipt.v2",
   "status": "PASS_FULL_META_REGISTRY_REFERENCE_RUNTIME_WITH_QUARANTINE",
   "github_actor": "Hawkar-usls",
-  "github_run_id": "45617460452",
-  "source_commit": "7514f1e4f832b282e2073a7c9fbeb37c7994e77e",
+  "github_run_id": "45713635258",
+  "source_commit": "828218baab62a8642807781633511da515fcf4d3",
   "registry_root": "/home/runner/work/aura-oracle-tg/aura-oracle-tg/registry/data",
   "registry_write_performed": false,
   "index_is_source_of_truth": false,
@@ -24,12 +24,12 @@
     "hrain_projection": true,
     "inaihr_projection": true
   },
-  "registry_files_seen": 4665,
-  "registry_files_indexed_this_run": 4663,
+  "registry_files_seen": 4679,
+  "registry_files_indexed_this_run": 4677,
   "registry_files_quarantined": 2,
-  "registry_indexed_files_total": 4663,
-  "registry_records_indexed": 69181,
-  "vocabulary_size": 227169,
+  "registry_indexed_files_total": 4677,
+  "registry_records_indexed": 69385,
+  "vocabulary_size": 227317,
   "semantic_search_hits": 8,
   "predictive_token_suggestions": 8,
   "predictive_phrase_suggestions": 5,
@@ -58,6 +58,6 @@
       "registry_write_performed": false
     }
   ],
-  "elapsed_seconds": 512.083335,
+  "elapsed_seconds": 996.525557,
   "claim_ceiling": "REFERENCE_RUNTIME_PASS_NOT_SCIENTIFIC_TRUTH_NOT_FINAL_ORIGIN_PRIME_PROMOTION"
 }
